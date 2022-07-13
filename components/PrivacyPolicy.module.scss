@@ -1,0 +1,21 @@
+.privacyPolicyDialog {
+    position: fixed;
+    bottom: 0;
+    background-color: var(--main-contrast-color);
+    transition: all 0.5s ease-in-out;
+}
+
+.acceptButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 15px;
+    margin-right: 5px;
+
+    button {
+        text-align: right;
+        padding: 5px 15px;
+        background-color: #30851b;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
