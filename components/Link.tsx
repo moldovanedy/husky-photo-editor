@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 
 // @ts-ignore Binding element 'children' implicitly has an 'any' type.
-const LinkComponent = ({ children, skipLocaleHandling, ...rest }) => {
+const LinkComponent = ({ children, skipLocaleHandling = false, ...rest }) => {
     const router = useRouter();
     const locale = rest.locale || router.query.locale || "";
 

@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "./../../components/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLanguage } from "@fortawesome/free-solid-svg-icons";
+import { faGear } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./../../styles/Home.module.scss";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
@@ -10,9 +10,7 @@ import { useTranslation } from "next-i18next";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
 import { useEffect, useState } from "react";
 
-// @ts-ignore
 const getStaticProps = makeStaticProps(["common", "index"]);
-// @ts-ignore
 export { getStaticPaths, getStaticProps };
 
 const Home: NextPage = () => {
@@ -31,7 +29,7 @@ const Home: NextPage = () => {
         }
     }, []);
 
-    const { t } = useTranslation("common");
+    const { t } = useTranslation();
     return (
         <>
             <Head>
@@ -49,15 +47,17 @@ const Home: NextPage = () => {
                         width={50}
                     />
                 </picture>
-                <FontAwesomeIcon
-                    icon={faLanguage}
-                    size={"2x"}
-                    style={{ margin: "10px" }}
-                />
+                <Link href="/settings" skipLocaleHandling={false}>
+                    <FontAwesomeIcon
+                        icon={faGear}
+                        size={"2x"}
+                        style={{ margin: "10px" }}
+                    />
+                </Link>
             </header>
 
             <div className={styles.main}>
-                <h2>Husky Photo Editor</h2>
+                <h2 style={{ fontSize: "24px" }}>Husky Photo Editor</h2>
 
                 <main className={styles.mainPanel}>
                     <div>

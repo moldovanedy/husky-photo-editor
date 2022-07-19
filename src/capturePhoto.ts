@@ -1,32 +1,40 @@
-var imageCapture: ImageCapture,
-    stream: MediaStream,
-    constraints = {
-        audio: false,
-        video: {
-            width: { min: 240, ideal: 9999, max: 9999 },
-            height: { min: 144, ideal: 9999, max: 9999 },
-        },
-    };
+let stream: MediaStream;
 
 /**
  * @description Captures user's camera and displays output in a video element
- * @param videotrackIndex
- * @param videoElement
- * @param capturePhotoButton
+ * @param videotrackIndex Usually 0
+ * @param videoElement The video element that will hold user's camera output
+ * @param capturePhotoButton The element that, when pressed, will render current frame on a canvas
+ * @param canvasReference The canvas that will be filled with the current frame
+ * @param changeCameraButton Optional element that will change the camera's facing mode
  */
 export function capture(
     videotrackIndex: number,
-    videoElement: HTMLVideoElement | null,
-    capturePhotoButton: SVGSVGElement | null
+    videoElement: HTMLVideoElement,
+    capturePhotoButton: SVGSVGElement | HTMLElement,
+    canvasReference: HTMLCanvasElement,
+    changeCameraButton: HTMLElement | null
 ): void {
     if (videotrackIndex === null || videotrackIndex === undefined) {
         videotrackIndex = 0;
     }
 
     navigator.mediaDevices
-        .getUserMedia(constraints)
+        .getUserMedia({
+            audio: false,
+            video: {
+                width: { min: 240, ideal: 9999, max: 9999 },
+                height: { min: 144, ideal: 9999, max: 9999 },
+                facingMode: {
+                    ideal:
+                        localStorage.getItem("isFrontCamera") === "true"
+                            ? "user"
+                            : "environment",
+                },
+            },
+        })
         .then((mediaStream) => {
-            var video: HTMLVideoElement | null = videoElement;
+            var video: HTMLVideoElement = videoElement;
             stream = mediaStream;
 
             if (video !== null) {
@@ -34,30 +42,54 @@ export function capture(
                 video.onloadedmetadata = function (e) {
                     if (video !== null) {
                         video.play();
+                        if (
+                            mediaStream
+                                .getVideoTracks()
+                                [videotrackIndex].getCapabilities().height !==
+                                undefined &&
+                            mediaStream
+                                .getVideoTracks()
+                                [videotrackIndex].getCapabilities().width !==
+                                undefined
+                        ) {
+                            // @ts-ignore Object is possibly 'undefined'
+                            video.width = mediaStream
+                                .getVideoTracks()
+                                [videotrackIndex].getCapabilities().width.max;
+                            // @ts-ignore Object is possibly 'undefined'
+                            video.height = mediaStream
+                                .getVideoTracks()
+                                [videotrackIndex].getCapabilities().height.max;
+                        }
                     } else {
                         throw new Error("Video element does not exist");
                     }
                 };
-            } else {
-                throw new Error("Video element does not exist");
-            }
-            const track = stream.getVideoTracks()[videotrackIndex];
-            imageCapture = new ImageCapture(track);
-            if (!imageCapture) {
-                console.log(
-                    "This feature (ImageCapture) is not supported on your device or browser."
-                );
-            }
+                //add event listener at runtime
+                var takePhotoButton = capturePhotoButton;
+                if (takePhotoButton !== null) {
+                    takePhotoButton.addEventListener("click", () => {
+                        takePhotoAction(
+                            video,
+                            canvasReference,
+                            mediaStream.getVideoTracks()[videotrackIndex]
+                        );
+                    });
+                }
 
-            //add event listener at runtime in order to have a reference of ImageCapture
-            var takePhotoButton = capturePhotoButton;
-            if (takePhotoButton !== null) {
-                takePhotoButton.addEventListener("click", () => {
-                    takePhotoAction(
-                        imageCapture,
-                        stream.getVideoTracks()[videotrackIndex]
-                    );
-                });
+                if (changeCameraButton !== null) {
+                    changeCameraButton.addEventListener("click", () => {
+                        switchCameraFacingMode(
+                            videotrackIndex,
+                            videoElement,
+                            capturePhotoButton,
+                            canvasReference,
+                            changeCameraButton
+                        );
+                    });
+                }
+            } else {
+                throw new Error("Take photo element does not exist");
             }
         })
         .catch(function (err) {
@@ -84,77 +116,83 @@ export function capture(
 }
 
 export function takePhotoAction(
-    imageCapture: ImageCapture,
+    videoElement: HTMLVideoElement,
+    canvasReference: HTMLCanvasElement,
     streamTrack: MediaStreamTrack
 ) {
-    imageCapture
-        .takePhoto()
-        .then((blob: any) => {
-            createImageBitmap(blob).then((imgBitmap) => {
-                var canvas: HTMLCanvasElement = document.getElementById(
-                    "canvas"
-                ) as HTMLCanvasElement;
-                if (canvas !== null) {
-                    canvas.width = imgBitmap.width;
-                    canvas.height = imgBitmap.height;
-                    let ratio = Math.min(
-                        canvas.width / imgBitmap.width,
-                        canvas.height / imgBitmap.height
-                    );
-                    let x = (canvas.width - imgBitmap.width * ratio) / 2;
-                    let y = (canvas.height - imgBitmap.height * ratio) / 2;
-                    if (canvas === null) {
-                        return;
-                    }
-                    //@ts-ignore: Object is possibly "null"
-                    canvas!
-                        .getContext("2d")
-                        .clearRect(0, 0, canvas.width, canvas.height);
-                    //@ts-ignore: Object is possibly "null"
-                    canvas!
-                        .getContext("2d")
-                        .drawImage(
-                            imgBitmap,
-                            0,
-                            0,
-                            imgBitmap.width,
-                            imgBitmap.height,
-                            x,
-                            y,
-                            imgBitmap.width * ratio,
-                            imgBitmap.height * ratio
-                        );
-                    scaleCanvas(canvas);
-                    var main = document.getElementById("mainCamera");
-                    var canvas = document.getElementById(
-                        "resultContainer"
-                    ) as HTMLCanvasElement;
-                    if (main !== null && canvas !== null) {
-                        main.style.display = "none";
-                        canvas.style.display = "block";
-                    }
-                    streamTrack.stop();
-                }
-            });
-        })
-        .catch((error: Error) => console.error("takePhoto() error:", error));
+    if (
+        streamTrack.getSettings().width !== undefined &&
+        streamTrack.getSettings().height
+    ) {
+        // @ts-ignore
+        canvasReference.width = streamTrack.getSettings().width;
+        // @ts-ignore
+        canvasReference.height = streamTrack.getSettings().height;
+    } else {
+        alert("Not supported");
+    }
+
+    let ctx = canvasReference.getContext("2d");
+    if (ctx !== null) {
+        ctx.drawImage(
+            videoElement,
+            0,
+            0,
+            canvasReference.width,
+            canvasReference.height
+        );
+    }
+
+    streamTrack.stop();
 }
 
-export function switchCamera() {
-    stream.getVideoTracks()[0].applyConstraints(constraints.video);
-
+export function getAvailableCameras(): string[] {
+    let devicesList: string[] = [];
     navigator.mediaDevices.enumerateDevices().then((devices) => {
         devices.forEach((device) => {
             if (device.kind === "videoinput") {
-                console.log(
-                    `${device.kind}  ${device.deviceId}  ${device.groupId}  ${device.label}`
-                );
+                devicesList.push(device.label);
             }
         });
     });
+    return devicesList;
 }
 
-export function scaleCanvas(canvasElement: HTMLCanvasElement): void {
+/**
+ * @description Switches the camera facing mode (front/rear) and accepts the same parameters that capture function accepts
+ * @param videotrackIndex Usually 0
+ * @param videoElement The video element that will hold user's camera output
+ * @param capturePhotoButton The element that, when pressed, will render current frame on a canvas
+ * @param canvasReference The canvas that will be filled with the current frame
+ * @param changeCameraButton Optional element that will change the camera's facing mode
+ */
+export function switchCameraFacingMode(
+    videotrackIndex: number,
+    videoElement: HTMLVideoElement,
+    capturePhotoButton: SVGSVGElement | HTMLElement,
+    canvasReference: HTMLCanvasElement,
+    changeCameraButton: HTMLElement | null
+) {
+    let localData = localStorage.getItem("isFrontCamera");
+    if (localData === null) {
+        localStorage.setItem("isFrontCamera", "false");
+    } else {
+        if (localData === "true") {
+            localStorage.setItem("isFrontCamera", "false");
+        } else {
+            localStorage.setItem("isFrontCamera", "true");
+        }
+    }
+    capture(
+        videotrackIndex,
+        videoElement,
+        capturePhotoButton,
+        canvasReference,
+        changeCameraButton
+    );
+}
+
+export function scaleCanvas(canvasElement: HTMLCanvasElement | null): void {
     var canvas: HTMLCanvasElement | null = canvasElement;
     if (canvas === null) {
         return;

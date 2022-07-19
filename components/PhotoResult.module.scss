@@ -1,0 +1,49 @@
+.main {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color: var(
+        --main-app-color
+    ); /* to cover the video element buttons */
+    transition: all 0.5s ease-in-out;
+    z-index: 3;
+    // overflow: hidden;
+}
+
+.actionLinesPhoto {
+    position: absolute;
+    width: 100vw;
+    background-color: #979797;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 4;
+}
+
+.actionLineButtons {
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+#photoOptions {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000b0;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.optionsWindow {
+    margin: auto;
+    background-color: var(--secondary-app-color);
+    font-size: 24px;
+    border-radius: 10px;
+
+    div {
+        padding: 15px;
+        margin: 20px;
+    }
+}

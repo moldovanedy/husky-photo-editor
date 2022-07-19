@@ -13,7 +13,9 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "incremental": true
+        "incremental": true,
+        "noImplicitReturns": true,
+        "noImplicitAny": false
     },
     "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "lib/getStatic.js"],
     "exclude": ["node_modules"]

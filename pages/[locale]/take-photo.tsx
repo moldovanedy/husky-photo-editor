@@ -1,42 +1,72 @@
-import React, { useEffect, useRef } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faCameraRotate,
     faGear,
+    faTimes,
     faVideo,
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircleDot } from "@fortawesome/free-regular-svg-icons";
 
 import styles from "./../../styles/take-photo.module.scss";
-import { capture, scaleCanvas } from "./../../src/capturePhoto";
+import {
+    capture,
+    scaleCanvas,
+    getAvailableCameras,
+} from "./../../src/capturePhoto";
+import PhotoResult from "./../../components/PhotoResult";
+import { State } from "../../src/GlobalElementReferences.state";
+
+import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
+import { useTranslation } from "next-i18next";
+const getStaticProps = makeStaticProps(["common", "takePhoto"]);
+export { getStaticPaths, getStaticProps };
 
 function TakePhoto() {
-    var videoElement = useRef<HTMLVideoElement>(null),
-        capturePhotoButton = useRef<SVGSVGElement>(null);
+    let videoElement = useRef<HTMLVideoElement>(null),
+        capturePhotoButton = useRef<SVGSVGElement>(null),
+        canvasElement = useRef<HTMLCanvasElement>(null),
+        changeCameraButton = useRef<HTMLElement>(null);
 
-    // window.onresize = () => {
-    //         scaleCanvas();
-    //     };
+    let [hasTakenPhoto, setHasTakenPhoto] = useState(false),
+        [isShowingAvailableCameras, setIsShowingAvailableCameras] =
+            useState(false),
+        [availableCameras, setAvailableCameras] = useState<string[]>([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
+        window.onresize = () => {
+            scaleCanvas(canvasElement.current);
+        };
+        setAvailableCameras(getAvailableCameras());
+
         try {
-            capture(0, videoElement.current, capturePhotoButton.current);
+            if (
+                videoElement.current !== null &&
+                capturePhotoButton.current !== null &&
+                canvasElement.current !== null
+            ) {
+                capture(
+                    0,
+                    videoElement.current,
+                    capturePhotoButton.current,
+                    canvasElement.current,
+                    changeCameraButton.current
+                );
+            }
         } catch (err: any) {
             switch (err.name) {
                 case "NotAllowedError":
-                    console.log(
-                        "Permission to camera has been denied. Please reload page settings to grant permission to camera"
-                    );
+                    console.log(t("takePhoto:cameraAccessDenied"));
                     break;
                 case "NotReadableError":
                     console.log("An unknown hardware error has occured.");
                     break;
                 case "NotFoundError":
-                    console.log(
-                        "We were unable to find a camera on your device."
-                    );
+                    console.log(t("takePhoto:cameraNotFound"));
                     break;
                 default:
                     console.log("An unknown error has occured.");
@@ -55,45 +85,56 @@ function TakePhoto() {
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <title>Take a photo</title>
+                <title>{t("takePhoto:pageTitle")}</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <main id={styles.mainCamera} className="centerAlign">
-                <div id="container">
+                <div>
                     {/* default width and height */}
                     <video
                         id={styles.video}
                         ref={videoElement}
-                        width="400"
-                        height="200"
+                        width="1920"
+                        height="1080"
                     ></video>
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.topLine}`}>
                     <FontAwesomeIcon
                         icon={faCameraRotate}
+                        //@ts-ignore
+                        ref={changeCameraButton}
                         size={"2x"}
-                        title="Switch between front and rear camera."
-                        // onclick="switchCamera()"
+                        title={t("takePhoto:changeCamera")}
                     ></FontAwesomeIcon>
+
                     <FontAwesomeIcon
                         icon={faVideo}
                         size={"2x"}
                         id="reloadCameraPermission"
                         onClick={() => {
-                            capture(
-                                0,
-                                videoElement.current,
-                                capturePhotoButton.current
-                            );
+                            if (
+                                videoElement.current !== null &&
+                                capturePhotoButton.current !== null &&
+                                canvasElement.current !== null
+                            ) {
+                                capture(
+                                    0,
+                                    videoElement.current,
+                                    capturePhotoButton.current,
+                                    canvasElement.current,
+                                    changeCameraButton.current
+                                );
+                            }
                         }}
-                        title="Request camera permission again."
+                        title={t("takePhoto:rerequestCamera")}
                     ></FontAwesomeIcon>
+
                     <FontAwesomeIcon
                         icon={faGear}
                         size={"2x"}
-                        title="Open settings."
+                        title={t("common:openSettings")}
                     ></FontAwesomeIcon>
                 </div>
 
@@ -103,9 +144,22 @@ function TakePhoto() {
                         size={"4x"}
                         ref={capturePhotoButton}
                         id="takePhotoButton"
+                        onClick={() => {
+                            setHasTakenPhoto(true);
+                            if (canvasElement.current !== null) {
+                                State.addReference(
+                                    "canvas",
+                                    canvasElement.current
+                                );
+                            }
+                        }}
                     ></FontAwesomeIcon>
                 </div>
             </main>
+
+            <PhotoResult visible={hasTakenPhoto ? true : false} i18n={t}>
+                <canvas ref={canvasElement}></canvas>
+            </PhotoResult>
         </>
     );
 }

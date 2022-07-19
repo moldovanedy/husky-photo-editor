@@ -4,12 +4,6 @@
     position: relative;
 }
 
-#container {
-    width: 97vw;
-    height: 97vh;
-    /* max-height: 76vh; */
-}
-
 #video {
     width: 100%;
     height: 100%;
@@ -25,12 +19,7 @@
     // background-color: var(--secondary-app-color);
 
     svg {
-        transition: all 0.5s ease-in-out;
         cursor: pointer;
-    }
-
-    svg:hover {
-        transform: scale(130%);
     }
 }
 
@@ -55,38 +44,18 @@
     z-index: -1;
 }
 
-.actionLinesPhoto {
+.availableCameras {
     position: fixed;
-    width: 100%;
-    background-color: #979797;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-}
-
-.actionLineButtons {
-    padding: 5px;
-    font-size: 16px;
-    border-radius: 5px;
-}
-
-#photoOptions {
-    position: fixed;
+    top: 0;
+    z-index: 5;
     width: 100vw;
     height: 100vh;
-    background-color: #000000b0;
-    transition: all 0.5s ease-in-out;
-    opacity: 0;
-}
-
-.optionsWindow {
-    margin: auto;
-    background-color: var(--secondary-app-color);
-    font-size: 24px;
-    border-radius: 10px;
+    background-color: #00000080;
 
     div {
+        background-color: var(--main-app-color);
+        color: var(--main-text-color);
+        border-radius: 10px;
         padding: 15px;
-        margin: 20px;
     }
 }

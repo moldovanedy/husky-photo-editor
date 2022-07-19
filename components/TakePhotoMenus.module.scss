@@ -1,0 +1,31 @@
+.downloadButton {
+    background-color: #17bd17;
+    color: #fff;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+.photoOptions {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    background-color: #000000b0;
+    transition: all 0.5s ease-in-out;
+    opacity: 0;
+}
+
+.optionsWindow {
+    margin: auto;
+    background-color: var(--secondary-app-color);
+    font-size: 24px;
+    border-radius: 10px;
+    flex-direction: column !important;
+
+    div {
+        padding: 15px;
+        margin: 20px;
+    }
+}
