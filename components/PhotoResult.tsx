@@ -11,12 +11,13 @@ import React, { useEffect, useState } from "react";
 import { gsap } from "gsap";
 
 import styles from "./PhotoResult.module.scss";
-import { State } from "../src/GlobalElementReferences.state";
+import { State } from "../src/GlobalSpecialState";
 import { DownloadMenu } from "./TakePhotoMenus";
 import { useDispatch } from "react-redux";
 
 import { openDownloadDialog } from "../src/redux/takePhotoDialogs/takePhotoDialogsSlice.redux";
 import { scaleCanvas } from "../src/capturePhoto";
+import { translate } from "../src/utils/transform/translateElements";
 
 function PhotoResult(props: any) {
     return (
@@ -38,8 +39,9 @@ function PhotoResult(props: any) {
 
 function TopBar({ i18n }) {
     let [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(
-        null
-    );
+            null
+        ),
+        isPressing = false;
 
     useEffect(() => {
         if (
@@ -50,6 +52,21 @@ function TopBar({ i18n }) {
             if (canvas instanceof HTMLCanvasElement) {
                 setCanvasElement(canvas);
             }
+
+            canvas.addEventListener("pointerdown", (e) => {
+                isPressing = true;
+                console.log(e.clientX);
+            });
+
+            canvas.addEventListener("pointerup", (e) => {
+                isPressing = false;
+            });
+
+            canvas.addEventListener("pointermove", (e) => {
+                if (isPressing) {
+                    translate(canvas);
+                }
+            });
         }
     }, [State.getReference("canvas")]);
 

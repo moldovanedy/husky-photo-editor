@@ -10,7 +10,7 @@ import {
 
 import styles from "./TakePhotoMenus.module.scss";
 import { downloadPhoto } from "./../src/savePhoto";
-import { State } from "../src/GlobalElementReferences.state";
+import { State } from "../src/GlobalSpecialState";
 
 export function DownloadMenu({ i18n }) {
     const downloadDialogState = useSelector(selectDownloadDialog);

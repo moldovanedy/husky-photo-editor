@@ -1,0 +1,51 @@
+.main {
+    max-width: 1200px;
+    margin: auto;
+    width: 95%;
+    padding: 10px 20px;
+    font-size: 20px;
+    min-height: 100vh;
+
+    select {
+        border-radius: 10px;
+        min-width: 120px;
+        padding: 3px 5px;
+    }
+
+    div {
+        display: block;
+    }
+}
+
+.themeInput {
+    display: block;
+
+    label {
+        margin-left: 15px;
+    }
+}
+
+.saveButton {
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    background-color: var(--secondary-app-color);
+
+    button {
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 10px;
+        margin: 10px 20px;
+        cursor: pointer;
+        background-color: #053aac;
+        transition: all 0.5s ease-in-out;
+    }
+
+    button:hover {
+        background-color: #3c3eb8;
+        border-radius: 20px;
+    }
+}

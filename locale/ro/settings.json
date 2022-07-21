@@ -1,3 +1,11 @@
 {
-    "settings": "Setări"
+    "settings": "Setări",
+    "language": "Limbă:",
+    "theme": {
+        "themeText": "Temă:",
+        "darkTheme": "Întunecat",
+        "lightTheme": "Luminos",
+        "systemTheme": "Sistem"
+    },
+    "save": "Salvare"
 }

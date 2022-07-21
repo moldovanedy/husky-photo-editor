@@ -45,6 +45,11 @@ const Home: NextPage = () => {
                         alt={"App logo"}
                         height={50}
                         width={50}
+                        style={{ cursor: "pointer" }}
+                        // in order to have a way to refresh app when using the PWA
+                        onClick={() => {
+                            document.location.pathname = "/";
+                        }}
                     />
                 </picture>
                 <Link href="/settings" skipLocaleHandling={false}>
@@ -68,7 +73,7 @@ const Home: NextPage = () => {
                             >
                                 <picture>
                                     <img
-                                        src="/assets/icons/EditPhoto.png"
+                                        src="/assets/icons/editPhoto.png"
                                         alt="Edit a photo"
                                         height="80"
                                         width="80"
@@ -85,7 +90,7 @@ const Home: NextPage = () => {
                             >
                                 <picture>
                                     <img
-                                        src="/assets/icons/TakePhoto.png"
+                                        src="/assets/icons/takePhoto.png"
                                         alt="Take a photo from camera"
                                         height="80"
                                         width="80"

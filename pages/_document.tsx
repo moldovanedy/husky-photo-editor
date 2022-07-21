@@ -6,7 +6,13 @@ class MyDocument extends Document {
         const currentLocale = i18nextConfig.i18n.defaultLocale;
         return (
             <Html lang={currentLocale}>
-                <Head />
+                <Head>
+                    <link rel="manifest" href="/manifest.json" />
+                    <link
+                        rel="apple-touch-icon"
+                        href="/assets/logo/logo192x192.png"
+                    />
+                </Head>
                 <body>
                     <Main />
                     <NextScript />

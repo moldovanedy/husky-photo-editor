@@ -1,0 +1,38 @@
+{
+    "theme_color": "#555555",
+    "background_color": "#222222",
+    "display": "standalone",
+    "scope": "/",
+    "start_url": "/",
+    "name": "Husky Photo Editor",
+    "short_name": "Husky Photo Editor",
+    "description": "The free web photo editor",
+    "icons": [
+        {
+            "src": "./assets/logo/logo192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/logo/logo256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/logo/logo384x384.png",
+            "sizes": "384x384",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/logo/logo512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        },
+        {
+            "src": "./assets/logo/maskable_icon.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

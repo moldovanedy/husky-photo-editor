@@ -1,3 +1,11 @@
 {
-    "settings": "Settings"
+    "settings": "Settings",
+    "language": "Language:",
+    "theme": {
+        "themeText": "Theme:",
+        "darkTheme": "Dark",
+        "lightTheme": "Light",
+        "systemTheme": "System"
+    },
+    "save": "Save"
 }

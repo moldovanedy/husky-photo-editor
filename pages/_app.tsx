@@ -10,7 +10,7 @@ import Router from "next/router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 
-import { store } from "./../src/redux/store";
+import { store } from "../src/redux/global.store";
 import { Provider } from "react-redux";
 
 const handleRouteStart = () => NProgress.start();

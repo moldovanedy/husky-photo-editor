@@ -4,5 +4,6 @@
     "saveAs": "Save as:",
     "quality": "Quality:",
     "imgName": "Image name:",
-    "download": "Download"
+    "download": "Download",
+    "goBack": "Go back"
 }

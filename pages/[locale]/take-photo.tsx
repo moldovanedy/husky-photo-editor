@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    faArrowLeft,
     faCameraRotate,
     faGear,
     faTimes,
@@ -18,7 +18,8 @@ import {
     getAvailableCameras,
 } from "./../../src/capturePhoto";
 import PhotoResult from "./../../components/PhotoResult";
-import { State } from "../../src/GlobalElementReferences.state";
+import { State } from "../../src/GlobalSpecialState";
+import Link from "../../components/Link";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
@@ -101,12 +102,28 @@ function TakePhoto() {
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.topLine}`}>
+                    <Link href="/">
+                        <FontAwesomeIcon
+                            icon={faArrowLeft}
+                            size={"2x"}
+                            title={t("common:goBack")}
+                            onClick={() => {
+                                // because otherwise the camera will still be on
+                                let stream = State.getReference("stream");
+                                if (stream !== null) {
+                                    stream.stop();
+                                }
+                            }}
+                        ></FontAwesomeIcon>
+                    </Link>
+
                     <FontAwesomeIcon
                         icon={faCameraRotate}
                         //@ts-ignore
                         ref={changeCameraButton}
                         size={"2x"}
                         title={t("takePhoto:changeCamera")}
+                        // onClick event listener is in src/capturePhoto.ts?82
                     ></FontAwesomeIcon>
 
                     <FontAwesomeIcon

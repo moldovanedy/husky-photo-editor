@@ -1,3 +1,5 @@
+import { State } from "./GlobalSpecialState";
+
 let stream: MediaStream;
 
 /**
@@ -36,6 +38,11 @@ export function capture(
         .then((mediaStream) => {
             var video: HTMLVideoElement = videoElement;
             stream = mediaStream;
+
+            State.addReference(
+                "stream",
+                mediaStream.getVideoTracks()[videotrackIndex]
+            );
 
             if (video !== null) {
                 video.srcObject = mediaStream;
@@ -183,13 +190,19 @@ export function switchCameraFacingMode(
             localStorage.setItem("isFrontCamera", "true");
         }
     }
-    capture(
-        videotrackIndex,
-        videoElement,
-        capturePhotoButton,
-        canvasReference,
-        changeCameraButton
-    );
+
+    //maybe reloading document is better
+    setTimeout(() => {
+        document.location.reload();
+    }, 500);
+
+    // capture(
+    //     videotrackIndex,
+    //     videoElement,
+    //     capturePhotoButton,
+    //     canvasReference,
+    //     changeCameraButton
+    // );
 }
 
 export function scaleCanvas(canvasElement: HTMLCanvasElement | null): void {
