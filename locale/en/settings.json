@@ -7,5 +7,6 @@
         "lightTheme": "Light",
         "systemTheme": "System"
     },
+    "disableLogoSpin": "Disable app logo spin when a page is loading",
     "save": "Save"
 }

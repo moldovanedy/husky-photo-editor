@@ -1,10 +1,40 @@
+export interface TransformObject {
+    translate?: string[];
+    translate3d?: string[];
+    translateX?: string;
+    translateY?: string;
+    translateZ?: string;
+
+    rotate?: string;
+    rotate3d?: string[];
+    rotateX?: string;
+    rotateY?: string;
+    rotateZ?: string;
+
+    scale?: string[];
+    scale3d?: string[];
+    scaleX?: string;
+    scaleY?: string;
+    scaleZ?: string;
+
+    skew?: string[];
+    skewX?: string;
+    skewY?: string;
+
+    perspective?: string[];
+    matrix?: string[];
+    matrix3d?: string[];
+}
+
 /**
  * Complex function which returns an object representing each transform property applied to object
  * @param transformString The string from element.style.transform
  * @returns The object
  * @example INITIAL: transform: scale(1.5) rotate(30deg) translate(10px, -10px) RETURNS: {scale: "1.5", rotate: "30deg", translate: "10px, -10px"}
  */
-export function getTransformValuesOfElement(transformString: string): object {
+export function getTransformValuesOfElement(
+    transformString: string
+): TransformObject | null {
     transformString = transformString.toLowerCase();
     let startIndex = 0,
         openBracketIndices: number[] = [],
@@ -12,7 +42,7 @@ export function getTransformValuesOfElement(transformString: string): object {
         index: number,
         arrayOfValues: string[] = [],
         arrayOfKeys: string[] = [],
-        obj = {};
+        obj: TransformObject = {};
 
     //getting indices of all occurences of open bracket "("
     while ((index = transformString.indexOf("(", startIndex)) > -1) {
@@ -56,12 +86,30 @@ export function getTransformValuesOfElement(transformString: string): object {
         );
     }
 
+    if (arrayOfKeys.length === 0 || arrayOfValues.length === 0) {
+        return null;
+    }
+
     //creating final object
     for (let i = 0; i < arrayOfKeys.length; i++) {
-        Object.defineProperty(obj, arrayOfKeys[i], {
-            value: arrayOfValues[i],
-            writable: false,
-        });
+        let commaSeparatedArray = arrayOfValues[i].split(",");
+        if (commaSeparatedArray.length > 1) {
+            let arrayOfStringValues: string[] = [];
+            for (let j = 0; j < commaSeparatedArray.length; j++) {
+                arrayOfStringValues.push(commaSeparatedArray[j]);
+                Object.defineProperty(obj, arrayOfKeys[i], {
+                    value: arrayOfStringValues,
+                    writable: false,
+                    configurable: true,
+                });
+            }
+        } else {
+            Object.defineProperty(obj, arrayOfKeys[i], {
+                value: commaSeparatedArray[0],
+                writable: false,
+                configurable: true,
+            });
+        }
     }
     return obj;
 }
@@ -78,4 +126,52 @@ export function getTransformProperties(transformString: string): string[] {
     } else {
         return [];
     }
+}
+
+export function convertTransformObjectToString(
+    transformObject: TransformObject | null,
+    excludedProperties?: string[]
+) {
+    if (transformObject === null) {
+        return;
+    }
+
+    let transformString = "",
+        transformProperties = Object.getOwnPropertyNames(transformObject);
+
+    for (let i = 0; i < transformProperties.length; i++) {
+        //if shouldContinue is false, we go to next iteration because this property will be undefined
+        let shouldContinue = true;
+        if (excludedProperties !== undefined) {
+            for (let j = 0; j < excludedProperties.length; j++) {
+                if (transformProperties[i] === excludedProperties[j]) {
+                    transformProperties.splice(i, 0); //remove the property
+                    shouldContinue = false;
+                }
+            }
+        }
+        if (!shouldContinue) {
+            continue;
+        }
+
+        transformString += transformProperties[i] + "(";
+        let value = Object.getOwnPropertyDescriptor(
+            transformObject,
+            transformProperties[i]
+        )?.value;
+
+        if (Array.isArray(value)) {
+            value.forEach((val, index) => {
+                transformString += val;
+                if (index !== value.length - 1) {
+                    transformString += ",";
+                }
+            });
+        } else {
+            transformString += value;
+        }
+
+        transformString += ")";
+    }
+    return transformString;
 }

@@ -1,5 +1,11 @@
 import { State } from "./GlobalSpecialState";
 
+import { store } from "./redux/global.store";
+import {
+    createMessage,
+    MessageType,
+} from "./redux/messages/messagesSlice.redux";
+
 let stream: MediaStream;
 
 /**
@@ -27,6 +33,7 @@ export function capture(
             video: {
                 width: { min: 240, ideal: 9999, max: 9999 },
                 height: { min: 144, ideal: 9999, max: 9999 },
+                frameRate: { min: 1, ideal: 30, max: 9999 },
                 facingMode: {
                     ideal:
                         localStorage.getItem("isFrontCamera") === "true"
@@ -69,7 +76,15 @@ export function capture(
                                 [videotrackIndex].getCapabilities().height.max;
                         }
                     } else {
-                        throw new Error("Video element does not exist");
+                        store.dispatch(
+                            createMessage({
+                                name: "Element not found",
+                                message:
+                                    "The video element was not found. Please reload the page.",
+                                type: MessageType.Error,
+                                id: Date.now(),
+                            })
+                        );
                     }
                 };
                 //add event listener at runtime
@@ -96,27 +111,60 @@ export function capture(
                     });
                 }
             } else {
-                throw new Error("Take photo element does not exist");
+                store.dispatch(
+                    createMessage({
+                        name: "Element not found",
+                        message:
+                            "A button element was not found. Please reload the page.",
+                        type: MessageType.Error,
+                        id: Date.now(),
+                    })
+                );
             }
         })
         .catch(function (err) {
             switch (err.name) {
                 case "NotAllowedError":
-                    console.log(
-                        "Permission to camera has been denied. Please reload page settings to grant permission to camera"
+                    store.dispatch(
+                        createMessage({
+                            name: "Permission denied",
+                            message:
+                                "Permission to camera has been denied. Please reload page settings to grant permission to camera",
+                            type: MessageType.Error,
+                            id: Date.now(),
+                        })
                     );
                     break;
                 case "NotReadableError":
-                    console.log("An unknown hardware error has occured.");
+                    store.dispatch(
+                        createMessage({
+                            name: "Unknown error",
+                            message: "An unknown hardware error has occured.",
+                            type: MessageType.Error,
+                            id: Date.now(),
+                        })
+                    );
                     break;
                 case "NotFoundError":
-                    console.log(
-                        "We were unable to find a camera on your device."
+                    store.dispatch(
+                        createMessage({
+                            name: "Camera not found",
+                            message:
+                                "We were unable to find a camera on your device.",
+                            type: MessageType.Error,
+                            id: Date.now(),
+                        })
                     );
                     break;
                 default:
-                    console.log("An unknown error has occured.");
-                    console.log(err);
+                    store.dispatch(
+                        createMessage({
+                            name: "Unknown error",
+                            message: "An unknown error has occured.",
+                            type: MessageType.Error,
+                            id: Date.now(),
+                        })
+                    );
                     break;
             }
         });

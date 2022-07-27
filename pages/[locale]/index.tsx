@@ -10,6 +10,12 @@ import { useTranslation } from "next-i18next";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
 import { useEffect, useState } from "react";
 
+import { store } from "../../src/redux/global.store";
+import {
+    createMessage,
+    MessageType,
+} from "../../src/redux/messages/messagesSlice.redux";
+
 const getStaticProps = makeStaticProps(["common", "index"]);
 export { getStaticPaths, getStaticProps };
 
@@ -62,7 +68,7 @@ const Home: NextPage = () => {
             </header>
 
             <div className={styles.main}>
-                <h2 style={{ fontSize: "24px" }}>Husky Photo Editor</h2>
+                <h1 className={styles.title}>Husky Photo Editor</h1>
 
                 <main className={styles.mainPanel}>
                     <div>
@@ -74,7 +80,7 @@ const Home: NextPage = () => {
                                 <picture>
                                     <img
                                         src="/assets/icons/editPhoto.png"
-                                        alt="Edit a photo"
+                                        alt={t("index:editImage")}
                                         height="80"
                                         width="80"
                                     />
@@ -91,7 +97,7 @@ const Home: NextPage = () => {
                                 <picture>
                                     <img
                                         src="/assets/icons/takePhoto.png"
-                                        alt="Take a photo from camera"
+                                        alt={t("index:takePhoto")}
                                         height="80"
                                         width="80"
                                     />
@@ -115,7 +121,7 @@ const Home: NextPage = () => {
             ) : null}
 
             <footer style={{ backgroundColor: `var(--secondary-app-color)` }}>
-                <a href="./privacy-policy.html">{t("index:privacyPolicy")}</a>
+                <Link href="/privacy-policy">{t("index:privacyPolicy")}</Link>
             </footer>
         </>
     );

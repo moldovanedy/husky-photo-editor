@@ -5,26 +5,20 @@ import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 config.autoAddCss = false;
 import { appWithTranslation } from "next-i18next";
-import Router from "next/router";
 
-import NProgress from "nprogress";
-import "nprogress/nprogress.css";
+import LoadingScreen from "./../components/LoadingAndProgress/LoadingScreen";
+import ShowMessages from "../components/Messages/ShowMessages";
 
 import { store } from "../src/redux/global.store";
 import { Provider } from "react-redux";
-
-const handleRouteStart = () => NProgress.start();
-const handleRouteDone = () => NProgress.done();
-
-Router.events.on("routeChangeStart", handleRouteStart);
-Router.events.on("routeChangeComplete", handleRouteDone);
-Router.events.on("routeChangeError", handleRouteDone);
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (
         <Provider store={store}>
             <ThemeProvider defaultTheme="dark">
+                <LoadingScreen />
                 <Component {...pageProps} />
+                <ShowMessages />
             </ThemeProvider>
         </Provider>
     );

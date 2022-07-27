@@ -12,12 +12,24 @@ import { gsap } from "gsap";
 
 import styles from "./PhotoResult.module.scss";
 import { State } from "../src/GlobalSpecialState";
-import { DownloadMenu } from "./TakePhotoMenus";
+import { DownloadMenu, DownscaleMenu } from "./TakePhotoMenus";
 import { useDispatch } from "react-redux";
 
-import { openDownloadDialog } from "../src/redux/takePhotoDialogs/takePhotoDialogsSlice.redux";
+import {
+    openDownloadDialog,
+    openDownscaleDialog,
+} from "../src/redux/takePhotoDialogs/takePhotoDialogsSlice.redux";
 import { scaleCanvas } from "../src/capturePhoto";
-import { translate } from "../src/utils/transform/translateElements";
+import {
+    MeasuringSystem,
+    translate,
+} from "../src/utils/transform/translateElements";
+import {
+    convertTransformObjectToString,
+    getTransformValuesOfElement,
+} from "../src/utils/transform/transformUtility";
+import { store } from "../src/redux/global.store";
+import { scale } from "../src/utils/transform/scaleElements";
 
 function PhotoResult(props: any) {
     return (
@@ -25,7 +37,12 @@ function PhotoResult(props: any) {
             className={styles.main}
             style={
                 props.visible
-                    ? { opacity: 1, pointerEvents: "all" }
+                    ? {
+                          opacity: 1,
+                          pointerEvents: "all",
+                          touchAction: "none",
+                          overflow: "hidden",
+                      }
                     : { opacity: 0, pointerEvents: "none" }
             }
             role={"dialog"}
@@ -41,7 +58,11 @@ function TopBar({ i18n }) {
     let [canvasElement, setCanvasElement] = useState<HTMLCanvasElement | null>(
             null
         ),
-        isPressing = false;
+        isPressing = false,
+        firstX = 0,
+        firstY = 0,
+        offsetX = 0,
+        offsetY = 0;
 
     useEffect(() => {
         if (
@@ -53,18 +74,61 @@ function TopBar({ i18n }) {
                 setCanvasElement(canvas);
             }
 
-            canvas.addEventListener("pointerdown", (e) => {
+            document.body.addEventListener("pointerdown", (e) => {
                 isPressing = true;
-                console.log(e.clientX);
+                let transformObject = getTransformValuesOfElement(
+                    canvas.style.transform
+                );
+
+                if (transformObject !== null) {
+                    convertTransformObjectToString(transformObject);
+                }
+
+                if (
+                    transformObject !== null &&
+                    transformObject.translate !== undefined &&
+                    transformObject.translate !== null
+                ) {
+                    offsetX = e.clientX;
+                    offsetY = e.clientY;
+                    firstX = parseInt(transformObject.translate[0]);
+                    firstY = parseInt(transformObject.translate[1]);
+                } else {
+                    offsetX = e.clientX;
+                    offsetY = e.clientY;
+                    firstX = 0;
+                    firstY = 0;
+                }
             });
 
-            canvas.addEventListener("pointerup", (e) => {
+            document.body.addEventListener("pointerup", (e) => {
                 isPressing = false;
             });
 
-            canvas.addEventListener("pointermove", (e) => {
+            document.body.addEventListener("pointermove", (e) => {
+                let transformObject = getTransformValuesOfElement(
+                    canvas.style.transform
+                );
+
                 if (isPressing) {
-                    translate(canvas);
+                    if (
+                        transformObject?.scale !== null &&
+                        transformObject?.scale !== undefined
+                    ) {
+                        translate(
+                            canvas,
+                            e.clientX - offsetX + firstX,
+                            e.clientY - offsetY + firstY,
+                            MeasuringSystem.Absolute
+                        );
+                    } else {
+                        translate(
+                            canvas,
+                            e.clientX - offsetX + firstX,
+                            e.clientY - offsetY + firstY,
+                            MeasuringSystem.Absolute
+                        );
+                    }
                 }
             });
         }
@@ -74,14 +138,40 @@ function TopBar({ i18n }) {
         if (canvasElement === null) {
             return;
         }
-        gsap.to(canvasElement, { scale: "+=0.1" });
+        let transformObject = getTransformValuesOfElement(
+                canvasElement.style.transform
+            ),
+            previousScale = transformObject?.scale;
+        if (previousScale !== undefined && previousScale[1] !== ".") {
+            scale(
+                canvasElement,
+                parseFloat(previousScale[0]) + 0.1,
+                parseFloat(previousScale[1]) + 0.1,
+                MeasuringSystem.Absolute
+            );
+        } else {
+            scale(canvasElement, 1.1, 1.1, MeasuringSystem.Absolute);
+        }
     }
 
     function zoomOut() {
         if (canvasElement === null) {
             return;
         }
-        gsap.to(canvasElement, { scale: "-=0.1" });
+        let transformObject = getTransformValuesOfElement(
+                canvasElement.style.transform
+            ),
+            previousScale = transformObject?.scale;
+        if (previousScale !== undefined && previousScale[1] !== ".") {
+            scale(
+                canvasElement,
+                parseFloat(previousScale[0]) - 0.1,
+                parseFloat(previousScale[1]) - 0.1,
+                MeasuringSystem.Absolute
+            );
+        } else {
+            scale(canvasElement, 0.9, 0.9, MeasuringSystem.Absolute);
+        }
     }
 
     return (
@@ -121,28 +211,57 @@ function TopBar({ i18n }) {
 
 function BottomBar({ i18n }) {
     const dispatch = useDispatch();
+    let [photoWidth, setPhotoWidth] = useState(0);
+    let [photoHeight, setPhotoHeight] = useState(0);
+    let [resizedPhoto, setResizedPhoto] = useState(false);
+
+    store.subscribe(() => {
+        setResizedPhoto(store.getState().takePhotoDialogs.downscaleDialog);
+    });
+
+    useEffect(() => {
+        if (
+            State.getReference("canvas") !== null &&
+            State.getReference("canvas") !== undefined
+        ) {
+            let canvas = State.getReference("canvas");
+            if (canvas instanceof HTMLCanvasElement) {
+                setPhotoWidth(canvas.width);
+                setPhotoHeight(canvas.height);
+            }
+        }
+    }, [State.getReference("canvas"), resizedPhoto]);
 
     return (
-        <div className={styles.actionLinesPhoto} style={{ bottom: 0 }}>
-            <button
-                className={styles.actionLineButtons}
-                style={{ backgroundColor: "#a1a045" }}
-            >
-                {i18n("takePhoto:downscale")}
-            </button>
-            <button
-                className={styles.actionLineButtons}
-                style={{ backgroundColor: "#17bd17" }}
-                onClick={() => {
-                    dispatch(openDownloadDialog());
-                }}
-            >
-                {i18n("takePhoto:download")}{" "}
-                <FontAwesomeIcon icon={faDownload} />
-            </button>
+        <>
+            <div className={styles.actionLinesPhoto} style={{ bottom: "30px" }}>
+                {photoWidth}x{photoHeight}
+            </div>
+            <div className={styles.actionLinesPhoto} style={{ bottom: 0 }}>
+                <button
+                    className={styles.actionLineButtons}
+                    style={{ backgroundColor: "#a1a045" }}
+                    onClick={() => {
+                        dispatch(openDownscaleDialog());
+                    }}
+                >
+                    {i18n("takePhoto:downscale")}
+                </button>
+                <button
+                    className={styles.actionLineButtons}
+                    style={{ backgroundColor: "#17bd17" }}
+                    onClick={() => {
+                        dispatch(openDownloadDialog());
+                    }}
+                >
+                    {i18n("takePhoto:download")}{" "}
+                    <FontAwesomeIcon icon={faDownload} />
+                </button>
 
-            <DownloadMenu i18n={i18n} />
-        </div>
+                <DownloadMenu i18n={i18n} />
+                <DownscaleMenu i18n={i18n} />
+            </div>
+        </>
     );
 }
 

@@ -1,0 +1,69 @@
+.fullScreenContainer {
+    z-index: 1020; //nprogress is higher
+    background-color: #0000006b;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.simpleContainer {
+    background-color: #0000006b;
+    width: 100%;
+    height: 100%;
+}
+
+.logo {
+    animation: rotate 5s ease-in-out 0s infinite;
+}
+
+.active {
+    display: flex;
+    animation: fadeIn 0.5s ease-in-out 0s 1;
+}
+
+.inactive {
+    display: none;
+    animation: fadeOut 0.5s ease-in-out 0s 1;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes rotate {
+    0% {
+        transform: scale(0.1) rotate(0);
+    }
+
+    40% {
+        transform: scale(1) rotate(360deg);
+    }
+
+    50% {
+        transform: scale(1) rotate(360deg);
+    }
+
+    90% {
+        transform: scale(0.1) rotate(0deg);
+    }
+
+    100% {
+        transform: scale(0.1) rotate(0deg);
+    }
+}

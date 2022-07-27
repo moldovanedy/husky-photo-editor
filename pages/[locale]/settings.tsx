@@ -132,8 +132,18 @@ function Settings() {
                     </div>
                 </div>
 
-                <p>{language}</p>
-                <p>{theme}</p>
+                <div style={{ marginTop: "30px" }}>
+                    <input
+                        id="disableLogoSpin"
+                        type={"checkbox"}
+                        value="disableLogoSpin"
+                        title={t("settings:disableLogoSpin")}
+                    />
+                    <label htmlFor="disableLogoSpin">
+                        {t("settings:disableLogoSpin")}
+                    </label>
+                </div>
+
                 <p>
                     Using {usedStorage} bytes out of {allowedStorage} available
                     bytes

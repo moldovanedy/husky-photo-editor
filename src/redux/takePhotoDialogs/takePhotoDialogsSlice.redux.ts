@@ -34,6 +34,9 @@ export const takePhotoDialogsSlice = createSlice({
 export const selectDownloadDialog = (state) =>
     state.takePhotoDialogs.downloadDialog;
 
+export const selectDownscaleDialog = (state) =>
+    state.takePhotoDialogs.downscaleDialog;
+
 export const {
     openDownloadDialog,
     openDownscaleDialog,
