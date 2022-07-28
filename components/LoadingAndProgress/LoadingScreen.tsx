@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Router from "next/router";
 import NProgress from "nprogress";
-import "nprogress/nprogress.css";
 
 import SpinningLogo from "./SpinningLogo";
 
@@ -11,6 +10,12 @@ function LoadingScreen() {
     const handleRouteStart = () => {
         NProgress.start();
         setShow(true);
+        document.body.style.overflow =
+            "auto"; /* in order to let user scroll through other pages
+            because overflow is hidden after you take a photo;
+            because of that, pressing the back button from browser/OS
+            will keep overflow hidden, thus making scrolling impossible
+            on other pages until reload */
     };
     const handleRouteDone = () => {
         NProgress.done();

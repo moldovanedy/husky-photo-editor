@@ -4,16 +4,16 @@
  * references to DOM objects (returned from document.getElementById() or useRef()).
  *--------------------------------------------------------------------------------------------*/
 
-export interface DOMReference {
+interface Reference {
     key: string;
     reference: any;
 }
 
 export class State {
-    public static references: DOMReference[] = [];
+    public static references: Reference[] = [];
 
     public static addReference(referenceKey: string, referenceElement: any) {
-        let object: DOMReference;
+        let object: Reference;
 
         object = { key: referenceKey, reference: referenceElement };
         State.references.push(object);

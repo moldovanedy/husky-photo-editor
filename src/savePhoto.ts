@@ -1,3 +1,11 @@
+/**
+ * Downloads a photo from a canvas
+ * @param quality The quality parameter (1-100) applied to photo (only if file format is JPG or WebP)
+ * @param format The file format (PNG, JPG, WebP etc.)
+ * @param imageName The name of the stored file
+ * @param link The link element to download from
+ * @param canvas The canvas element whose visual representation (the photo) is downloaded
+ */
 export function downloadPhoto(
     quality: number | null,
     format: string | null,

@@ -1,0 +1,100 @@
+.container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 9998;
+    background-color: #0000006b;
+    animation: fadeIn 0.5s ease-in-out 0s 1;
+    transition: all 0.5s ease-in-out; //useful to fade out elements from component
+}
+
+.modal {
+    background-color: var(--main-app-color);
+    width: 90%;
+    max-width: 800px;
+    min-height: 200px;
+    max-height: 60%;
+    position: relative;
+
+    padding: 10px;
+    border-radius: 15px;
+    border: 3px inset #736be0;
+    animation: modalFadeIn 0.5s ease-in-out 0s 1;
+    transition: all 0.5s ease-in-out; //useful to fade out elements from component
+
+    /* title */
+    span {
+        font-size: 28px;
+        font-weight: bolder;
+    }
+
+    .content {
+        height: 30vh;
+        overflow: auto;
+        border-radius: 10px;
+        background-color: var(--secondary-app-color);
+    }
+}
+
+.buttonArea {
+    margin-top: 10px;
+
+    button {
+        background-color: #736be0;
+        float: right;
+        margin-right: 10px;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1px solid #3b30d4;
+        max-width: 150px;
+        transition: all 0.3s ease-in-out;
+    }
+
+    button:hover {
+        background-color: #098641;
+        border-radius: 15px;
+        color: #fff; //for light theme
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes modalFadeIn {
+    0% {
+        margin-bottom: 100px;
+        transform: scale(0.5);
+    }
+
+    100% {
+        margin-bottom: 0px;
+        transform: scale(1);
+    }
+}
+
+@media (prefers-reduced-motion) {
+    .container {
+        animation: none;
+        transition: none;
+    }
+
+    .modal {
+        animation: none;
+        transition: none;
+    }
+
+    .buttonArea {
+        button {
+            transition: none;
+        }
+    }
+}

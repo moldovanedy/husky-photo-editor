@@ -11,6 +11,7 @@ import ShowMessages from "../components/Messages/ShowMessages";
 
 import { store } from "../src/redux/global.store";
 import { Provider } from "react-redux";
+import "./../components/LoadingAndProgress/customNprogressStyle.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
     return (

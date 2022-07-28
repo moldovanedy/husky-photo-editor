@@ -74,12 +74,7 @@ function Message({ name, message, id }) {
                 className={styles.closeButton}
                 onClick={() => {
                     if (messageId.current !== null) {
-                        store.dispatch(
-                            disposeMessage(
-                                //@ts-ignore
-                                parseInt(messageId.current.value)
-                            )
-                        );
+                        store.dispatch(disposeMessage(messageId.current.value));
                     }
                 }}
             />

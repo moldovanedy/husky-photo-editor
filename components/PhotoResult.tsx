@@ -74,15 +74,13 @@ function TopBar({ i18n }) {
                 setCanvasElement(canvas);
             }
 
+            document.body.style.overflow = "hidden";
+
             document.body.addEventListener("pointerdown", (e) => {
                 isPressing = true;
                 let transformObject = getTransformValuesOfElement(
                     canvas.style.transform
                 );
-
-                if (transformObject !== null) {
-                    convertTransformObjectToString(transformObject);
-                }
 
                 if (
                     transformObject !== null &&
@@ -115,10 +113,15 @@ function TopBar({ i18n }) {
                         transformObject?.scale !== null &&
                         transformObject?.scale !== undefined
                     ) {
+                        // translate taking into account the scale in order to prevent too quick movement at big scale and too small movement at small scale
                         translate(
                             canvas,
-                            e.clientX - offsetX + firstX,
-                            e.clientY - offsetY + firstY,
+                            (e.clientX - offsetX) /
+                                parseFloat(transformObject.scale[0]) +
+                                firstX,
+                            (e.clientY - offsetY) /
+                                parseFloat(transformObject.scale[1]) +
+                                firstY,
                             MeasuringSystem.Absolute
                         );
                     } else {

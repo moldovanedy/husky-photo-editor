@@ -82,7 +82,6 @@ export function capture(
                                 message:
                                     "The video element was not found. Please reload the page.",
                                 type: MessageType.Error,
-                                id: Date.now(),
                             })
                         );
                     }
@@ -101,13 +100,7 @@ export function capture(
 
                 if (changeCameraButton !== null) {
                     changeCameraButton.addEventListener("click", () => {
-                        switchCameraFacingMode(
-                            videotrackIndex,
-                            videoElement,
-                            capturePhotoButton,
-                            canvasReference,
-                            changeCameraButton
-                        );
+                        switchCameraFacingMode();
                     });
                 }
             } else {
@@ -117,7 +110,6 @@ export function capture(
                         message:
                             "A button element was not found. Please reload the page.",
                         type: MessageType.Error,
-                        id: Date.now(),
                     })
                 );
             }
@@ -131,7 +123,6 @@ export function capture(
                             message:
                                 "Permission to camera has been denied. Please reload page settings to grant permission to camera",
                             type: MessageType.Error,
-                            id: Date.now(),
                         })
                     );
                     break;
@@ -141,7 +132,6 @@ export function capture(
                             name: "Unknown error",
                             message: "An unknown hardware error has occured.",
                             type: MessageType.Error,
-                            id: Date.now(),
                         })
                     );
                     break;
@@ -152,7 +142,6 @@ export function capture(
                             message:
                                 "We were unable to find a camera on your device.",
                             type: MessageType.Error,
-                            id: Date.now(),
                         })
                     );
                     break;
@@ -162,7 +151,6 @@ export function capture(
                             name: "Unknown error",
                             message: "An unknown error has occured.",
                             type: MessageType.Error,
-                            id: Date.now(),
                         })
                     );
                     break;
@@ -215,19 +203,8 @@ export function getAvailableCameras(): string[] {
 
 /**
  * @description Switches the camera facing mode (front/rear) and accepts the same parameters that capture function accepts
- * @param videotrackIndex Usually 0
- * @param videoElement The video element that will hold user's camera output
- * @param capturePhotoButton The element that, when pressed, will render current frame on a canvas
- * @param canvasReference The canvas that will be filled with the current frame
- * @param changeCameraButton Optional element that will change the camera's facing mode
  */
-export function switchCameraFacingMode(
-    videotrackIndex: number,
-    videoElement: HTMLVideoElement,
-    capturePhotoButton: SVGSVGElement | HTMLElement,
-    canvasReference: HTMLCanvasElement,
-    changeCameraButton: HTMLElement | null
-) {
+export function switchCameraFacingMode(): void {
     let localData = localStorage.getItem("isFrontCamera");
     if (localData === null) {
         localStorage.setItem("isFrontCamera", "false");
@@ -243,14 +220,6 @@ export function switchCameraFacingMode(
     setTimeout(() => {
         document.location.reload();
     }, 500);
-
-    // capture(
-    //     videotrackIndex,
-    //     videoElement,
-    //     capturePhotoButton,
-    //     canvasReference,
-    //     changeCameraButton
-    // );
 }
 
 export function scaleCanvas(canvasElement: HTMLCanvasElement | null): void {
@@ -276,7 +245,7 @@ export function scaleCanvas(canvasElement: HTMLCanvasElement | null): void {
     var canvasScaledWidth = canvasWidth * scaleFactor,
         canvasScaledHeight = canvasHeight * scaleFactor;
 
-    canvas.style.transform = `scale(${scaleFactor})`;
+    canvas.style.transform = `scale(${scaleFactor}, ${scaleFactor})`;
 
     if (windowWidth >= 1800) {
         marginDivisionFactor = 2; //on large screens will prevent top content from being lost

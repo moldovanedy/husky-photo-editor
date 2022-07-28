@@ -1,0 +1,10 @@
+.main {
+    background-color: var(--secondary-app-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    svg {
+        padding: 5px;
+    }
+}

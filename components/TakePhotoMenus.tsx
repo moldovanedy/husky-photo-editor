@@ -182,7 +182,6 @@ export function DownloadMenu({ i18n }) {
                         ref={fileNameInput}
                         type="text"
                         value={fileName}
-                        defaultValue="download"
                         onChange={() => {
                             changeFileName();
                         }}
@@ -250,7 +249,6 @@ export function DownscaleMenu({ i18n }) {
                     message:
                         "The following feature is not supported on your browser: canvas. Please upgrade your browser. Or reload the page as it might just be an unknown error.",
                     type: MessageType.Error,
-                    id: Date.now(),
                 })
             );
             return;

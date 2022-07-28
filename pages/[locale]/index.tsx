@@ -1,20 +1,15 @@
+/* eslint-disable @next/next/no-img-element */
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "./../../components/Link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faGear } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faGear } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./../../styles/Home.module.scss";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
 import { useEffect, useState } from "react";
-
-import { store } from "../../src/redux/global.store";
-import {
-    createMessage,
-    MessageType,
-} from "../../src/redux/messages/messagesSlice.redux";
 
 const getStaticProps = makeStaticProps(["common", "index"]);
 export { getStaticPaths, getStaticProps };
@@ -45,19 +40,18 @@ const Home: NextPage = () => {
             </Head>
 
             <header className={styles.header}>
-                <picture>
-                    <img
-                        src="/assets/logo/logo64x64.png"
-                        alt={"App logo"}
-                        height={50}
-                        width={50}
-                        style={{ cursor: "pointer" }}
-                        // in order to have a way to refresh app when using the PWA
-                        onClick={() => {
-                            document.location.pathname = "/";
-                        }}
-                    />
-                </picture>
+                <img
+                    src="/assets/logo/logo64x64.png"
+                    alt={"App logo"}
+                    height={50}
+                    width={50}
+                    style={{ cursor: "pointer" }}
+                    // in order to have a way to refresh app when using the PWA
+                    onClick={() => {
+                        document.location.pathname = "/";
+                    }}
+                />
+
                 <Link href="/settings" skipLocaleHandling={false}>
                     <FontAwesomeIcon
                         icon={faGear}
@@ -72,19 +66,17 @@ const Home: NextPage = () => {
 
                 <main className={styles.mainPanel}>
                     <div>
-                        <Link href="#" skipLocaleHandling={false}>
+                        <Link href="/edit" skipLocaleHandling={false}>
                             <div
                                 className={`centerAlign ${styles.linkMain}`}
                                 style={{ justifyContent: "space-between" }}
                             >
-                                <picture>
-                                    <img
-                                        src="/assets/icons/editPhoto.png"
-                                        alt={t("index:editImage")}
-                                        height="80"
-                                        width="80"
-                                    />
-                                </picture>
+                                <img
+                                    src="/assets/icons/editPhoto.png"
+                                    alt={t("index:editImage")}
+                                    height="80"
+                                    width="80"
+                                />
                                 <span>{t("index:editImage")}</span>
                             </div>
                         </Link>
@@ -94,14 +86,11 @@ const Home: NextPage = () => {
                                 className={`centerAlign ${styles.linkMain}`}
                                 style={{ justifyContent: "space-between" }}
                             >
-                                <picture>
-                                    <img
-                                        src="/assets/icons/takePhoto.png"
-                                        alt={t("index:takePhoto")}
-                                        height="80"
-                                        width="80"
-                                    />
-                                </picture>
+                                <FontAwesomeIcon
+                                    icon={faCamera}
+                                    size={"3x"}
+                                    style={{ marginLeft: "10px" }}
+                                />
                                 <span>{t("index:takePhoto")}</span>
                             </div>
                         </Link>
