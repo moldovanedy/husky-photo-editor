@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef, useState } from "react";
 
 import { store } from "../../src/redux/global.store";
-import { disposeMessage } from "../../src/redux/messages/messagesSlice.redux";
+import { disposeMessage } from "../../src/redux/messagesSlice.redux";
 import styles from "./ShowMessages.module.scss";
 
 function ShowMessages() {

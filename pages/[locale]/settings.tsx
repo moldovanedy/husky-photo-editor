@@ -17,9 +17,11 @@ function Settings() {
     let [language, setLanguage] = useState("en"),
         [theme, setTheme] = useState("dark"),
         [usedStorage, setUsedStorage] = useState(0),
+        [allowedStorage, setAllowedStorage] = useState(0),
+        [supportsStorageEstimation, setSupportsStorageEstimation] =
+            useState(true),
         [showUnsavedChangesDialog, setShowUnsavedChangesDialog] =
             useState(false),
-        [allowedStorage, setAllowedStorage] = useState(0),
         [hasUnsavedSettings, setHasUnsavedSettings] = useState(false);
 
     useEffect(() => {
@@ -34,14 +36,23 @@ function Settings() {
             setTheme(theme);
         }
 
-        navigator.storage.estimate().then((result) => {
-            if (result.usage !== undefined) {
-                setUsedStorage(result.usage);
-            }
-            if (result.quota !== undefined) {
-                setAllowedStorage(result.quota);
-            }
-        });
+        if (!navigator.storage) {
+            setSupportsStorageEstimation(false);
+            return;
+        }
+
+        try {
+            navigator.storage.estimate().then((result) => {
+                if (result.usage !== undefined) {
+                    setUsedStorage(result.usage);
+                }
+                if (result.quota !== undefined) {
+                    setAllowedStorage(result.quota);
+                }
+            });
+        } catch {
+            setSupportsStorageEstimation(false);
+        }
     }, []);
 
     function saveSettings() {
@@ -92,7 +103,7 @@ function Settings() {
                     style={{
                         position: "absolute",
                         top: "5px",
-                        right: "5%",
+                        right: "5%"
                     }}
                 />
                 <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
@@ -174,10 +185,14 @@ function Settings() {
 
                 <div>
                     <h2>Storage</h2>
-                    <p>
-                        Using {usedStorage} bytes out of {allowedStorage}{" "}
-                        available bytes
-                    </p>
+                    {supportsStorageEstimation ? (
+                        <p>
+                            Using {usedStorage} bytes out of {allowedStorage}{" "}
+                            available bytes
+                        </p>
+                    ) : (
+                        <p>Storage estimation not supported</p>
+                    )}
                 </div>
                 <hr />
 

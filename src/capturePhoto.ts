@@ -1,12 +1,7 @@
 import { State } from "./GlobalSpecialState";
 
 import { store } from "./redux/global.store";
-import {
-    createMessage,
-    MessageType,
-} from "./redux/messages/messagesSlice.redux";
-
-let stream: MediaStream;
+import { createMessage, MessageType } from "./redux/messagesSlice.redux";
 
 /**
  * @description Captures user's camera and displays output in a video element
@@ -38,15 +33,14 @@ export function capture(
                     ideal:
                         localStorage.getItem("isFrontCamera") === "true"
                             ? "user"
-                            : "environment",
-                },
-            },
+                            : "environment"
+                }
+            }
         })
         .then((mediaStream) => {
             var video: HTMLVideoElement = videoElement;
-            stream = mediaStream;
 
-            State.addReference(
+            State.addObject(
                 "stream",
                 mediaStream.getVideoTracks()[videotrackIndex]
             );
@@ -81,7 +75,7 @@ export function capture(
                                 name: "Element not found",
                                 message:
                                     "The video element was not found. Please reload the page.",
-                                type: MessageType.Error,
+                                type: MessageType.Error
                             })
                         );
                     }
@@ -109,7 +103,7 @@ export function capture(
                         name: "Element not found",
                         message:
                             "A button element was not found. Please reload the page.",
-                        type: MessageType.Error,
+                        type: MessageType.Error
                     })
                 );
             }
@@ -122,7 +116,7 @@ export function capture(
                             name: "Permission denied",
                             message:
                                 "Permission to camera has been denied. Please reload page settings to grant permission to camera",
-                            type: MessageType.Error,
+                            type: MessageType.Error
                         })
                     );
                     break;
@@ -131,7 +125,7 @@ export function capture(
                         createMessage({
                             name: "Unknown error",
                             message: "An unknown hardware error has occured.",
-                            type: MessageType.Error,
+                            type: MessageType.Error
                         })
                     );
                     break;
@@ -141,7 +135,7 @@ export function capture(
                             name: "Camera not found",
                             message:
                                 "We were unable to find a camera on your device.",
-                            type: MessageType.Error,
+                            type: MessageType.Error
                         })
                     );
                     break;
@@ -150,7 +144,7 @@ export function capture(
                         createMessage({
                             name: "Unknown error",
                             message: "An unknown error has occured.",
-                            type: MessageType.Error,
+                            type: MessageType.Error
                         })
                     );
                     break;
@@ -187,6 +181,7 @@ export function takePhotoAction(
     }
 
     streamTrack.stop();
+    State.deleteObject("stream");
 }
 
 export function getAvailableCameras(): string[] {
@@ -202,7 +197,7 @@ export function getAvailableCameras(): string[] {
 }
 
 /**
- * @description Switches the camera facing mode (front/rear) and accepts the same parameters that capture function accepts
+ * @description Switches the camera facing mode (front/rear)
  */
 export function switchCameraFacingMode(): void {
     let localData = localStorage.getItem("isFrontCamera");

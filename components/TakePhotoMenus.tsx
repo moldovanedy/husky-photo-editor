@@ -8,18 +8,15 @@ import {
     closeDownloadDialog,
     closeDownscaleDialog,
     selectDownloadDialog,
-    selectDownscaleDialog,
-} from "../src/redux/takePhotoDialogs/takePhotoDialogsSlice.redux";
+    selectDownscaleDialog
+} from "../src/redux/takePhotoDialogsSlice.redux";
 
 import styles from "./TakePhotoMenus.module.scss";
 import { downloadPhoto } from "./../src/savePhoto";
 import { State } from "../src/GlobalSpecialState";
 
 import { store } from "./../src/redux/global.store";
-import {
-    createMessage,
-    MessageType,
-} from "./../src/redux/messages/messagesSlice.redux";
+import { createMessage, MessageType } from "../src/redux/messagesSlice.redux";
 import { v1 as uuid } from "uuid";
 
 export function DownloadMenu({ i18n }) {
@@ -53,7 +50,7 @@ export function DownloadMenu({ i18n }) {
     }
 
     function downloadImage() {
-        let canvasRef = State.getReference("canvas");
+        let canvasRef = State.getObject("canvas");
         if (
             downloadLink.current !== null &&
             canvasRef !== null &&
@@ -194,7 +191,7 @@ export function DownloadMenu({ i18n }) {
                         style={{
                             backgroundColor: "#2dc4cc",
                             marginLeft: "10px",
-                            maxWidth: "500px",
+                            maxWidth: "500px"
                         }}
                     >
                         {i18n("common:generateRandomName")}
@@ -235,7 +232,7 @@ export function DownscaleMenu({ i18n }) {
     }
 
     function downscaleImage() {
-        let canvasRef: HTMLCanvasElement = State.getReference("canvas"),
+        let canvasRef: HTMLCanvasElement = State.getObject("canvas"),
             image: ImageBitmap;
         if (canvasRef === null) {
             return;
@@ -248,7 +245,7 @@ export function DownscaleMenu({ i18n }) {
                     name: "Unsupported feature",
                     message:
                         "The following feature is not supported on your browser: canvas. Please upgrade your browser. Or reload the page as it might just be an unknown error.",
-                    type: MessageType.Error,
+                    type: MessageType.Error
                 })
             );
             return;
@@ -275,7 +272,7 @@ export function DownscaleMenu({ i18n }) {
             return;
         }
 
-        let canvasRef = State.getReference("canvas");
+        let canvasRef = State.getObject("canvas");
         if (canvasRef !== null) {
             setWidth(canvasRef.width);
             setHeight(canvasRef.height);

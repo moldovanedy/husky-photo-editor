@@ -4,27 +4,50 @@
  * references to DOM objects (returned from document.getElementById() or useRef()).
  *--------------------------------------------------------------------------------------------*/
 
-interface Reference {
+interface StateObject {
     key: string;
-    reference: any;
+    element: any;
 }
 
 export class State {
-    public static references: Reference[] = [];
+    public static store: StateObject[] = [];
 
-    public static addReference(referenceKey: string, referenceElement: any) {
-        let object: Reference;
+    /**
+     * Adds an object or a value to the global state
+     * @param key The identifier for the stored element
+     * @param element The stored element
+     */
+    public static addObject(key: string, element: any) {
+        let object: StateObject;
 
-        object = { key: referenceKey, reference: referenceElement };
-        State.references.push(object);
+        object = { key: key, element: element };
+        State.store.push(object);
     }
 
-    public static getReference(key: string): any | null {
-        for (let i = 0; i < this.references.length; i++) {
-            if (this.references[i].key === key) {
-                return this.references[i].reference;
+    /**
+     * Gets an object or a value from the global state
+     * @param key The identifier for the stored element
+     */
+    public static getObject(key: string): any | null {
+        for (let i = 0; i < this.store.length; i++) {
+            if (this.store[i].key === key) {
+                return this.store[i].element;
             }
         }
         return null;
+    }
+
+    /**
+     * Deletes an object or a value from the global state
+     * @param key The identifier for the stored element
+     */
+    public static deleteObject(key: string): boolean {
+        for (let i = 0; i < this.store.length; i++) {
+            if (this.store[i].key === key) {
+                this.store.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
     }
 }

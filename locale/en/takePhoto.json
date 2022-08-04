@@ -2,8 +2,6 @@
     "pageTitle": "Take a photo",
     "download": "Download",
     "downscale": "Downscale",
-    "cameraAccessDenied": "Permission to camera has been denied. Please reload page settings to grant permission to camera.",
-    "cameraNotFound": "We were unable to find a camera on your device.",
     "changeCamera": "Change between front/rear camera",
     "rerequestCamera": "Request camera permission again",
     "downscaleRatio": "Downscale ratio"

@@ -1,0 +1,16 @@
+.main {
+    display: flex;
+    align-items: center;
+    overflow: auto;
+
+    div {
+        width: 90px;
+        min-width: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: #4470cf;
+        border-radius: 5px;
+        margin: 2px 4px 2px 1px;
+    }
+}

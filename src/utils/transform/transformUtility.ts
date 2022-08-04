@@ -29,7 +29,7 @@ export interface TransformObject {
 /**
  * Complex function which returns an object representing each transform property applied to object
  * @param transformString The string from element.style.transform
- * @returns The object
+ * @returns A TransformObject whose keys are transform properties and values are property values
  * @example INITIAL: transform: scale(1.5) rotate(30deg) translate(10px, -10px) RETURNS: {scale: "1.5", rotate: "30deg", translate: "10px, -10px"}
  */
 export function getTransformValuesOfElement(
@@ -100,14 +100,14 @@ export function getTransformValuesOfElement(
                 Object.defineProperty(obj, arrayOfKeys[i], {
                     value: arrayOfStringValues,
                     writable: false,
-                    configurable: true,
+                    configurable: true
                 });
             }
         } else {
             Object.defineProperty(obj, arrayOfKeys[i], {
                 value: commaSeparatedArray[0],
                 writable: false,
-                configurable: true,
+                configurable: true
             });
         }
     }
@@ -128,6 +128,11 @@ export function getTransformProperties(transformString: string): string[] {
     }
 }
 
+interface KeyValuePair {
+    key: string;
+    value: string;
+}
+
 export function convertTransformObjectToString(
     transformObject: TransformObject | null,
     excludedProperties?: string[]
@@ -137,7 +142,8 @@ export function convertTransformObjectToString(
     }
 
     let transformString = "",
-        transformProperties = Object.getOwnPropertyNames(transformObject);
+        transformProperties = Object.getOwnPropertyNames(transformObject),
+        keyValuePairs: KeyValuePair[] = [];
 
     for (let i = 0; i < transformProperties.length; i++) {
         //if shouldContinue is false, we go to next iteration because this property will be undefined
@@ -154,24 +160,86 @@ export function convertTransformObjectToString(
             continue;
         }
 
-        transformString += transformProperties[i] + "(";
+        // transformString += transformProperties[i] + "(";
         let value = Object.getOwnPropertyDescriptor(
             transformObject,
             transformProperties[i]
         )?.value;
 
+        let localTransformString = "(";
+
         if (Array.isArray(value)) {
             value.forEach((val, index) => {
-                transformString += val;
+                localTransformString += val;
                 if (index !== value.length - 1) {
-                    transformString += ",";
+                    localTransformString += ",";
                 }
             });
         } else {
-            transformString += value;
+            localTransformString += value;
         }
+        localTransformString += ")";
 
-        transformString += ")";
+        keyValuePairs.push({
+            key: transformProperties[i],
+            value: localTransformString
+        });
+
+        // transformString += ")";
     }
+
+    //order transform properties in the following order: perspective translate translate3d translateX translateY translateZ rotate rotate3d rotateX rotate rotateZ scale scale3d scaleX scaleY scaleZ skew skewX skewY matrix matrix3d
+    const priorityOrder = {
+        perspective: 0,
+        translate: 1,
+        translate3d: 2,
+        translateX: 3,
+        translateY: 4,
+        translateZ: 5,
+        rotate: 6,
+        rotate3d: 7,
+        rotateX: 8,
+        rotateY: 9,
+        rotateZ: 10,
+        scale: 11,
+        scale3d: 12,
+        scaleX: 13,
+        scaleY: 14,
+        scaleZ: 15,
+        skew: 16,
+        skewX: 17,
+        skewY: 18,
+        matrix: 19,
+        matrix3d: 20
+    };
+
+    let outputArray: KeyValuePair[] = [];
+
+    const input: KeyValuePair[] = [];
+
+    keyValuePairs.forEach((item) => {
+        input.push(item);
+    });
+
+    const prioritized: KeyValuePair[] = [];
+    const extra: KeyValuePair[] = [];
+
+    input.forEach((value) => {
+        if (priorityOrder[value.key] !== undefined) {
+            prioritized.push(value);
+        } else {
+            extra.push(value);
+        }
+    });
+
+    prioritized.sort((a, b) => priorityOrder[a.key] - priorityOrder[b.key]);
+    extra.sort();
+
+    const output = outputArray.concat(prioritized, extra);
+
+    output.forEach((item) => {
+        transformString += item.key + item.value;
+    });
+
     return transformString;
 }

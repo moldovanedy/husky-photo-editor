@@ -4,11 +4,10 @@ import {
     faDownload,
     faMagnifyingGlassMinus,
     faMagnifyingGlassPlus,
-    faMinimize,
+    faMinimize
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { gsap } from "gsap";
 
 import styles from "./PhotoResult.module.scss";
 import { State } from "../src/GlobalSpecialState";
@@ -17,16 +16,16 @@ import { useDispatch } from "react-redux";
 
 import {
     openDownloadDialog,
-    openDownscaleDialog,
-} from "../src/redux/takePhotoDialogs/takePhotoDialogsSlice.redux";
+    openDownscaleDialog
+} from "../src/redux/takePhotoDialogsSlice.redux";
 import { scaleCanvas } from "../src/capturePhoto";
 import {
     MeasuringSystem,
-    translate,
+    translate
 } from "../src/utils/transform/translateElements";
 import {
     convertTransformObjectToString,
-    getTransformValuesOfElement,
+    getTransformValuesOfElement
 } from "../src/utils/transform/transformUtility";
 import { store } from "../src/redux/global.store";
 import { scale } from "../src/utils/transform/scaleElements";
@@ -41,7 +40,7 @@ function PhotoResult(props: any) {
                           opacity: 1,
                           pointerEvents: "all",
                           touchAction: "none",
-                          overflow: "hidden",
+                          overflow: "hidden"
                       }
                     : { opacity: 0, pointerEvents: "none" }
             }
@@ -66,10 +65,10 @@ function TopBar({ i18n }) {
 
     useEffect(() => {
         if (
-            State.getReference("canvas") !== null &&
-            State.getReference("canvas") !== undefined
+            State.getObject("canvas") !== null &&
+            State.getObject("canvas") !== undefined
         ) {
-            let canvas = State.getReference("canvas");
+            let canvas = State.getObject("canvas");
             if (canvas instanceof HTMLCanvasElement) {
                 setCanvasElement(canvas);
             }
@@ -135,7 +134,7 @@ function TopBar({ i18n }) {
                 }
             });
         }
-    }, [State.getReference("canvas")]);
+    }, [State.getObject("canvas")]);
 
     function zoomIn() {
         if (canvasElement === null) {
@@ -224,16 +223,16 @@ function BottomBar({ i18n }) {
 
     useEffect(() => {
         if (
-            State.getReference("canvas") !== null &&
-            State.getReference("canvas") !== undefined
+            State.getObject("canvas") !== null &&
+            State.getObject("canvas") !== undefined
         ) {
-            let canvas = State.getReference("canvas");
+            let canvas = State.getObject("canvas");
             if (canvas instanceof HTMLCanvasElement) {
                 setPhotoWidth(canvas.width);
                 setPhotoHeight(canvas.height);
             }
         }
-    }, [State.getReference("canvas"), resizedPhoto]);
+    }, [State.getObject("canvas"), resizedPhoto]);
 
     return (
         <>

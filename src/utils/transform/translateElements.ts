@@ -1,11 +1,11 @@
 import {
     getTransformValuesOfElement,
-    convertTransformObjectToString,
+    convertTransformObjectToString
 } from "./transformUtility";
 
 export enum MeasuringSystem {
     Relative,
-    Absolute,
+    Absolute
 }
 
 /**
@@ -49,7 +49,7 @@ export function translate(
         );
     if (previousTransformString !== undefined) {
         element.style.transform =
-            previousTransformString + `translate(${x}px, ${y}px)`;
+            `translate(${x}px, ${y}px)` + previousTransformString;
     } else {
         element.style.transform = `translate(${x}px, ${y}px)`;
     }

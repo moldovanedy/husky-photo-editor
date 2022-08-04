@@ -6,24 +6,19 @@ import {
     faArrowLeft,
     faCameraRotate,
     faGear,
-    faTimes,
-    faVideo,
+    faVideo
 } from "@fortawesome/free-solid-svg-icons";
 import { faCircleDot } from "@fortawesome/free-regular-svg-icons";
 
 import styles from "./../../styles/take-photo.module.scss";
-import {
-    capture,
-    scaleCanvas,
-    getAvailableCameras,
-} from "./../../src/capturePhoto";
+import { capture, scaleCanvas } from "./../../src/capturePhoto";
 import PhotoResult from "./../../components/PhotoResult";
 import { State } from "../../src/GlobalSpecialState";
 import Link from "../../components/Link";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
-const getStaticProps = makeStaticProps(["common", "takePhoto"]);
+const getStaticProps = makeStaticProps(["common", "takePhoto", "messages"]);
 export { getStaticPaths, getStaticProps };
 
 function TakePhoto() {
@@ -32,17 +27,13 @@ function TakePhoto() {
         canvasElement = useRef<HTMLCanvasElement>(null),
         changeCameraButton = useRef<HTMLElement>(null);
 
-    let [hasTakenPhoto, setHasTakenPhoto] = useState(false),
-        [isShowingAvailableCameras, setIsShowingAvailableCameras] =
-            useState(false),
-        [availableCameras, setAvailableCameras] = useState<string[]>([]);
+    let [hasTakenPhoto, setHasTakenPhoto] = useState(false);
     const { t } = useTranslation();
 
     useEffect(() => {
         window.onresize = () => {
             scaleCanvas(canvasElement.current);
         };
-        setAvailableCameras(getAvailableCameras());
 
         try {
             if (
@@ -61,16 +52,16 @@ function TakePhoto() {
         } catch (err: any) {
             switch (err.name) {
                 case "NotAllowedError":
-                    console.log(t("takePhoto:cameraAccessDenied"));
+                    console.log(t("messages:errors.cameraAccessDenied"));
                     break;
                 case "NotReadableError":
-                    console.log("An unknown hardware error has occured.");
+                    console.log(t("messages:errors.unknownHardwareError"));
                     break;
                 case "NotFoundError":
-                    console.log(t("takePhoto:cameraNotFound"));
+                    console.log(t("messages:errors.cameraNotFound"));
                     break;
                 default:
-                    console.log("An unknown error has occured.");
+                    console.log(t("messages:errors.unknownError"));
                     console.log(err);
                     break;
             }
@@ -109,7 +100,7 @@ function TakePhoto() {
                             title={t("common:goBack")}
                             onClick={() => {
                                 // because otherwise the camera will still be on
-                                let stream = State.getReference("stream");
+                                let stream = State.getObject("stream");
                                 if (stream !== null) {
                                     stream.stop();
                                 }
@@ -164,7 +155,7 @@ function TakePhoto() {
                         onClick={() => {
                             setHasTakenPhoto(true);
                             if (canvasElement.current !== null) {
-                                State.addReference(
+                                State.addObject(
                                     "canvas",
                                     canvasElement.current
                                 );

@@ -3,9 +3,27 @@ import Router from "next/router";
 import NProgress from "nprogress";
 
 import SpinningLogo from "./SpinningLogo";
+import { useEffect } from "react";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+    changeWindowHeightInfo,
+    changeWindowWidthInfo
+} from "./../../src/redux/environmentInfo.redux";
 
 function LoadingScreen() {
     let [show, setShow] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        window.addEventListener("resize", () => {
+            dispatch(changeWindowHeightInfo(window.innerHeight));
+            dispatch(changeWindowWidthInfo(window.innerWidth));
+        });
+
+        dispatch(changeWindowHeightInfo(window.innerHeight));
+        dispatch(changeWindowWidthInfo(window.innerWidth));
+    }, [dispatch]);
 
     const handleRouteStart = () => {
         NProgress.start();

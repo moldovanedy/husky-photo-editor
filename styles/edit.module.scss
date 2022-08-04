@@ -1,0 +1,27 @@
+.mainScrollElement {
+    background-color: rgb(49, 49, 49);
+    width: 100%;
+    overflow: auto;
+}
+
+.canvasContainer {
+    position: relative;
+
+    canvas {
+        position: absolute;
+        transform-origin: 0px 0px;
+        margin: 100px !important;
+    }
+}
+
+@media screen and (max-height: 470px) {
+    .mainScrollElement {
+        height: 65vh;
+    }
+}
+
+@media screen and (max-height: 270px) {
+    .mainScrollElement {
+        height: 50vh;
+    }
+}
