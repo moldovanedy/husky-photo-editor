@@ -8,5 +8,6 @@
         "systemTheme": "System"
     },
     "disableLogoSpin": "Disable app logo spin when a page is loading",
+    "enableSounds": "Enable sounds",
     "save": "Save"
 }

@@ -7,10 +7,23 @@ const getStaticProps = makeStaticProps(["common", "settings"]);
 export { getStaticPaths, getStaticProps };
 
 import styles from "./../../styles/setttings.module.scss";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 import Modal from "./../../components/UI/Modal";
+import {
+    Button,
+    FormControl,
+    FormControlLabel,
+    FormGroup,
+    FormLabel,
+    InputLabel,
+    MenuItem,
+    Radio,
+    RadioGroup,
+    Select,
+    Switch
+} from "@mui/material";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 function Settings() {
     const { t } = useTranslation();
@@ -90,9 +103,13 @@ function Settings() {
             </Modal>
 
             <main className={styles.main}>
-                <FontAwesomeIcon
-                    icon={faTimes}
-                    size={"3x"}
+                <CloseIcon
+                    sx={{
+                        position: "absolute",
+                        top: "5px",
+                        right: "5%",
+                        fontSize: "60px"
+                    }}
                     onClick={() => {
                         if (hasUnsavedSettings) {
                             setShowUnsavedChangesDialog(true);
@@ -100,96 +117,101 @@ function Settings() {
                             document.location.pathname = "/";
                         }
                     }}
-                    style={{
-                        position: "absolute",
-                        top: "5px",
-                        right: "5%"
-                    }}
                 />
+
                 <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
                     {t("settings:settings")}
                 </h1>
 
                 <div>
                     <h2>General</h2>
-                    <div>
-                        <label htmlFor="langSelector">
+
+                    <FormControl
+                        sx={{
+                            maxWidth: "90%",
+                            minWidth: 80,
+                            marginBottom: "30px"
+                        }}
+                    >
+                        <InputLabel id="languageSelector">
                             {t("settings:language")}
-                        </label>{" "}
-                        <select
-                            id="langSelector"
+                        </InputLabel>
+                        <Select
+                            labelId="languageSelector"
+                            id="demo-simple-select"
                             value={language}
+                            label={t("settings:language")}
                             onChange={(e) => {
                                 setLanguage(e.target.value);
                                 setHasUnsavedSettings(true);
                             }}
                         >
-                            <option value={"en"}>English</option>
-                            <option value={"ro"}>Română</option>
-                        </select>
-                    </div>
+                            <MenuItem value={"en"}>English</MenuItem>
+                            <MenuItem value={"ro"}>Română</MenuItem>
+                        </Select>
+                    </FormControl>
 
-                    <label>{t("settings:theme.themeText")}</label>
-                    <div style={{ marginLeft: "40px" }}>
-                        <div className={styles.themeInput}>
-                            <input
-                                type={"radio"}
+                    <FormControl className={styles.displayBlockLabels}>
+                        <FormLabel id="demo-radio-buttons-group-label">
+                            {t("settings:theme.themeText")}
+                        </FormLabel>
+                        <RadioGroup
+                            aria-labelledby="demo-radio-buttons-group-label"
+                            value={theme}
+                            name="radio-buttons-group"
+                            onChange={(e) => {
+                                setTheme(e.target.value);
+                                setHasUnsavedSettings(true);
+                            }}
+                        >
+                            <FormControlLabel
                                 value="dark"
-                                id="dark"
-                                title={t("settings:theme.darkTheme")}
-                                checked={theme === "dark" ? true : false}
-                                onChange={(e) => {
-                                    setTheme(e.target.value);
-                                    setHasUnsavedSettings(true);
-                                }}
+                                control={<Radio />}
+                                label={t("settings:theme.darkTheme")}
                             />
-                            <label htmlFor="dark">
-                                {t("settings:theme.darkTheme")}
-                            </label>
-                        </div>
-                        <div className={styles.themeInput}>
-                            <input
-                                type={"radio"}
+                            <FormControlLabel
                                 value="light"
-                                id="light"
-                                title={t("settings:theme.lightTheme")}
-                                checked={theme === "light" ? true : false}
-                                onChange={(e) => {
-                                    setTheme(e.target.value);
-                                    setHasUnsavedSettings(true);
-                                }}
+                                control={<Radio />}
+                                label={t("settings:theme.lightTheme")}
                             />
-                            <label htmlFor="light">
-                                {t("settings:theme.lightTheme")}
-                            </label>
-                        </div>
-                        <div className={styles.themeInput}>
-                            <input
-                                type={"radio"}
+                            <FormControlLabel
                                 value="system"
-                                id="system"
-                                title={t("settings:theme.systemTheme")}
-                                checked={theme === "system" ? true : false}
-                                onChange={(e) => {
-                                    setTheme(e.target.value);
-                                    setHasUnsavedSettings(true);
-                                }}
+                                control={<Radio />}
+                                label={t("settings:theme.systemTheme")}
                             />
-                            <label htmlFor="system">
-                                {t("settings:theme.systemTheme")}
-                            </label>
-                        </div>
-                    </div>
+                        </RadioGroup>
+                    </FormControl>
+
+                    <FormGroup
+                        sx={{ marginTop: "20px" }}
+                        className={styles.displayBlockLabels}
+                    >
+                        <FormControlLabel
+                            control={<Switch />}
+                            label={t("settings:enableSounds")}
+                        />
+                    </FormGroup>
                 </div>
                 <hr />
 
                 <div>
                     <h2>Storage</h2>
                     {supportsStorageEstimation ? (
-                        <p>
-                            Using {usedStorage} bytes out of {allowedStorage}{" "}
-                            available bytes
-                        </p>
+                        <>
+                            <meter
+                                style={{ width: "85%", height: "40px" }}
+                                low={1000 / allowedStorage} // 1 KB
+                                optimum={0.4} // 40% of allowed storage
+                                high={0.8} // 80% of allowed storage
+                                value={usedStorage / allowedStorage}
+                            >
+                                {usedStorage} / {allowedStorage}
+                            </meter>
+                            <p>
+                                Using {usedStorage} bytes out of{" "}
+                                {allowedStorage} available bytes
+                            </p>
+                        </>
                     ) : (
                         <p>Storage estimation not supported</p>
                     )}
@@ -198,28 +220,25 @@ function Settings() {
 
                 <div>
                     <h2>Accesibility</h2>
-                    <div style={{ marginTop: "30px" }}>
-                        <input
-                            id="disableLogoSpin"
-                            type={"checkbox"}
-                            value="disableLogoSpin"
-                            title={t("settings:disableLogoSpin")}
+
+                    <FormGroup className={styles.displayBlockLabels}>
+                        <FormControlLabel
+                            control={<Switch />}
+                            label={t("settings:disableLogoSpin")}
                         />
-                        <label htmlFor="disableLogoSpin">
-                            {t("settings:disableLogoSpin")}
-                        </label>
-                    </div>
+                    </FormGroup>
                 </div>
             </main>
 
             <div className={styles.saveButton}>
-                <button
+                <Button
+                    variant="contained"
                     onClick={() => {
                         saveSettings();
                     }}
                 >
                     {t("settings:save")}
-                </button>
+                </Button>
             </div>
         </>
     );

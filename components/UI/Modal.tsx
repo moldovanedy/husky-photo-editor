@@ -1,6 +1,6 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";
+
+import CloseIcon from "@mui/icons-material/Close";
 
 import styles from "./Modal.module.scss";
 
@@ -56,10 +56,9 @@ function Modal(props: {
         >
             <div className={styles.modal} ref={modalRef}>
                 <span>{props.title}</span>
-                <FontAwesomeIcon
-                    icon={faTimes}
-                    size={"2x"}
-                    style={{ float: "right" }}
+
+                <CloseIcon
+                    sx={{ fontSize: "28px", float: "right" }}
                     onClick={() => {
                         closeModal();
                     }}

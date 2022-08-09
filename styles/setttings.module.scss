@@ -1,3 +1,5 @@
+@import "sass-material-design-colors/palette.scss";
+
 .main {
     max-width: 1200px;
     margin: auto;
@@ -5,6 +7,7 @@
     padding: 10px 20px;
     font-size: 20px;
     min-height: 100vh;
+    margin-bottom: 50px;
 
     select {
         border-radius: 10px;
@@ -17,11 +20,9 @@
     }
 }
 
-.themeInput {
-    display: block;
-
+.displayBlockLabels {
     label {
-        margin-left: 15px;
+        display: block;
     }
 }
 
@@ -36,16 +37,13 @@
 
     button {
         color: #fff;
-        padding: 5px 15px;
-        border-radius: 10px;
         margin: 10px 20px;
         cursor: pointer;
-        background-color: #053aac;
+        background-color: $blue-A400;
         transition: all 0.5s ease-in-out;
     }
 
     button:hover {
-        background-color: #3c3eb8;
-        border-radius: 20px;
+        background-color: $deep-purple-A200;
     }
 }

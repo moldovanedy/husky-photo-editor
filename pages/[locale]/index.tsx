@@ -2,14 +2,15 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import Link from "./../../components/Link";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera, faGear } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./../../styles/home.module.scss";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
 import { useEffect, useState } from "react";
+
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const getStaticProps = makeStaticProps(["common", "index"]);
 export { getStaticPaths, getStaticProps };
@@ -53,16 +54,13 @@ const Home: NextPage = () => {
                 />
 
                 <Link href="/settings" skipLocaleHandling={false}>
-                    <FontAwesomeIcon
-                        icon={faGear}
-                        size={"2x"}
-                        style={{ margin: "10px" }}
-                    />
+                    <SettingsIcon fontSize="large" sx={{ color: "#fff" }} />
                 </Link>
             </header>
 
             <div className={styles.main}>
                 <h1 className={styles.title}>Husky Photo Editor</h1>
+                <h3>v 0.3.0</h3>
 
                 <main className={styles.mainPanel}>
                     <div>
@@ -72,12 +70,16 @@ const Home: NextPage = () => {
                                 style={{ justifyContent: "space-between" }}
                             >
                                 <img
-                                    src="/assets/icons/editPhoto.png"
+                                    src="/assets/img/editPhoto.png"
                                     alt={t("index:editImage")}
                                     height="80"
                                     width="80"
                                 />
-                                <span>{t("index:editImage")}</span>
+                                <span
+                                    style={{ color: "var(--main-text-color)" }}
+                                >
+                                    {t("index:editImage")}
+                                </span>
                             </div>
                         </Link>
                         <br />
@@ -86,12 +88,14 @@ const Home: NextPage = () => {
                                 className={`centerAlign ${styles.linkMain}`}
                                 style={{ justifyContent: "space-between" }}
                             >
-                                <FontAwesomeIcon
-                                    icon={faCamera}
-                                    size={"3x"}
-                                    style={{ marginLeft: "10px" }}
+                                <CameraAltIcon
+                                    sx={{ color: "#fff", fontSize: "82px" }}
                                 />
-                                <span>{t("index:takePhoto")}</span>
+                                <span
+                                    style={{ color: "var(--main-text-color)" }}
+                                >
+                                    {t("index:takePhoto")}
+                                </span>
                             </div>
                         </Link>
                     </div>

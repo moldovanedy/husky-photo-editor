@@ -1,14 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef, useState } from "react";
 import Head from "next/head";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faArrowLeft,
-    faCameraRotate,
-    faGear,
-    faVideo
-} from "@fortawesome/free-solid-svg-icons";
-import { faCircleDot } from "@fortawesome/free-regular-svg-icons";
 
 import styles from "./../../styles/take-photo.module.scss";
 import { capture, scaleCanvas } from "./../../src/capturePhoto";
@@ -18,6 +10,13 @@ import Link from "../../components/Link";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
+import VideocamIcon from "@mui/icons-material/Videocam";
+import SettingsIcon from "@mui/icons-material/Settings";
+import CameraIcon from "@mui/icons-material/Camera";
+
 const getStaticProps = makeStaticProps(["common", "takePhoto", "messages"]);
 export { getStaticPaths, getStaticProps };
 
@@ -25,7 +24,7 @@ function TakePhoto() {
     let videoElement = useRef<HTMLVideoElement>(null),
         capturePhotoButton = useRef<SVGSVGElement>(null),
         canvasElement = useRef<HTMLCanvasElement>(null),
-        changeCameraButton = useRef<HTMLElement>(null);
+        changeCameraButton = useRef<SVGSVGElement>(null);
 
     let [hasTakenPhoto, setHasTakenPhoto] = useState(false);
     const { t } = useTranslation();
@@ -94,10 +93,8 @@ function TakePhoto() {
 
                 <div className={`${styles.buttonLines} ${styles.topLine}`}>
                     <Link href="/">
-                        <FontAwesomeIcon
-                            icon={faArrowLeft}
-                            size={"2x"}
-                            title={t("common:goBack")}
+                        <ArrowBackIcon
+                            sx={{ fontSize: "36px", color: "#fff" }}
                             onClick={() => {
                                 // because otherwise the camera will still be on
                                 let stream = State.getObject("stream");
@@ -105,22 +102,17 @@ function TakePhoto() {
                                     stream.stop();
                                 }
                             }}
-                        ></FontAwesomeIcon>
+                        />
                     </Link>
 
-                    <FontAwesomeIcon
-                        icon={faCameraRotate}
-                        //@ts-ignore
+                    <CameraswitchIcon
                         ref={changeCameraButton}
-                        size={"2x"}
-                        title={t("takePhoto:changeCamera")}
+                        sx={{ fontSize: "36px", color: "#fff" }}
                         // onClick event listener is in src/capturePhoto.ts?82
-                    ></FontAwesomeIcon>
+                    />
 
-                    <FontAwesomeIcon
-                        icon={faVideo}
-                        size={"2x"}
-                        id="reloadCameraPermission"
+                    <VideocamIcon
+                        sx={{ fontSize: "36px", color: "#fff" }}
                         onClick={() => {
                             if (
                                 videoElement.current !== null &&
@@ -136,22 +128,15 @@ function TakePhoto() {
                                 );
                             }
                         }}
-                        title={t("takePhoto:rerequestCamera")}
-                    ></FontAwesomeIcon>
+                    />
 
-                    <FontAwesomeIcon
-                        icon={faGear}
-                        size={"2x"}
-                        title={t("common:openSettings")}
-                    ></FontAwesomeIcon>
+                    <SettingsIcon sx={{ fontSize: "36px", color: "#fff" }} />
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.bottomLine}`}>
-                    <FontAwesomeIcon
-                        icon={faCircleDot}
-                        size={"4x"}
+                    <CameraIcon
+                        sx={{ fontSize: "60px", color: "#fff" }}
                         ref={capturePhotoButton}
-                        id="takePhotoButton"
                         onClick={() => {
                             setHasTakenPhoto(true);
                             if (canvasElement.current !== null) {
@@ -161,7 +146,7 @@ function TakePhoto() {
                                 );
                             }
                         }}
-                    ></FontAwesomeIcon>
+                    />
                 </div>
             </main>
 

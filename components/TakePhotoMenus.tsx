@@ -1,6 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { faDownload, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -9,15 +7,18 @@ import {
     closeDownscaleDialog,
     selectDownloadDialog,
     selectDownscaleDialog
-} from "../src/redux/takePhotoDialogsSlice.redux";
+} from "../src/redux/takePhotoDialogs.redux";
 
 import styles from "./TakePhotoMenus.module.scss";
 import { downloadPhoto } from "./../src/savePhoto";
 import { State } from "../src/GlobalSpecialState";
 
 import { store } from "./../src/redux/global.store";
-import { createMessage, MessageType } from "../src/redux/messagesSlice.redux";
+import { createMessage, MessageType } from "../src/redux/messages.redux";
 import { v1 as uuid } from "uuid";
+
+import CloseIcon from "@mui/icons-material/Close";
+import DownloadIcon from "@mui/icons-material/Download";
 
 export function DownloadMenu({ i18n }) {
     const downloadDialogState = useSelector(selectDownloadDialog);
@@ -89,10 +90,13 @@ export function DownloadMenu({ i18n }) {
 
     return (
         <div ref={mainElement} className={`centerAlign ${styles.photoOptions}`}>
-            <FontAwesomeIcon
-                icon={faTimes}
-                size={"3x"}
-                style={{ position: "absolute", top: "7%", right: "8%" }}
+            <CloseIcon
+                sx={{
+                    position: "absolute",
+                    top: "7%",
+                    right: "8%",
+                    fontSize: "48px"
+                }}
                 onClick={() => {
                     dispatch(closeDownloadDialog());
                 }}
@@ -207,7 +211,7 @@ export function DownloadMenu({ i18n }) {
                         }}
                     >
                         {i18n("common:download")}
-                        <FontAwesomeIcon icon={faDownload} />
+                        <DownloadIcon sx={{ fontSize: "22px" }} />
                     </a>
                 </div>
             </div>
@@ -242,9 +246,10 @@ export function DownscaleMenu({ i18n }) {
         if (ctx === null) {
             store.dispatch(
                 createMessage({
-                    name: "Unsupported feature",
-                    message:
-                        "The following feature is not supported on your browser: canvas. Please upgrade your browser. Or reload the page as it might just be an unknown error.",
+                    //@ts-ignore
+                    message: i18n("messages:errors.unsupportedFeature", {
+                        feature: "HTML5 canvas"
+                    }),
                     type: MessageType.Error
                 })
             );
@@ -289,10 +294,13 @@ export function DownscaleMenu({ i18n }) {
 
     return (
         <div ref={mainElement} className={`centerAlign ${styles.photoOptions}`}>
-            <FontAwesomeIcon
-                icon={faTimes}
-                size={"3x"}
-                style={{ position: "absolute", top: "7%", right: "8%" }}
+            <CloseIcon
+                sx={{
+                    position: "absolute",
+                    top: "7%",
+                    right: "8%",
+                    fontSize: "48px"
+                }}
                 onClick={() => {
                     dispatch(closeDownscaleDialog());
                 }}

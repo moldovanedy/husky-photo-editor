@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faClockRotateLeft,
-    faFont,
-    faPen
-} from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./Tools.module.scss";
 import { State } from "../../src/GlobalSpecialState";
+
+import HistoryIcon from "@mui/icons-material/History";
+import EditIcon from "@mui/icons-material/Edit";
+import TitleIcon from "@mui/icons-material/Title";
 
 function Tools() {
     let toolbar = useRef<HTMLElement>(null);
@@ -30,19 +28,19 @@ function Tools() {
                 }}
             >
                 <div>
-                    <FontAwesomeIcon icon={faClockRotateLeft} size={"2x"} />
+                    <HistoryIcon sx={{ fontSize: "28px" }} />
                     <span>Recent</span>
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={faPen} size={"2x"} />
+                    <EditIcon sx={{ fontSize: "28px" }} />
                     <span>Transform</span>
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={faPen} size={"2x"} />
+                    <EditIcon sx={{ fontSize: "28px" }} />
                     <span>Paint</span>
                 </div>
                 <div>
-                    <FontAwesomeIcon icon={faFont} size={"2x"} />
+                    <TitleIcon sx={{ fontSize: "28px" }} />
                     <span>Text</span>
                 </div>
             </aside>

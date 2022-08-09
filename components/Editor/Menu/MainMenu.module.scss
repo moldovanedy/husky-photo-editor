@@ -76,3 +76,15 @@
         background-color: var(--secondary-app-color);
     }
 }
+
+.menuDivision {
+    width: auto;
+
+    div {
+        width: 100%;
+    }
+
+    div:hover {
+        background-color: var(--secondary-app-color);
+    }
+}

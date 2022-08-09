@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "next-themes";
@@ -10,6 +11,8 @@ import { appWithTranslation } from "next-i18next";
 import LoadingScreen from "./../components/LoadingAndProgress/LoadingScreen";
 import ShowMessages from "../components/Messages/ShowMessages";
 
+import ErrorBoundary from "../components/ErrorHandler";
+
 import { store } from "../src/redux/global.store";
 import { Provider } from "react-redux";
 import "./../components/LoadingAndProgress/customNprogressStyle.css";
@@ -18,26 +21,62 @@ import { getStaticPaths, makeStaticProps } from "./../lib/getStatic";
 import { useTranslation } from "next-i18next";
 const getStaticProps = makeStaticProps(["common", "messages"]);
 export { getStaticPaths, getStaticProps };
+
 import { State } from "./../src/GlobalSpecialState";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+import {
+    ThemeProvider as MaterialUI,
+    createTheme,
+    useTheme
+} from "@mui/material/styles";
+import "@fontsource/roboto/300.css";
+import "@fontsource/roboto/400.css";
+import "@fontsource/roboto/500.css";
+import "@fontsource/roboto/700.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { t } = useTranslation();
+    let [theme, setTheme] = useState("dark");
+
     useEffect(() => {
         let context = State.getObject("translationContext");
         if (context === null) {
             State.addObject("translationContext", t);
         }
+        let storedTheme = localStorage.getItem("theme");
+
+        if (storedTheme === null) {
+            setTheme("dark");
+        } else {
+            setTheme(storedTheme);
+        }
+
+        let settedLang = localStorage.getItem("language");
+        if (settedLang !== null) {
+            document.documentElement.setAttribute("lang", settedLang);
+        }
     }, [t]);
 
+    let muiTheme = createTheme({
+        palette: {
+            //@ts-ignore
+            mode: theme
+        }
+    });
+
     return (
-        <Provider store={store}>
-            <ThemeProvider defaultTheme="dark">
-                <LoadingScreen />
-                <Component {...pageProps} />
-                <ShowMessages />
-            </ThemeProvider>
-        </Provider>
+        <ErrorBoundary>
+            <Provider store={store}>
+                <ThemeProvider defaultTheme="dark">
+                    <MaterialUI theme={muiTheme}>
+                        <LoadingScreen />
+                        <Component {...pageProps} />
+                        <ShowMessages />
+                    </MaterialUI>
+                </ThemeProvider>
+            </Provider>
+        </ErrorBoundary>
     );
 }
 

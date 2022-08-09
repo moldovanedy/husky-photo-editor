@@ -1,3 +1,5 @@
+@import "sass-material-design-colors/palette.scss";
+
 .main {
     position: absolute;
     bottom: 14px;
@@ -14,7 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        background-color: #6d6fdb;
+        background-color: $indigo-400;
         border-radius: 5px;
         min-width: 70px;
         transition: all 0.3s ease-in-out;
@@ -28,7 +30,7 @@
     div:hover {
         cursor: pointer;
         border-radius: 10px;
-        background-color: #1c1b57;
+        background-color: $indigo-900;
 
         span {
             color: #fff; //for light theme

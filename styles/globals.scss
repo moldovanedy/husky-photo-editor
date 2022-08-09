@@ -1,32 +1,43 @@
+@import "sass-material-design-colors/palette.scss";
+
 :root {
     --dark-mode: 0;
-    --main-app-color: #eee;
-    --secondary-app-color: #ccc;
-    --main-text-color: #000;
-    --inverse-text-color: #fff;
-    --main-contrast-color: #3d3d3d;
-    --hover-color: #195053;
-    --link-color: #3229b4;
+    --main-app-color: #eeeeee; //equivalent of grey-200
+    --secondary-app-color: #bdbdbd; //equivalent of grey-400
+    --main-text-color: #000000; //equivalent of grey-1000
+    --inverse-text-color: #fafafa; //equivalent of grey-1000
+    --main-contrast-color: #424242; //equivalent of grey-800
+    --hover-color: #00838f; //equivalent of cyan-800
+    --link-color: #283593; //equivalent of indigo-800
     --main-theme-color: #3326a7;
-    --semitransparent-background-color: #0000006b;
+    --semitransparent-background-color: #00000060;
 }
 
 [data-theme="dark"] {
     --dark-mode: 1;
-    --main-app-color: #222;
-    --secondary-app-color: #555;
-    --main-text-color: #fff;
-    --inverse-text-color: #000;
-    --main-contrast-color: #ccc;
-    --hover-color: #37b4bd;
-    --link-color: #cac7f3;
+    --main-app-color: #212121; // equivalent of grey-900
+    --secondary-app-color: #616161; //equivalent of grey-700
+    --main-text-color: #fafafa; //equivalent of grey-50
+    --inverse-text-color: #000000; //equivalent of grey-1000
+    --main-contrast-color: #bdbdbd; //equivalent of grey-400
+    --hover-color: #80deea; //equivalent of cyan-200
+    --link-color: #c5cae9; //equivalent of indigo-100
     --main-theme-color: #3326a7;
-    --semitransparent-background-color: #0000006b;
+    --semitransparent-background-color: #00000060;
 }
 
 * {
-    color: var(--main-text-color);
     box-sizing: border-box;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: var(--main-text-color);
 }
 
 html,
@@ -34,7 +45,7 @@ body {
     padding: 0;
     margin: 0;
     background-color: var(--main-app-color);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: Roboto, Arial, sans-serif;
     transition: background-color 0.5s ease-in-out;
     scroll-behavior: smooth;
 }
@@ -42,6 +53,10 @@ body {
 a {
     color: var(--link-color);
     text-decoration: none;
+}
+
+a:hover {
+    color: var(--hover-color);
 }
 
 ::-webkit-scrollbar {
@@ -63,6 +78,14 @@ svg {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
 }
+
+svg[data-prefix="fas"],
+svg[data-prefix="far"],
+svg[data-prefix="fab"] {
+    * {
+        color: var(--main-text-color);
+    }
+} //font awesome icons
 
 svg:hover {
     filter: brightness(0.7);

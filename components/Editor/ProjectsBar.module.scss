@@ -3,14 +3,15 @@
     align-items: center;
     overflow: auto;
 
-    div {
+    .card {
         width: 90px;
         min-width: 90px;
+        position: relative;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        background-color: #4470cf;
         border-radius: 5px;
         margin: 2px 4px 2px 1px;
+        cursor: pointer;
     }
 }

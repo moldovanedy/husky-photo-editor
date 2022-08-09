@@ -3,6 +3,13 @@
         "unknownError": "S-a produs o eroare neașteptată",
         "unknownHardwareError": "S-a produs o eroare de hardware neașteptată",
         "cameraAccessDenied": "Permisiunea de a accesa camera a fost respinsă. Vă rugăm reîncărcați setările paginii pentru a acorda permisiunea camerei.",
-        "cameraNotFound": "Nu am putut găsi nici o cameră pe dispozitivul dvs."
+        "cameraNotFound": "Nu am putut găsi nici o cameră pe dispozitivul dvs.",
+        "unsupportedFeature": "Următoarea caracteristică nu este suportată de browser-ul dvs.: {{feature}}. Vă rugăm actualizați browser-ul sau folosiți alt browser."
+    },
+    "success": {
+        "projectDeleted": "Proiect șters cu succes!"
+    },
+    "information": {
+        "projectNotDeleted": "Proiectul nu a fost șters."
     }
 }

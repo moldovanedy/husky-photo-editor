@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import Head from "next/head";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft, faGear } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./../../styles/privacy-policy.module.scss";
 import Link from "../../components/Link";
@@ -11,6 +9,9 @@ import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 const getStaticProps = makeStaticProps(["common", "privacyPolicy"]);
 export { getStaticPaths, getStaticProps };
+
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 function PrivacyPolicy() {
     const { t } = useTranslation();
@@ -34,21 +35,21 @@ function PrivacyPolicy() {
                 />
 
                 <Link href="/settings" skipLocaleHandling={false}>
-                    <FontAwesomeIcon
-                        icon={faGear}
-                        size={"2x"}
-                        style={{ margin: "10px" }}
+                    <SettingsIcon
+                        fontSize="large"
+                        sx={{ margin: "10px", color: "#fff" }}
                     />
                 </Link>
             </header>
 
             <Link href={"/"}>
-                <FontAwesomeIcon
-                    icon={faArrowLeft}
-                    size={"3x"}
-                    style={{
+                <ArrowBackIcon
+                    sx={{
+                        fontSize: "50px",
+                        margin: "10px",
                         marginTop: "60px",
                         marginLeft: "10px",
+                        color: "#fff"
                     }}
                 />
             </Link>

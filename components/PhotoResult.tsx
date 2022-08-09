@@ -1,12 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-    faCamera,
-    faDownload,
-    faMagnifyingGlassMinus,
-    faMagnifyingGlassPlus,
-    faMinimize
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 
 import styles from "./PhotoResult.module.scss";
@@ -17,7 +9,7 @@ import { useDispatch } from "react-redux";
 import {
     openDownloadDialog,
     openDownscaleDialog
-} from "../src/redux/takePhotoDialogsSlice.redux";
+} from "../src/redux/takePhotoDialogs.redux";
 import { scaleCanvas } from "../src/capturePhoto";
 import {
     MeasuringSystem,
@@ -29,6 +21,12 @@ import {
 } from "../src/utils/transform/transformUtility";
 import { store } from "../src/redux/global.store";
 import { scale } from "../src/utils/transform/scaleElements";
+
+import ZoomInIcon from "@mui/icons-material/ZoomIn";
+import ZoomOutIcon from "@mui/icons-material/ZoomOut";
+import CameraAltIcon from "@mui/icons-material/CameraAlt";
+import DownloadIcon from "@mui/icons-material/Download";
+import CloseFullscreenIcon from "@mui/icons-material/CloseFullscreen";
 
 function PhotoResult(props: any) {
     return (
@@ -178,31 +176,29 @@ function TopBar({ i18n }) {
 
     return (
         <div className={styles.actionLinesPhoto}>
-            <FontAwesomeIcon
-                icon={faMagnifyingGlassPlus}
-                size={"2x"}
+            <ZoomInIcon
+                sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     zoomIn();
                 }}
             />
-            <FontAwesomeIcon
-                icon={faMagnifyingGlassMinus}
-                size={"2x"}
+
+            <ZoomOutIcon
+                sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     zoomOut();
                 }}
             />
-            <FontAwesomeIcon
-                icon={faMinimize}
-                size={"2x"}
+
+            <CloseFullscreenIcon
+                sx={{ fontSize: "28px" }}
                 onClick={() => {
                     scaleCanvas(canvasElement);
                 }}
-                title="Resize the canvas to fit the screen (doesn't affect final photo)"
             />
-            <FontAwesomeIcon
-                icon={faCamera}
-                size={"2x"}
+
+            <CameraAltIcon
+                sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     document.location.reload();
                 }}
@@ -257,7 +253,7 @@ function BottomBar({ i18n }) {
                     }}
                 >
                     {i18n("takePhoto:download")}{" "}
-                    <FontAwesomeIcon icon={faDownload} />
+                    <DownloadIcon sx={{ fontSize: "16px" }} />
                 </button>
 
                 <DownloadMenu i18n={i18n} />

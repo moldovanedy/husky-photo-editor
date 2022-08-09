@@ -23,22 +23,32 @@ export interface ModificationItem {
 
 export interface Project {
     id: string;
+    name: string;
     originalPhotoName?: string;
     lastModifiedInApp?: number;
-    initialData: Uint8ClampedArray; //array of bytes from original photo
     currentData: Layer[];
     modificationsStack: ModificationItem[];
+    width: number;
+    height: number;
 }
 
-export class RecentProjects extends Dexie {
+interface MiscellaneousData {
+    key: string;
+    value: any;
+}
+
+export class HuskyPhotoEditor extends Dexie {
     projects!: Table<Project>;
+    misc!: Table<MiscellaneousData>;
 
     constructor() {
-        super("RecentProjects");
+        super("HuskyPhotoEditor");
         this.version(1).stores({
-            projects: "id" // Primary key and indexed props
+            // Primary keys
+            projects: "id",
+            misc: "key"
         });
     }
 }
 
-export const db = new RecentProjects();
+export const db = new HuskyPhotoEditor();

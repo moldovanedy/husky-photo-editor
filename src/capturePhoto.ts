@@ -1,7 +1,7 @@
 import { State } from "./GlobalSpecialState";
 
 import { store } from "./redux/global.store";
-import { createMessage, MessageType } from "./redux/messagesSlice.redux";
+import { createMessage, MessageType } from "./redux/messages.redux";
 
 /**
  * @description Captures user's camera and displays output in a video element
@@ -16,7 +16,7 @@ export function capture(
     videoElement: HTMLVideoElement,
     capturePhotoButton: SVGSVGElement | HTMLElement,
     canvasReference: HTMLCanvasElement,
-    changeCameraButton: HTMLElement | null
+    changeCameraButton: SVGSVGElement | null
 ): void {
     if (videotrackIndex === null || videotrackIndex === undefined) {
         videotrackIndex = 0;
@@ -72,7 +72,6 @@ export function capture(
                     } else {
                         store.dispatch(
                             createMessage({
-                                name: "Element not found",
                                 message:
                                     "The video element was not found. Please reload the page.",
                                 type: MessageType.Error
@@ -100,7 +99,6 @@ export function capture(
             } else {
                 store.dispatch(
                     createMessage({
-                        name: "Element not found",
                         message:
                             "A button element was not found. Please reload the page.",
                         type: MessageType.Error
@@ -113,7 +111,6 @@ export function capture(
                 case "NotAllowedError":
                     store.dispatch(
                         createMessage({
-                            name: "Permission denied",
                             message:
                                 "Permission to camera has been denied. Please reload page settings to grant permission to camera",
                             type: MessageType.Error
@@ -123,7 +120,6 @@ export function capture(
                 case "NotReadableError":
                     store.dispatch(
                         createMessage({
-                            name: "Unknown error",
                             message: "An unknown hardware error has occured.",
                             type: MessageType.Error
                         })
@@ -132,7 +128,6 @@ export function capture(
                 case "NotFoundError":
                     store.dispatch(
                         createMessage({
-                            name: "Camera not found",
                             message:
                                 "We were unable to find a camera on your device.",
                             type: MessageType.Error
@@ -142,7 +137,6 @@ export function capture(
                 default:
                     store.dispatch(
                         createMessage({
-                            name: "Unknown error",
                             message: "An unknown error has occured.",
                             type: MessageType.Error
                         })

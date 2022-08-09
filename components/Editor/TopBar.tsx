@@ -1,18 +1,17 @@
-import {
-    faRotateLeft,
-    faRotateRight,
-    faBars,
-    faQuestionCircle,
-    faInfoCircle
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import type { RootState } from "./../../src/redux/global.store";
 
 import styles from "./TopBar.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { openMainMenu } from "../../src/redux/userInterface.redux";
-import { MainMenuDesktop, MainMenuMobile } from "./MainMenu";
+import { MainMenuMobile } from "./Menu/MainMenuMobile";
+import { MainMenuDesktop } from "./Menu/MainMenuDesktop";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import UndoIcon from "@mui/icons-material/Undo";
+import RedoIcon from "@mui/icons-material/Redo";
+import InfoIcon from "@mui/icons-material/Info";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 function TopBar() {
     const dispatch = useDispatch();
@@ -36,21 +35,20 @@ function TopBar() {
 
             <div>
                 {windowWidth <= 768 ? (
-                    <FontAwesomeIcon
-                        icon={faBars}
-                        size="2x"
+                    <MenuIcon
+                        sx={{ fontSize: "40px" }}
                         onClick={() => {
                             dispatch(openMainMenu());
                         }}
                     />
                 ) : null}
-                <FontAwesomeIcon icon={faRotateLeft} size="2x" />
-                <FontAwesomeIcon icon={faRotateRight} size="2x" />
+                <UndoIcon sx={{ fontSize: "40px" }} />
+                <RedoIcon sx={{ fontSize: "40px" }} />
             </div>
 
             <div>
-                <FontAwesomeIcon icon={faInfoCircle} size="2x" />
-                <FontAwesomeIcon icon={faQuestionCircle} size="2x" />
+                <InfoIcon sx={{ fontSize: "40px" }} />
+                <HelpOutlineIcon sx={{ fontSize: "40px" }} />
             </div>
         </div>
     );

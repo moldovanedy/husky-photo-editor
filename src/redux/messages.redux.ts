@@ -10,11 +10,10 @@ export enum MessageType {
     Information,
     Warning,
     Error,
-    Success,
+    Success
 }
 
 export interface UserMessage {
-    name: string;
     message: string;
     type: MessageType;
     id: string; //uuid
@@ -22,7 +21,6 @@ export interface UserMessage {
 }
 
 export interface MessageCreated {
-    name: string;
     message: string;
     type: MessageType;
 }
@@ -39,15 +37,11 @@ export const messagesSlice = createSlice({
         ) => {
             let uuid = uuidV1();
             state.push({
-                name: action.payload.name,
                 message: action.payload.message,
                 type: action.payload.type,
                 id: uuid,
-                timeCreated: Date.now(),
+                timeCreated: Date.now()
             });
-            // setTimeout(() => {
-            //     disposeMessage(uuid);
-            // }, 10000);
         },
         disposeMessage: (
             state: UserMessage[],
@@ -62,8 +56,8 @@ export const messagesSlice = createSlice({
                     state.pop();
                 }
             }
-        },
-    },
+        }
+    }
 });
 
 export const { createMessage, disposeMessage } = messagesSlice.actions;

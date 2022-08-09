@@ -1,16 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import {
-    faArrowRightFromBracket,
-    faTimes
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
+import React, { useRef } from "react";
 
 import styles from "./MainMenu.module.scss";
 
 import { useDispatch } from "react-redux";
-import { closeMainMenu } from "../../src/redux/userInterface.redux";
-import { store } from "../../src/redux/global.store";
+import { closeMainMenu } from "../../../src/redux/userInterface.redux";
+import { store } from "../../../src/redux/global.store";
 import {
     Menu,
     MenuItem,
@@ -21,11 +16,14 @@ import {
     SubMenu
 } from "react-pro-sidebar";
 
-// import { db, Storage } from "../../src/storage/db";
-// import { v1 as uuid } from "uuid";
+import { openFiles } from "../../../src/menu/actions";
+
+import CloseIcon from "@mui/icons-material/Close";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 
 export function MainMenuMobile(props: { show: boolean }) {
     const dispatch = useDispatch();
+    let filePicker = useRef<HTMLInputElement>(null);
 
     return (
         <div
@@ -53,17 +51,16 @@ export function MainMenuMobile(props: { show: boolean }) {
                                 alt="Husky logo"
                             />
                         </div>
-                        <FontAwesomeIcon
-                            icon={faTimes}
-                            onClick={() => {
-                                dispatch(closeMainMenu());
-                            }}
-                            size={"3x"}
-                            style={{
+                        <CloseIcon
+                            sx={{
+                                fontSize: "60px",
                                 position: "absolute",
                                 top: "10px",
                                 right: "10px",
                                 zIndex: "8001"
+                            }}
+                            onClick={() => {
+                                dispatch(closeMainMenu());
                             }}
                         />
                     </SidebarHeader>
@@ -93,6 +90,19 @@ export function MainMenuMobile(props: { show: boolean }) {
                                         type={"file"}
                                         accept={"image/*"}
                                         id={"openFiles"}
+                                        ref={filePicker}
+                                        onChange={(e) => {
+                                            if (filePicker.current === null) {
+                                                return;
+                                            } else {
+                                                let files = e.target.files;
+                                                if (files === null) {
+                                                    console.log("ERR");
+                                                } else {
+                                                    openFiles(files);
+                                                }
+                                            }
+                                        }}
                                         multiple
                                     />
                                 </MenuItem>
@@ -123,27 +133,17 @@ export function MainMenuMobile(props: { show: boolean }) {
                             {/* in order to leave elements visible because the footer covers the last 50px */}
                         </Menu>
                     </SidebarContent>
-                    <SidebarFooter className={styles.sidebarFooter}>
-                        <FontAwesomeIcon
-                            icon={faArrowRightFromBracket}
-                            size={"2x"}
-                        />{" "}
+                    <SidebarFooter
+                        className={styles.sidebarFooter}
+                        onClick={() => {
+                            document.location.pathname = "/";
+                        }}
+                    >
+                        <ExitToAppIcon sx={{ fontSize: "36px" }} />
                         Exit editor
                     </SidebarFooter>
                 </ProSidebar>
             </section>
         </div>
-    );
-}
-
-export function MainMenuDesktop() {
-    return (
-        <nav className={styles.containerDesktop}>
-            <div>File</div>
-            <div>Edit</div>
-            <div>View</div>
-            <div>Layers</div>
-            <div>Help</div>
-        </nav>
     );
 }

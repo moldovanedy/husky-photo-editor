@@ -1,61 +1,68 @@
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { store } from "../../src/redux/global.store";
-import { disposeMessage } from "../../src/redux/messagesSlice.redux";
+import { RootState, store } from "../../src/redux/global.store";
+import { disposeMessage } from "../../src/redux/messages.redux";
 import styles from "./ShowMessages.module.scss";
 
+import CloseIcon from "@mui/icons-material/Close";
+import { Alert, AlertColor, Snackbar } from "@mui/material";
+
 function ShowMessages() {
-    let [globalStore, setGlobalStore] = useState(store.getState());
+    let [msgStore, setMsgStore] = useState(store.getState().messages);
+    let [isOpen, setIsOpen] = useState(true);
 
     store.subscribe(() => {
-        setGlobalStore(store.getState());
+        setMsgStore(store.getState().messages);
+        setIsOpen(true);
     });
+
+    function closeSnack(id) {
+        setIsOpen(false);
+        setTimeout(() => {
+            store.dispatch(disposeMessage(id));
+        }, 500);
+    }
 
     return (
         <aside
             className={`centerAlign ${styles.messagesContainer}`}
             style={{ flexDirection: "column" }}
         >
-            {globalStore.messages.map((item, index) => {
+            {msgStore.map((item, index) => {
                 let msgType = "";
                 switch (item.type) {
                     case 0:
-                        msgType = "Information";
+                        msgType = "info";
                         break;
                     case 1:
-                        msgType = "Warning";
+                        msgType = "warning";
                         break;
                     case 2:
-                        msgType = "Error";
+                        msgType = "error";
                         break;
                     default:
-                        msgType = "Success";
+                        msgType = "success";
                         break;
                 }
                 return (
-                    <div
+                    <Snackbar
                         key={index}
-                        role={"alert"}
-                        style={
-                            item.type === 0
-                                ? { backgroundColor: "#6082cc" }
-                                : item.type === 1
-                                ? { backgroundColor: "#ccbc3a" }
-                                : item.type === 2
-                                ? { backgroundColor: "#f5494c" }
-                                : { backgroundColor: "#8ee77c" }
-                        }
-                        className={styles.message}
+                        open={isOpen}
+                        autoHideDuration={6000}
+                        onClose={() => {
+                            closeSnack(item.id);
+                        }}
                     >
-                        <Message
-                            key={index}
-                            name={item.name}
-                            message={item.message}
-                            id={item.id}
-                        />
-                    </div>
+                        <Alert
+                            severity={msgType as AlertColor}
+                            sx={{ width: "100%" }}
+                            onClose={() => {
+                                closeSnack(item.id);
+                            }}
+                        >
+                            {item.message}
+                        </Alert>
+                    </Snackbar>
                 );
             })}
         </aside>
@@ -65,13 +72,20 @@ function ShowMessages() {
 function Message({ name, message, id }) {
     let messageId = useRef<HTMLInputElement>(null);
 
+    useEffect(() => {
+        setTimeout(() => {
+            if (messageId.current !== null) {
+                store.dispatch(disposeMessage(messageId.current.value));
+            }
+        }, 5000);
+    }, []);
+
     return (
         <>
             <input type={"hidden"} ref={messageId} value={id} />
-            <FontAwesomeIcon
-                icon={faTimes}
-                size={"2x"}
+            <CloseIcon
                 className={styles.closeButton}
+                sx={{ fontSize: "28px" }}
                 onClick={() => {
                     if (messageId.current !== null) {
                         store.dispatch(disposeMessage(messageId.current.value));

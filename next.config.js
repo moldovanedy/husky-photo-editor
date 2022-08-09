@@ -6,11 +6,11 @@ const nextConfig = {
     reactStrictMode: true,
     swcMinify: true,
     sassOptions: {
-        includePaths: [path.join(__dirname, "styles")],
+        includePaths: [path.join(__dirname, "styles")]
     },
     images: {
-        disableStaticImages: true,
-    },
+        disableStaticImages: true
+    }
 };
 
 module.exports = nextConfig;
@@ -19,6 +19,7 @@ module.exports = withPWA({
         dest: "public",
         register: true,
         skipWaiting: true,
-        disable: true,
-    },
+        diable: true
+    }
 });
+
