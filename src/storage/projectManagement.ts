@@ -5,6 +5,7 @@ import { store } from "../redux/global.store";
 import { createMessage, MessageType } from "../redux/messages.redux";
 import { deleteProjectRedux } from "../redux/projectManagement.redux";
 import { displayProject } from "../projectInteractions/displayProject";
+import { addOrModifyMiscDataDB } from "./miscDataManager";
 
 /**
  * Creates a new project and stores it in memory.
@@ -40,13 +41,10 @@ export async function createNewProjectDB(
 
         db.misc.get("openedProjects").then((projects) => {
             if (projects === undefined) {
-                db.misc.add({
-                    key: "openedProjects",
-                    value: [id]
-                });
+                addOrModifyMiscDataDB("openedProjects", [id]);
             } else {
                 projects.value.push(id);
-                db.misc.update("openedProjects", {
+                addOrModifyMiscDataDB("openedProjects", {
                     key: projects.key,
                     value: projects.value
                 });
@@ -65,7 +63,10 @@ export async function createNewProjectDB(
     }
 }
 
-export async function deleteProjectDB(projectId: string): Promise<boolean> {
+export async function deleteProjectDB(
+    projectId: string,
+    dontUpdateDisplayedProjects?: boolean
+): Promise<boolean> {
     function resolve() {
         store.dispatch(deleteProjectRedux(projectId));
         return true;
@@ -91,13 +92,18 @@ export async function deleteProjectDB(projectId: string): Promise<boolean> {
                     projects.value.splice(index, 1);
                 }
 
-                setTimeout(() => {
-                    projects.value.forEach((item) => {
-                        displayProject(item);
-                    });
-                }, 200);
+                if (
+                    !dontUpdateDisplayedProjects &&
+                    dontUpdateDisplayedProjects === undefined
+                ) {
+                    setTimeout(() => {
+                        projects.value.forEach((item) => {
+                            displayProject(item);
+                        });
+                    }, 200);
+                }
 
-                db.misc.update("openedProjects", {
+                addOrModifyMiscDataDB("openedProjects", {
                     key: projects.key,
                     value: projects.value
                 });

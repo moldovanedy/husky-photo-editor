@@ -8,9 +8,13 @@ export { getStaticPaths, getStaticProps };
 
 import styles from "./../../styles/setttings.module.scss";
 
-import Modal from "./../../components/UI/Modal";
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     FormControl,
     FormControlLabel,
     FormGroup,
@@ -24,22 +28,26 @@ import {
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
+import { db } from "../../src/storage/db";
+import StorageEstimation from "../../components/settings/StorageEstimation";
 
 function Settings() {
     const { t } = useTranslation();
     let [language, setLanguage] = useState("en"),
         [theme, setTheme] = useState("dark"),
-        [usedStorage, setUsedStorage] = useState(0),
-        [allowedStorage, setAllowedStorage] = useState(0),
-        [supportsStorageEstimation, setSupportsStorageEstimation] =
-            useState(true),
         [showUnsavedChangesDialog, setShowUnsavedChangesDialog] =
             useState(false),
         [hasUnsavedSettings, setHasUnsavedSettings] = useState(false);
 
+    let [settings, setSettings] = useState({
+        soundsEnabled: false,
+        appLogoSpinDisabled: false
+    });
+
     useEffect(() => {
         let lang = localStorage.getItem("language"),
-            theme = localStorage.getItem("theme");
+            theme = localStorage.getItem("theme"),
+            settingsLocal = localStorage.getItem("settings");
 
         if (lang !== null) {
             setLanguage(lang);
@@ -49,28 +57,15 @@ function Settings() {
             setTheme(theme);
         }
 
-        if (!navigator.storage) {
-            setSupportsStorageEstimation(false);
-            return;
-        }
-
-        try {
-            navigator.storage.estimate().then((result) => {
-                if (result.usage !== undefined) {
-                    setUsedStorage(result.usage);
-                }
-                if (result.quota !== undefined) {
-                    setAllowedStorage(result.quota);
-                }
-            });
-        } catch {
-            setSupportsStorageEstimation(false);
+        if (settingsLocal !== null) {
+            setSettings(JSON.parse(settingsLocal));
         }
     }, []);
 
     function saveSettings() {
         localStorage.setItem("theme", theme);
         localStorage.setItem("language", language);
+        localStorage.setItem("settings", JSON.stringify(settings));
 
         // the link element will not update language and theme
         document.location.pathname = "/";
@@ -80,30 +75,56 @@ function Settings() {
         <>
             <Head>
                 <title>{t("settings:settings")}</title>
+                <meta
+                    property="og:url"
+                    content="https://huskyphotoeditor.netlify.app/settings"
+                />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
             </Head>
 
-            <Modal
-                title={"Are you sure?"}
-                show={showUnsavedChangesDialog}
-                cancelBtnText={"Cancel"}
-                button1Event={() => {
-                    document.location.pathname = "/";
-                }}
-                closeEvent={() => {
+            <Dialog
+                open={showUnsavedChangesDialog}
+                onClose={() => {
                     setShowUnsavedChangesDialog(false);
                 }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
             >
-                <p>
-                    There are some unsaved changes to your settings. If you
-                    press &quot;OK&quot;, you will lose all your changes. If you
-                    want to save your change, please press &quot;Cancel&quot;
-                    and then the &quot;Save&quot; button at the bottom of the
-                    page.
-                </p>
-            </Modal>
+                <DialogTitle id="alert-dialog-title">
+                    {t("common:areYouSure")}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {t("settings:unsavedChangesDialogContent")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="outlined"
+                        onClick={() => {
+                            setShowUnsavedChangesDialog(false);
+                        }}
+                        autoFocus
+                    >
+                        {t("common:cancel")}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            document.location.pathname = "/";
+                        }}
+                    >
+                        {t("common:yes")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <main className={styles.main}>
                 <CloseIcon
+                    className="themeDependentIcon"
                     sx={{
                         position: "absolute",
                         top: "5px",
@@ -187,44 +208,65 @@ function Settings() {
                         className={styles.displayBlockLabels}
                     >
                         <FormControlLabel
-                            control={<Switch />}
+                            control={
+                                <Switch checked={settings.soundsEnabled} />
+                            }
                             label={t("settings:enableSounds")}
+                            onChange={() => {
+                                setSettings((previousValue) => ({
+                                    ...previousValue,
+                                    soundsEnabled: !settings.soundsEnabled
+                                }));
+                            }}
                         />
                     </FormGroup>
                 </div>
                 <hr />
 
                 <div>
-                    <h2>Storage</h2>
-                    {supportsStorageEstimation ? (
-                        <>
-                            <meter
-                                style={{ width: "85%", height: "40px" }}
-                                low={1000 / allowedStorage} // 1 KB
-                                optimum={0.4} // 40% of allowed storage
-                                high={0.8} // 80% of allowed storage
-                                value={usedStorage / allowedStorage}
-                            >
-                                {usedStorage} / {allowedStorage}
-                            </meter>
-                            <p>
-                                Using {usedStorage} bytes out of{" "}
-                                {allowedStorage} available bytes
-                            </p>
-                        </>
-                    ) : (
-                        <p>Storage estimation not supported</p>
-                    )}
+                    <StorageEstimation i18n={t} />
+
+                    <Button
+                        color="error"
+                        variant="contained"
+                        onClick={() => {
+                            db.delete()
+                                .then(() => {
+                                    console.log(
+                                        "Database successfully deleted"
+                                    );
+                                })
+                                .catch(() => {
+                                    console.error("Could not delete database");
+                                })
+                                .finally(() => {
+                                    localStorage.clear();
+                                });
+                        }}
+                    >
+                        {t("settings:deleteLocalData")}
+                    </Button>
                 </div>
                 <hr />
 
                 <div>
-                    <h2>Accesibility</h2>
+                    <h2>{t("settings:accesibility")}</h2>
 
                     <FormGroup className={styles.displayBlockLabels}>
                         <FormControlLabel
-                            control={<Switch />}
+                            control={
+                                <Switch
+                                    checked={settings.appLogoSpinDisabled}
+                                />
+                            }
                             label={t("settings:disableLogoSpin")}
+                            onChange={() => {
+                                setSettings((previousValue) => ({
+                                    ...previousValue,
+                                    appLogoSpinDisabled:
+                                        !settings.appLogoSpinDisabled
+                                }));
+                            }}
                         />
                     </FormGroup>
                 </div>

@@ -28,6 +28,9 @@ class ErrorBoundary extends React.Component<IProps, IState> {
     render() {
         // Check if the error is thrown
         if (this.state.hasError) {
+            let audio = new Audio("/assets/audio/criticalError.mp3");
+            audio.volume = 0.05;
+            audio.play();
             //inline styling to ensure the component works properly
             return (
                 <div
@@ -38,7 +41,7 @@ class ErrorBoundary extends React.Component<IProps, IState> {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        backgroundColor: "#00000080"
+                        backgroundImage: "url(/assets/img/criticalErrorBg.png)"
                     }}
                 >
                     <div

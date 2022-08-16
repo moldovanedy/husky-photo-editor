@@ -70,14 +70,15 @@ function TakePhoto() {
     return (
         <>
             <Head>
-                <meta charSet="UTF-8" />
-                <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+                <title>{t("takePhoto:pageTitle")}</title>
+                <meta
+                    property="og:url"
+                    content="https://huskyphotoeditor.netlify.app/take-photo"
+                />
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1.0"
                 />
-                <title>{t("takePhoto:pageTitle")}</title>
-                <link rel="icon" href="/favicon.ico" />
             </Head>
 
             <main id={styles.mainCamera} className="centerAlign">
@@ -94,6 +95,7 @@ function TakePhoto() {
                 <div className={`${styles.buttonLines} ${styles.topLine}`}>
                     <Link href="/">
                         <ArrowBackIcon
+                            className="themeDependentIcon"
                             sx={{ fontSize: "36px", color: "#fff" }}
                             onClick={() => {
                                 // because otherwise the camera will still be on
@@ -106,12 +108,14 @@ function TakePhoto() {
                     </Link>
 
                     <CameraswitchIcon
+                        className="themeDependentIcon"
                         ref={changeCameraButton}
                         sx={{ fontSize: "36px", color: "#fff" }}
                         // onClick event listener is in src/capturePhoto.ts?82
                     />
 
                     <VideocamIcon
+                        className="themeDependentIcon"
                         sx={{ fontSize: "36px", color: "#fff" }}
                         onClick={() => {
                             if (
@@ -130,11 +134,15 @@ function TakePhoto() {
                         }}
                     />
 
-                    <SettingsIcon sx={{ fontSize: "36px", color: "#fff" }} />
+                    <SettingsIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "36px", color: "#fff" }}
+                    />
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.bottomLine}`}>
                     <CameraIcon
+                        className="themeDependentIcon"
                         sx={{ fontSize: "60px", color: "#fff" }}
                         ref={capturePhotoButton}
                         onClick={() => {

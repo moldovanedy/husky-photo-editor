@@ -2,48 +2,30 @@
 import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import { ThemeProvider } from "next-themes";
-import { config } from "@fortawesome/fontawesome-svg-core";
-import "@fortawesome/fontawesome-svg-core/styles.css";
 import "react-pro-sidebar/dist/css/styles.css";
-config.autoAddCss = false;
 import { appWithTranslation } from "next-i18next";
 
 import LoadingScreen from "./../components/LoadingAndProgress/LoadingScreen";
 import ShowMessages from "../components/Messages/ShowMessages";
 
-import ErrorBoundary from "../components/ErrorHandler";
+import ErrorBoundary from "../components/ErrorBoundary";
 
 import { store } from "../src/redux/global.store";
 import { Provider } from "react-redux";
 import "./../components/LoadingAndProgress/customNprogressStyle.css";
 
-import { getStaticPaths, makeStaticProps } from "./../lib/getStatic";
-import { useTranslation } from "next-i18next";
-const getStaticProps = makeStaticProps(["common", "messages"]);
-export { getStaticPaths, getStaticProps };
-
-import { State } from "./../src/GlobalSpecialState";
 import React, { useEffect, useState } from "react";
 
-import {
-    ThemeProvider as MaterialUI,
-    createTheme,
-    useTheme
-} from "@mui/material/styles";
+import { ThemeProvider as MaterialUI, createTheme } from "@mui/material/styles";
 import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
 
 function MyApp({ Component, pageProps }: AppProps) {
-    const { t } = useTranslation();
     let [theme, setTheme] = useState("dark");
 
     useEffect(() => {
-        let context = State.getObject("translationContext");
-        if (context === null) {
-            State.addObject("translationContext", t);
-        }
         let storedTheme = localStorage.getItem("theme");
 
         if (storedTheme === null) {
@@ -56,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         if (settedLang !== null) {
             document.documentElement.setAttribute("lang", settedLang);
         }
-    }, [t]);
+    }, []);
 
     let muiTheme = createTheme({
         palette: {

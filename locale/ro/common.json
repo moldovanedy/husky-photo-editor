@@ -4,10 +4,24 @@
     "imgName": "Nume imagine:",
     "download": "Descărcați",
     "goBack": "Mergeți înapoi",
+    "yes": "Da",
+    "no": "Nu",
+    "cancel": "Anulare",
     "generateRandomName": "Generați un nume aleatoriu",
+    "license": "Licență",
+    "termsOfUse": "Termeni de utilizare",
+
     "imageProperties": {
         "width": "Lățime",
         "height": "Înălțime",
         "aspectRatio": "Raport de aspect"
+    },
+
+    "storage": "Stocare",
+    "areYouSure": "Sunteți sigur/ă?",
+
+    "thirdPartyNotices": {
+        "text": "Notificări ale terților",
+        "info": "Această pagină conține notițe și licențe de la biblioteci terțe părți pe care Husky Photo Editor le folosește intern. Aceste informații nu sunt traduse."
     }
 }

@@ -25,27 +25,20 @@ function FileMenu(props: {
             open={props.open}
             onClose={props.closeEvent}
         >
-            <MenuItem>
+            <MenuItem
+                onClick={() => {
+                    if (filePicker.current !== null) {
+                        filePicker.current.click();
+                    }
+                }}
+            >
                 <ListItemIcon>
-                    <AddIcon sx={{ fontSize: "28px" }} />
+                    <FolderOpenIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "28px" }}
+                    />
                 </ListItemIcon>
-                <ListItemText>New</ListItemText>
-            </MenuItem>
-            <MenuItem>
-                <ListItemIcon>
-                    <label htmlFor="openFiles">
-                        <FolderOpenIcon sx={{ fontSize: "28px" }} />
-                    </label>
-                </ListItemIcon>
-                <label
-                    htmlFor="openFiles"
-                    style={{
-                        cursor: "pointer",
-                        width: "100%"
-                    }}
-                >
-                    Open
-                </label>
+                Open
                 <input
                     style={{
                         opacity: 0,
@@ -71,21 +64,19 @@ function FileMenu(props: {
                     multiple
                 />
             </MenuItem>
-            <MenuItem>
-                <ListItemText>Open recent</ListItemText>
-            </MenuItem>
             <Divider />
-            <MenuItem>
+            <MenuItem
+                onClick={() => {
+                    document.location.pathname = "/";
+                }}
+            >
                 <ListItemIcon>
-                    <ExitToAppIcon sx={{ fontSize: "28px" }} />
+                    <ExitToAppIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "28px" }}
+                    />
                 </ListItemIcon>
-                <ListItemText
-                    onClick={() => {
-                        document.location.pathname = "/";
-                    }}
-                >
-                    Exit editor
-                </ListItemText>
+                <ListItemText>Exit editor</ListItemText>
             </MenuItem>
         </Menu>
     );

@@ -1,12 +1,17 @@
 {
     "settings": "Setări",
     "language": "Limbă:",
+    "accesibility": "Accesibilitate",
+    "unsavedChangesDialogContent": "Există modificări nesalvate în setările dvs. Dacă apăsați \"Da\", veți pierde toate modificările. Dacă vreți să salvați modificările, vă rugăm apăsați \"Anulare\" și apoi butonul \"Salvare\" din partea de jos a paginii.",
     "theme": {
         "themeText": "Temă:",
         "darkTheme": "Întunecat",
         "lightTheme": "Luminos",
         "systemTheme": "Sistem"
     },
+    "storageEstimationText": "Se folosesc {{bytesUsed}} din {{bytesAvailable}} disponibili",
+    "unsupportedStorageEstimation": "Estimarea spațiului de stocare nu este disponibilă în browser-ul dvs.",
+    "deleteLocalData": "Ștergeți toate datele locale",
     "disableLogoSpin": "Dezactivați logo-ul rotitor când se încarcă pagina",
     "enableSounds": "Activați efecte sonore",
     "save": "Salvare"

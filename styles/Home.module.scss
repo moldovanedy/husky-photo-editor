@@ -1,3 +1,5 @@
+@import "sass-material-design-colors/palette.scss";
+
 .header {
     position: fixed;
     top: 0;
@@ -11,6 +13,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    z-index: 5;
 }
 
 .main {
@@ -32,7 +35,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     width: 100%;
 
     div {
@@ -63,23 +66,41 @@
     width: 90%;
     background-color: var(--secondary-app-color);
     border-radius: 10px;
-    text-align: justify;
+    padding: 10px;
+}
+
+.recentProjectsGrid {
+    display: flex;
+    flex-wrap: wrap;
+
+    .recentProjectElement {
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border: 2px inset #bbdefb;
+        border-radius: 5px;
+        margin: 10px;
+        background-color: var(--main-theme-color);
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+    }
+
+    .recentProjectElement:hover {
+        background-color: $blue-500;
+    }
 }
 
 .footer {
     display: flex;
-    flex: 1;
-    padding: 2rem 0;
     border-top: 1px solid #eaeaea;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    background-color: var(--secondary-app-color);
 }
 
 .footer a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
+    padding-top: 20px;
 }
 
 @media screen and (max-width: 600px) {
@@ -98,3 +119,4 @@
         transition: none;
     }
 }
+

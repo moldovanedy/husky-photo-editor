@@ -10,8 +10,7 @@
     overflow-x: auto;
 
     div {
-        padding: 5px;
-        margin: 5px 10px;
+        margin: 2px 5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -22,6 +21,7 @@
         transition: all 0.3s ease-in-out;
 
         span {
+            font-size: 14px;
             transition: all 0.3s ease-in-out;
             padding: 2px;
         }

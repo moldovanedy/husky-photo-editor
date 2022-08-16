@@ -4,10 +4,24 @@
     "imgName": "Image name:",
     "download": "Download",
     "goBack": "Go back",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
     "generateRandomName": "Generate random name",
+    "license": "License",
+    "termsOfUse": "Terms of use",
+
     "imageProperties": {
         "width": "Width",
         "height": "Height",
         "aspectRatio": "Aspect ratio"
+    },
+
+    "storage": "Storage",
+    "areYouSure": "Are you sure?",
+
+    "thirdPartyNotices": {
+        "text": "Third party notices",
+        "info": "This page contains notices and licenses of third party libraries that Husky Photo Editor uses internally. These informations are not translated."
     }
 }

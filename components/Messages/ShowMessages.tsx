@@ -6,15 +6,15 @@ import styles from "./ShowMessages.module.scss";
 
 import CloseIcon from "@mui/icons-material/Close";
 import { Alert, AlertColor, Snackbar } from "@mui/material";
+import { useSelector } from "react-redux";
 
 function ShowMessages() {
-    let [msgStore, setMsgStore] = useState(store.getState().messages);
     let [isOpen, setIsOpen] = useState(true);
+    let msgStore = useSelector((state: RootState) => state.messages);
 
-    store.subscribe(() => {
-        setMsgStore(store.getState().messages);
+    useEffect(() => {
         setIsOpen(true);
-    });
+    }, [msgStore]);
 
     function closeSnack(id) {
         setIsOpen(false);
@@ -84,7 +84,7 @@ function Message({ name, message, id }) {
         <>
             <input type={"hidden"} ref={messageId} value={id} />
             <CloseIcon
-                className={styles.closeButton}
+                className={`${styles.closeButton} themeDependentIcon`}
                 sx={{ fontSize: "28px" }}
                 onClick={() => {
                     if (messageId.current !== null) {

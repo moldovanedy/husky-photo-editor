@@ -52,6 +52,7 @@ export function MainMenuMobile(props: { show: boolean }) {
                             />
                         </div>
                         <CloseIcon
+                            className="themeDependentIcon"
                             sx={{
                                 fontSize: "60px",
                                 position: "absolute",
@@ -71,7 +72,6 @@ export function MainMenuMobile(props: { show: boolean }) {
                             className={styles.sidebarThemeSwitch}
                         >
                             <SubMenu title="File">
-                                <MenuItem>New</MenuItem>
                                 <MenuItem>
                                     <label
                                         htmlFor="openFiles"
@@ -106,28 +106,10 @@ export function MainMenuMobile(props: { show: boolean }) {
                                         multiple
                                     />
                                 </MenuItem>
-                                <SubMenu title={"Open recent"}>
-                                    <MenuItem>New</MenuItem>
-                                </SubMenu>
-                            </SubMenu>
-
-                            <SubMenu title="Edit">
-                                <MenuItem>Undo</MenuItem>
-                                <MenuItem>Redo</MenuItem>
-                            </SubMenu>
-
-                            <SubMenu title="View">
-                                <MenuItem>Ruler</MenuItem>
-                            </SubMenu>
-
-                            <SubMenu title="Layers">
-                                <MenuItem>Add</MenuItem>
-                                <MenuItem>Delete</MenuItem>
                             </SubMenu>
 
                             <SubMenu title="Help">
-                                <MenuItem>About Husky Photo Editor</MenuItem>
-                                <MenuItem>Manual</MenuItem>
+                                <MenuItem>About</MenuItem>
                             </SubMenu>
                             <div style={{ paddingTop: "50px" }}></div>
                             {/* in order to leave elements visible because the footer covers the last 50px */}

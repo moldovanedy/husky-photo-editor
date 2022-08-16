@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./PhotoResult.module.scss";
 import { State } from "../src/GlobalSpecialState";
 import { DownloadMenu, DownscaleMenu } from "./TakePhotoMenus";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
     openDownloadDialog,
@@ -19,7 +19,7 @@ import {
     convertTransformObjectToString,
     getTransformValuesOfElement
 } from "../src/utils/transform/transformUtility";
-import { store } from "../src/redux/global.store";
+import { RootState, store } from "../src/redux/global.store";
 import { scale } from "../src/utils/transform/scaleElements";
 
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
@@ -46,7 +46,12 @@ function PhotoResult(props: any) {
         >
             <TopBar i18n={props.i18n} />
             <BottomBar i18n={props.i18n} />
-            {props.children}
+            <div
+                style={{ cursor: "grab", imageRendering: "pixelated" }}
+                id="scrollable"
+            >
+                {props.children}
+            </div>
         </div>
     );
 }
@@ -71,9 +76,13 @@ function TopBar({ i18n }) {
                 setCanvasElement(canvas);
             }
 
-            document.body.style.overflow = "hidden";
+            (
+                document.getElementById("scrollable") as HTMLElement
+            ).style.overflow = "hidden";
 
-            document.body.addEventListener("pointerdown", (e) => {
+            (
+                document.getElementById("scrollable") as HTMLElement
+            ).addEventListener("pointerdown", (e) => {
                 isPressing = true;
                 let transformObject = getTransformValuesOfElement(
                     canvas.style.transform
@@ -96,39 +105,27 @@ function TopBar({ i18n }) {
                 }
             });
 
-            document.body.addEventListener("pointerup", (e) => {
+            (
+                document.getElementById("scrollable") as HTMLElement
+            ).addEventListener("pointerup", (e) => {
                 isPressing = false;
             });
 
-            document.body.addEventListener("pointermove", (e) => {
+            (
+                document.getElementById("scrollable") as HTMLElement
+            ).addEventListener("pointermove", (e) => {
                 let transformObject = getTransformValuesOfElement(
                     canvas.style.transform
                 );
 
                 if (isPressing) {
-                    if (
-                        transformObject?.scale !== null &&
-                        transformObject?.scale !== undefined
-                    ) {
-                        // translate taking into account the scale in order to prevent too quick movement at big scale and too small movement at small scale
-                        translate(
-                            canvas,
-                            (e.clientX - offsetX) /
-                                parseFloat(transformObject.scale[0]) +
-                                firstX,
-                            (e.clientY - offsetY) /
-                                parseFloat(transformObject.scale[1]) +
-                                firstY,
-                            MeasuringSystem.Absolute
-                        );
-                    } else {
-                        translate(
-                            canvas,
-                            e.clientX - offsetX + firstX,
-                            e.clientY - offsetY + firstY,
-                            MeasuringSystem.Absolute
-                        );
-                    }
+                    // translate taking into account the scale in order to prevent too quick movement at big scale and too small movement at small scale
+                    translate(
+                        canvas,
+                        e.clientX - offsetX + firstX,
+                        e.clientY - offsetY + firstY,
+                        MeasuringSystem.Absolute
+                    );
                 }
             });
         }
@@ -177,6 +174,7 @@ function TopBar({ i18n }) {
     return (
         <div className={styles.actionLinesPhoto}>
             <ZoomInIcon
+                className="themeDependentIcon"
                 sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     zoomIn();
@@ -184,6 +182,7 @@ function TopBar({ i18n }) {
             />
 
             <ZoomOutIcon
+                className="themeDependentIcon"
                 sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     zoomOut();
@@ -191,6 +190,7 @@ function TopBar({ i18n }) {
             />
 
             <CloseFullscreenIcon
+                className="themeDependentIcon"
                 sx={{ fontSize: "28px" }}
                 onClick={() => {
                     scaleCanvas(canvasElement);
@@ -198,6 +198,7 @@ function TopBar({ i18n }) {
             />
 
             <CameraAltIcon
+                className="themeDependentIcon"
                 sx={{ fontSize: "36px", color: "#fff" }}
                 onClick={() => {
                     document.location.reload();
@@ -211,11 +212,10 @@ function BottomBar({ i18n }) {
     const dispatch = useDispatch();
     let [photoWidth, setPhotoWidth] = useState(0);
     let [photoHeight, setPhotoHeight] = useState(0);
-    let [resizedPhoto, setResizedPhoto] = useState(false);
 
-    store.subscribe(() => {
-        setResizedPhoto(store.getState().takePhotoDialogs.downscaleDialog);
-    });
+    let resizedPhoto = useSelector(
+        (state: RootState) => state.takePhotoDialogs.downscaleDialog
+    );
 
     useEffect(() => {
         if (
@@ -253,7 +253,10 @@ function BottomBar({ i18n }) {
                     }}
                 >
                     {i18n("takePhoto:download")}{" "}
-                    <DownloadIcon sx={{ fontSize: "16px" }} />
+                    <DownloadIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "16px" }}
+                    />
                 </button>
 
                 <DownloadMenu i18n={i18n} />

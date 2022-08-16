@@ -1,12 +1,17 @@
 {
     "settings": "Settings",
     "language": "Language:",
+    "accesibility": "Accesibility",
+    "unsavedChangesDialogContent": "There are some unsaved changes to your settings. If you press \"Yes\", you will lose all your changes. If you want to save your changes, please press \"Cancel\" and then the \"Save\" button at the bottom of the page.",
     "theme": {
         "themeText": "Theme:",
         "darkTheme": "Dark",
         "lightTheme": "Light",
         "systemTheme": "System"
     },
+    "storageEstimationText": "Using {{bytesUsed}} out of {{bytesAvailable}} available",
+    "unsupportedStorageEstimation": "Storage estimation is not supported on your browser.",
+    "deleteLocalData": "Delete all local data",
     "disableLogoSpin": "Disable app logo spin when a page is loading",
     "enableSounds": "Enable sounds",
     "save": "Save"

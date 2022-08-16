@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { addOrModifyMiscDataDB } from "../storage/miscDataManager";
+import { userInterfaceSlice } from "./userInterface.redux";
 
 export interface ProjectInState {
     id: string;
@@ -52,9 +54,11 @@ export const projectManagementSlice = createSlice({
             state: ProjectInState[],
             action: PayloadAction<string>
         ) => {
+            addOrModifyMiscDataDB("activeProject", action.payload);
             state.forEach((project) => {
                 if (project.id === action.payload) {
                     project.isActive = true;
+                    userInterfaceSlice.actions.setProjectAsActive(project.id);
                 } else {
                     project.isActive = false;
                 }

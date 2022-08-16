@@ -91,6 +91,7 @@ export function DownloadMenu({ i18n }) {
     return (
         <div ref={mainElement} className={`centerAlign ${styles.photoOptions}`}>
             <CloseIcon
+                className="themeDependentIcon"
                 sx={{
                     position: "absolute",
                     top: "7%",
@@ -211,7 +212,10 @@ export function DownloadMenu({ i18n }) {
                         }}
                     >
                         {i18n("common:download")}
-                        <DownloadIcon sx={{ fontSize: "22px" }} />
+                        <DownloadIcon
+                            className="themeDependentIcon"
+                            sx={{ fontSize: "22px" }}
+                        />
                     </a>
                 </div>
             </div>
@@ -295,6 +299,7 @@ export function DownscaleMenu({ i18n }) {
     return (
         <div ref={mainElement} className={`centerAlign ${styles.photoOptions}`}>
             <CloseIcon
+                className="themeDependentIcon"
                 sx={{
                     position: "absolute",
                     top: "7%",

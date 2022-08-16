@@ -5,41 +5,32 @@ import FileMenu from "./FileMenu";
 
 export function MainMenuDesktop() {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [open, setOpen] = useState(false);
+    const [fileMenuOpen, setFileMenuOpen] = useState(false);
 
-    function handleClick(event: React.MouseEvent<HTMLElement>) {
+    function handleFileMenuClick(event: React.MouseEvent<HTMLElement>) {
         setAnchorEl(event.currentTarget);
-        setOpen(true);
+        setFileMenuOpen(true);
     }
-    const handleClose = () => {
+    function handleFileMenuClose() {
         setAnchorEl(null);
-        setOpen(false);
-    };
+        setFileMenuOpen(false);
+    }
 
     return (
         <nav className={styles.containerDesktop}>
             <div
                 onClick={(e) => {
-                    handleClick(e);
+                    handleFileMenuClick(e);
                 }}
             >
                 File
             </div>
-            <div>Edit</div>
-            <div>View</div>
-            <div>Layers</div>
-            <div
-                onClick={(e) => {
-                    handleClick(e);
-                }}
-            >
-                Help
-            </div>
+            <div>Help</div>
 
             <FileMenu
                 anchorElement={anchorEl}
-                open={open}
-                closeEvent={handleClose}
+                open={fileMenuOpen}
+                closeEvent={() => handleFileMenuClose()}
             />
         </nav>
     );

@@ -19,6 +19,14 @@ function PrivacyPolicy() {
         <>
             <Head>
                 <title>{t("privacyPolicy:privacyPolicy")}</title>
+                <meta
+                    property="og:url"
+                    content="https://huskyphotoeditor.netlify.app/privacy-policy"
+                />
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1.0"
+                />
             </Head>
 
             <header className={styles.header}>
@@ -36,6 +44,7 @@ function PrivacyPolicy() {
 
                 <Link href="/settings" skipLocaleHandling={false}>
                     <SettingsIcon
+                        className="themeDependentIcon"
                         fontSize="large"
                         sx={{ margin: "10px", color: "#fff" }}
                     />
@@ -44,6 +53,7 @@ function PrivacyPolicy() {
 
             <Link href={"/"}>
                 <ArrowBackIcon
+                    className="themeDependentIcon"
                     sx={{
                         fontSize: "50px",
                         margin: "10px",

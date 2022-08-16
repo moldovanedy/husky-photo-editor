@@ -7,6 +7,7 @@
     "name": "Husky Photo Editor",
     "short_name": "Husky Photo Editor",
     "description": "The free web photo editor",
+    "categories": ["photo"],
     "icons": [
         {
             "src": "./assets/logo/logo192x192.png",

@@ -6,12 +6,18 @@ import { State } from "../../src/GlobalSpecialState";
 import HistoryIcon from "@mui/icons-material/History";
 import EditIcon from "@mui/icons-material/Edit";
 import TitleIcon from "@mui/icons-material/Title";
+import { RootState } from "../../src/redux/global.store";
+import { useSelector } from "react-redux";
 
 function Tools() {
     let toolbar = useRef<HTMLElement>(null);
     useEffect(() => {
         State.addObject("toolbar", toolbar.current);
     }, []);
+
+    let zoomFactor = useSelector(
+        (state: RootState) => state.userInterface.zoomFactor
+    );
 
     return (
         <>
@@ -28,26 +34,38 @@ function Tools() {
                 }}
             >
                 <div>
-                    <HistoryIcon sx={{ fontSize: "28px" }} />
+                    <HistoryIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "22px" }}
+                    />
                     <span>Recent</span>
                 </div>
                 <div>
-                    <EditIcon sx={{ fontSize: "28px" }} />
+                    <EditIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "22px" }}
+                    />
                     <span>Transform</span>
                 </div>
                 <div>
-                    <EditIcon sx={{ fontSize: "28px" }} />
+                    <EditIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "22px" }}
+                    />
                     <span>Paint</span>
                 </div>
                 <div>
-                    <TitleIcon sx={{ fontSize: "28px" }} />
+                    <TitleIcon
+                        className="themeDependentIcon"
+                        sx={{ fontSize: "22px" }}
+                    />
                     <span>Text</span>
                 </div>
             </aside>
 
             <aside className={styles.infoPanel}>
                 <span>Pos.: 1920:1080</span>
-                <span>Zoom: 1.5</span>
+                <span>Zoom: {zoomFactor.toFixed(2)}</span>
                 <span>Layer: 1</span>
             </aside>
         </>

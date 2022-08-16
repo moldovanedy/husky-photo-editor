@@ -58,6 +58,7 @@ function Modal(props: {
                 <span>{props.title}</span>
 
                 <CloseIcon
+                    className="themeDependentIcon"
                     sx={{ fontSize: "28px", float: "right" }}
                     onClick={() => {
                         closeModal();

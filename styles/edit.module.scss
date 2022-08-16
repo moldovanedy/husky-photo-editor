@@ -2,6 +2,8 @@
     background-color: rgb(49, 49, 49);
     width: 100%;
     overflow: auto;
+    touch-action: none;
+    position: relative;
 }
 
 .canvasContainer {

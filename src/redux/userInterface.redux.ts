@@ -1,13 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface UI {
     mainMenuOpen: boolean;
     workInProgress: boolean;
+    activeProject: string;
+    zoomFactor: number;
+    isInNavigationMode: boolean;
 }
 
 const initialState: UI = {
     mainMenuOpen: false,
-    workInProgress: false
+    workInProgress: false,
+    activeProject: "",
+    zoomFactor: 1,
+    isInNavigationMode: true
 };
 
 export const userInterfaceSlice = createSlice({
@@ -25,10 +31,30 @@ export const userInterfaceSlice = createSlice({
         },
         completeWork: (state: UI) => {
             state.workInProgress = false;
+        },
+        setProjectAsActive: (state: UI, action: PayloadAction<string>) => {
+            state.activeProject = action.payload;
+        },
+        setZoomFactor: (state: UI, action: PayloadAction<number>) => {
+            state.zoomFactor = action.payload;
+        },
+        enterNavigationMode: (state: UI) => {
+            state.isInNavigationMode = true;
+        },
+        exitNavigationMode: (state: UI) => {
+            state.isInNavigationMode = false;
         }
     }
 });
 
-export const { openMainMenu, closeMainMenu, startWork, completeWork } =
-    userInterfaceSlice.actions;
+export const {
+    openMainMenu,
+    closeMainMenu,
+    startWork,
+    completeWork,
+    setProjectAsActive,
+    setZoomFactor,
+    enterNavigationMode,
+    exitNavigationMode
+} = userInterfaceSlice.actions;
 export default userInterfaceSlice.reducer;

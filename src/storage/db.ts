@@ -1,4 +1,5 @@
 import Dexie, { Table } from "dexie";
+import { Point } from "../objects/units";
 
 export interface Layer {
     data: Uint8ClampedArray;
@@ -6,6 +7,7 @@ export interface Layer {
     width: number;
     height: number;
     zIndex: number;
+    topLeftPoint?: Point;
 }
 
 export enum Storage {
@@ -16,7 +18,7 @@ export enum Storage {
 export interface ModificationItem {
     type: Storage;
     operationNumber: number; // the order number (1 is first modification, 2 is the second etc.)
-    expensive: boolean; // is the operation computationally expensive?
+    isExpensive: boolean; // is the operation computationally expensive?
     name: string;
     data: any;
 }
@@ -30,6 +32,7 @@ export interface Project {
     modificationsStack: ModificationItem[];
     width: number;
     height: number;
+    thumbnailPNG?: string;
 }
 
 interface MiscellaneousData {
