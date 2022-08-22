@@ -3,12 +3,15 @@ import React, { useEffect, useState } from "react";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 import Head from "next/head";
-const getStaticProps = makeStaticProps(["common", "settings"]);
+const getStaticProps = makeStaticProps(["common", "settings", "messages"]);
 export { getStaticPaths, getStaticProps };
+
+import PrivacyPolicy from "../../components/PrivacyPolicy";
 
 import styles from "./../../styles/setttings.module.scss";
 
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
@@ -19,17 +22,26 @@ import {
     FormControlLabel,
     FormGroup,
     FormLabel,
+    Grid,
+    Input,
     InputLabel,
     MenuItem,
     Radio,
     RadioGroup,
     Select,
-    Switch
+    Slider,
+    Switch,
+    Typography
 } from "@mui/material";
 
 import CloseIcon from "@mui/icons-material/Close";
+import InfoIcon from "@mui/icons-material/Info";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+
 import { db } from "../../src/storage/db";
 import StorageEstimation from "../../components/settings/StorageEstimation";
+import { store } from "../../src/redux/global.store";
+import { createMessage, MessageType } from "../../src/redux/messages.redux";
 
 function Settings() {
     const { t } = useTranslation();
@@ -37,11 +49,48 @@ function Settings() {
         [theme, setTheme] = useState("dark"),
         [showUnsavedChangesDialog, setShowUnsavedChangesDialog] =
             useState(false),
-        [hasUnsavedSettings, setHasUnsavedSettings] = useState(false);
+        [hasUnsavedSettings, setHasUnsavedSettings] = useState(false),
+        [audioValue, setAudioValue] = useState(30);
+
+    let [sondsHelperActive, setSoundsHelperActive] = useState(false),
+        [logoSpinHelperActive, setLogoSpinHelperActive] = useState(false);
+
+    let [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
+    const handleAudioSliderChange = (
+        event: Event,
+        newValue: number | number[]
+    ) => {
+        if (Array.isArray(newValue)) {
+            setAudioValue(newValue[0]);
+        } else {
+            setAudioValue(newValue);
+        }
+        setHasUnsavedSettings(true);
+    };
+
+    const handleAudioInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setAudioValue(
+            event.target.value === "" ? 0 : Number(event.target.value)
+        );
+        setHasUnsavedSettings(true);
+    };
+
+    const handleAudioBlur = () => {
+        if (audioValue < 0) {
+            setAudioValue(0);
+        } else if (audioValue > 100) {
+            setAudioValue(100);
+        }
+        setHasUnsavedSettings(true);
+    };
 
     let [settings, setSettings] = useState({
         soundsEnabled: false,
-        appLogoSpinDisabled: false
+        appLogoSpinDisabled: false,
+        appVolume: 30
     });
 
     useEffect(() => {
@@ -59,12 +108,29 @@ function Settings() {
 
         if (settingsLocal !== null) {
             setSettings(JSON.parse(settingsLocal));
+            setAudioValue(
+                settings.appVolume !== null ? settings.appVolume : 30
+            );
+        }
+    }, [settings.appVolume]);
+
+    useEffect(() => {
+        let hasAcceptedLegalTerms = localStorage.getItem(
+            "hasAcceptedLegalTerms"
+        );
+
+        if (
+            hasAcceptedLegalTerms === null ||
+            hasAcceptedLegalTerms === undefined
+        ) {
+            setShowPrivacyPolicy(true);
         }
     }, []);
 
     function saveSettings() {
         localStorage.setItem("theme", theme);
         localStorage.setItem("language", language);
+        settings.appVolume = audioValue;
         localStorage.setItem("settings", JSON.stringify(settings));
 
         // the link element will not update language and theme
@@ -85,6 +151,14 @@ function Settings() {
                 />
             </Head>
 
+            {showPrivacyPolicy ? (
+                <PrivacyPolicy
+                    title={t("common:initial.privacyPolicyDialogTitle")}
+                    content={t("common:initial.privacyPolicyDialogContent")}
+                />
+            ) : null}
+
+            {/* unsaved changes dialog */}
             <Dialog
                 open={showUnsavedChangesDialog}
                 onClose={() => {
@@ -122,6 +196,64 @@ function Settings() {
                 </DialogActions>
             </Dialog>
 
+            {/* sound helper dialog */}
+            <Dialog
+                open={sondsHelperActive}
+                onClose={() => {
+                    setSoundsHelperActive(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {t("settings:helpers.soundsTitle")}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {t("settings:helpers.soundsContent")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            setSoundsHelperActive(false);
+                        }}
+                    >
+                        {t("common:ok")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* logo spin helper dialog */}
+            <Dialog
+                open={logoSpinHelperActive}
+                onClose={() => {
+                    setLogoSpinHelperActive(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {t("settings:helpers.logoSpinTitle")}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {t("settings:helpers.logoSpinContent")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            setLogoSpinHelperActive(false);
+                        }}
+                    >
+                        {t("common:ok")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <main className={styles.main}>
                 <CloseIcon
                     className="themeDependentIcon"
@@ -147,6 +279,7 @@ function Settings() {
                 <div>
                     <h2>General</h2>
 
+                    {/* language */}
                     <FormControl
                         sx={{
                             maxWidth: "90%",
@@ -159,7 +292,6 @@ function Settings() {
                         </InputLabel>
                         <Select
                             labelId="languageSelector"
-                            id="demo-simple-select"
                             value={language}
                             label={t("settings:language")}
                             onChange={(e) => {
@@ -172,12 +304,10 @@ function Settings() {
                         </Select>
                     </FormControl>
 
+                    {/* theme */}
                     <FormControl className={styles.displayBlockLabels}>
-                        <FormLabel id="demo-radio-buttons-group-label">
-                            {t("settings:theme.themeText")}
-                        </FormLabel>
+                        <FormLabel>{t("settings:theme.themeText")}</FormLabel>
                         <RadioGroup
-                            aria-labelledby="demo-radio-buttons-group-label"
                             value={theme}
                             name="radio-buttons-group"
                             onChange={(e) => {
@@ -203,6 +333,7 @@ function Settings() {
                         </RadioGroup>
                     </FormControl>
 
+                    {/* sounds */}
                     <FormGroup
                         sx={{ marginTop: "20px" }}
                         className={styles.displayBlockLabels}
@@ -211,14 +342,85 @@ function Settings() {
                             control={
                                 <Switch checked={settings.soundsEnabled} />
                             }
-                            label={t("settings:enableSounds")}
+                            label={
+                                <div
+                                    style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        flexWrap: "wrap"
+                                    }}
+                                >
+                                    {t("settings:enableSounds")}
+                                    <InfoIcon
+                                        onClick={() => {
+                                            setSettings((previousValue) => ({
+                                                ...previousValue,
+                                                soundsEnabled:
+                                                    !settings.soundsEnabled
+                                            }));
+                                            setSoundsHelperActive(true);
+                                        }}
+                                    />
+                                </div>
+                            }
                             onChange={() => {
                                 setSettings((previousValue) => ({
                                     ...previousValue,
                                     soundsEnabled: !settings.soundsEnabled
                                 }));
+                                setHasUnsavedSettings(true);
                             }}
                         />
+
+                        {settings.soundsEnabled ? (
+                            <Box sx={{ width: 250 }}>
+                                <Typography id="input-slider" gutterBottom>
+                                    {t("settings:volume")}
+                                </Typography>
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center"
+                                    }}
+                                >
+                                    {/* override custom stylesheet */}
+                                    <Grid item>
+                                        <VolumeUpIcon />
+                                    </Grid>
+                                    <Grid item xs>
+                                        <Slider
+                                            sx={{
+                                                width: "130px",
+                                                marginLeft: "10px"
+                                            }}
+                                            value={
+                                                typeof audioValue === "number"
+                                                    ? audioValue
+                                                    : 0
+                                            }
+                                            onChange={handleAudioSliderChange}
+                                        />
+                                    </Grid>
+                                    <Grid item>
+                                        <Input
+                                            value={audioValue}
+                                            size="small"
+                                            onChange={handleAudioInputChange}
+                                            onBlur={handleAudioBlur}
+                                            inputProps={{
+                                                step: 1,
+                                                min: 0,
+                                                max: 100,
+                                                type: "number",
+                                                "aria-labelledby":
+                                                    "input-slider"
+                                            }}
+                                        />
+                                    </Grid>
+                                </div>
+                            </Box>
+                        ) : null}
                     </FormGroup>
                 </div>
                 <hr />
@@ -226,18 +428,31 @@ function Settings() {
                 <div>
                     <StorageEstimation i18n={t} />
 
+                    {/* delete local data */}
                     <Button
                         color="error"
                         variant="contained"
                         onClick={() => {
                             db.delete()
                                 .then(() => {
-                                    console.log(
-                                        "Database successfully deleted"
+                                    store.dispatch(
+                                        createMessage({
+                                            message: t(
+                                                "messages:success.dataDeleted"
+                                            ),
+                                            type: MessageType.Success
+                                        })
                                     );
                                 })
                                 .catch(() => {
-                                    console.error("Could not delete database");
+                                    store.dispatch(
+                                        createMessage({
+                                            message: t(
+                                                "messages:information.dataNotDeleted"
+                                            ),
+                                            type: MessageType.Information
+                                        })
+                                    );
                                 })
                                 .finally(() => {
                                     localStorage.clear();
@@ -252,6 +467,7 @@ function Settings() {
                 <div>
                     <h2>{t("settings:accesibility")}</h2>
 
+                    {/* logo spin */}
                     <FormGroup className={styles.displayBlockLabels}>
                         <FormControlLabel
                             control={
@@ -259,13 +475,34 @@ function Settings() {
                                     checked={settings.appLogoSpinDisabled}
                                 />
                             }
-                            label={t("settings:disableLogoSpin")}
+                            label={
+                                <div
+                                    style={{
+                                        display: "inline-flex",
+                                        alignItems: "center",
+                                        flexWrap: "wrap"
+                                    }}
+                                >
+                                    {t("settings:disableLogoSpin")}
+                                    <InfoIcon
+                                        onClick={() => {
+                                            setSettings((previousValue) => ({
+                                                ...previousValue,
+                                                appLogoSpinDisabled:
+                                                    !settings.appLogoSpinDisabled
+                                            }));
+                                            setLogoSpinHelperActive(true);
+                                        }}
+                                    />
+                                </div>
+                            }
                             onChange={() => {
                                 setSettings((previousValue) => ({
                                     ...previousValue,
                                     appLogoSpinDisabled:
                                         !settings.appLogoSpinDisabled
                                 }));
+                                setHasUnsavedSettings(true);
                             }}
                         />
                     </FormGroup>

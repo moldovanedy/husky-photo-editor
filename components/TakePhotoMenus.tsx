@@ -19,36 +19,29 @@ import { v1 as uuid } from "uuid";
 
 import CloseIcon from "@mui/icons-material/Close";
 import DownloadIcon from "@mui/icons-material/Download";
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    MenuItem,
+    InputLabel,
+    Select,
+    Slider,
+    Input,
+    TextField,
+    Button,
+    DialogActions
+} from "@mui/material";
 
-export function DownloadMenu({ i18n }) {
+export function DownloadMenu({ i18n, closeEvent }) {
     const downloadDialogState = useSelector(selectDownloadDialog);
     const dispatch = useDispatch();
 
     let [qualityValue, setQualityValue] = useState(90),
         [fileFormat, setFileFormat] = useState("PNG"),
         [fileName, setFileName] = useState("download");
-    let qualityRangeInput = useRef<HTMLInputElement>(null),
-        qualityNumberInput = useRef<HTMLInputElement>(null),
-        fileFormatInput = useRef<HTMLSelectElement>(null),
-        fileNameInput = useRef<HTMLInputElement>(null),
-        mainElement = useRef<HTMLDivElement>(null),
+    let mainElement = useRef<HTMLDivElement>(null),
         downloadLink = useRef<HTMLAnchorElement>(null);
-
-    function changeQuality(quality: number) {
-        setQualityValue(quality);
-    }
-
-    function changeFileFormat() {
-        if (fileFormatInput.current !== null) {
-            setFileFormat(fileFormatInput.current.value);
-        }
-    }
-
-    function changeFileName() {
-        if (fileNameInput.current !== null) {
-            setFileName(fileNameInput.current.value);
-        }
-    }
 
     function downloadImage() {
         let canvasRef = State.getObject("canvas");
@@ -65,13 +58,13 @@ export function DownloadMenu({ i18n }) {
                 canvasRef
             );
         } else {
-            throw new Error("References were null or incorrect");
+            dispatch(
+                createMessage({
+                    message: i18n("messages:errors.unknownError"),
+                    type: MessageType.Error
+                })
+            );
         }
-    }
-
-    function generateRandomFileName() {
-        let randomName = uuid();
-        setFileName(randomName);
     }
 
     useEffect(() => {
@@ -89,137 +82,101 @@ export function DownloadMenu({ i18n }) {
     }, [downloadDialogState]);
 
     return (
-        <div ref={mainElement} className={`centerAlign ${styles.photoOptions}`}>
-            <CloseIcon
-                className="themeDependentIcon"
-                sx={{
-                    position: "absolute",
-                    top: "7%",
-                    right: "8%",
-                    fontSize: "48px"
-                }}
-                onClick={() => {
-                    dispatch(closeDownloadDialog());
-                }}
-            />
-            <div className={`centerAlign ${styles.optionsWindow}`}>
+        <Dialog open={true} onClose={closeEvent}>
+            <DialogTitle>Save photo options</DialogTitle>
+            <DialogContent>
                 <div>
-                    <span>{i18n("common:saveAs")}</span>
-                    <select
-                        ref={fileFormatInput}
-                        id="fileFormat"
-                        onChange={() => {
-                            changeFileFormat();
+                    <InputLabel id="fileFormat">
+                        {i18n("common:saveAs")}
+                    </InputLabel>
+                    <Select
+                        labelId="fileFormat"
+                        value={fileFormat}
+                        label={"Format"}
+                        onChange={(e) => {
+                            setFileFormat(e.target.value);
                         }}
                     >
-                        <option value="PNG">PNG</option>
-                        <option value="JPG">JPG</option>
-                        <option value="WEBP">WebP</option>
-                    </select>
+                        <MenuItem value={"PNG"}>PNG</MenuItem>
+                        <MenuItem value={"JPG"}>JPG/JPEG</MenuItem>
+                        <MenuItem value={"WEBP"}>WebP</MenuItem>
+                    </Select>
                 </div>
 
                 <div>
-                    <span>{i18n("common:quality")}</span>
-                    <input
-                        type="range"
-                        min="1"
-                        max="100"
-                        value={qualityValue}
-                        disabled={fileFormat === "PNG" ? true : false}
-                        ref={qualityRangeInput}
-                        onChange={() => {
-                            if (qualityRangeInput.current !== null) {
-                                if (
-                                    isNaN(
-                                        parseInt(
-                                            qualityRangeInput.current.value
-                                        )
-                                    )
-                                ) {
-                                    changeQuality(1);
-                                    qualityRangeInput.current.value = "1";
-                                } else {
-                                    changeQuality(
-                                        parseInt(
-                                            qualityRangeInput.current.value
-                                        )
-                                    );
-                                }
+                    <p>{i18n("common:quality")}</p>
+                    <div className="centerAlign">
+                        <Slider
+                            disabled={
+                                fileFormat !== "JPG" && fileFormat !== "WEBP"
                             }
-                        }}
-                    />
-                    <input
-                        id="qualityInput"
-                        type="number"
-                        min="1"
-                        max="100"
-                        value={qualityValue}
-                        ref={qualityNumberInput}
-                        disabled={fileFormat === "PNG" ? true : false}
-                        onChange={() => {
-                            if (qualityNumberInput.current !== null) {
-                                if (
-                                    isNaN(
-                                        parseInt(
-                                            qualityNumberInput.current.value
-                                        )
-                                    )
-                                ) {
-                                    changeQuality(1);
-                                } else {
-                                    changeQuality(
-                                        parseInt(
-                                            qualityNumberInput.current.value
-                                        )
-                                    );
-                                }
+                            sx={{ marginRight: "20px" }}
+                            value={
+                                typeof qualityValue === "number"
+                                    ? qualityValue
+                                    : 0
                             }
-                        }}
-                    />
-                </div>
-
-                <div>
-                    <span>{i18n("common:imgName")}</span>
-                    <input
-                        ref={fileNameInput}
-                        type="text"
-                        value={fileName}
-                        onChange={() => {
-                            changeFileName();
-                        }}
-                    />
-                    <button
-                        className={styles.downloadButton}
-                        onClick={() => {
-                            generateRandomFileName();
-                        }}
-                        style={{
-                            backgroundColor: "#2dc4cc",
-                            marginLeft: "10px",
-                            maxWidth: "500px"
-                        }}
-                    >
-                        {i18n("common:generateRandomName")}
-                    </button>
-                </div>
-
-                <div>
-                    <a
-                        ref={downloadLink}
-                        className={styles.downloadButton}
-                        onClick={() => {
-                            downloadImage();
-                        }}
-                    >
-                        {i18n("common:download")}
-                        <DownloadIcon
-                            className="themeDependentIcon"
-                            sx={{ fontSize: "22px" }}
+                            onChange={(e) => {
+                                //@ts-ignore
+                                setQualityValue(e.target.value);
+                            }}
                         />
-                    </a>
+                        <Input
+                            disabled={
+                                fileFormat !== "JPG" && fileFormat !== "WEBP"
+                            }
+                            value={qualityValue}
+                            size="small"
+                            onChange={(e) =>
+                                setQualityValue(parseInt(e.target.value))
+                            }
+                            inputProps={{
+                                step: 1,
+                                min: 0,
+                                max: 100,
+                                type: "number"
+                            }}
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <TextField
+                    margin="dense"
+                    id="name"
+                    label={i18n("common:imgName")}
+                    type="text"
+                    value={fileName}
+                    fullWidth
+                    variant="standard"
+                    onChange={(e) => {
+                        setFileName(e.target.value);
+                    }}
+                />
+
+                <Button
+                    variant="contained"
+                    size="small"
+                    onClick={() => {
+                        setFileName(uuid());
+                    }}
+                >
+                    {i18n("common:generateRandomName")}
+                </Button>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={closeEvent}>{i18n("common:cancel")}</Button>
+                <Button
+                    variant="contained"
+                    onClick={() => {
+                        downloadImage();
+                    }}
+                >
+                    <a style={{ color: "#000" }} ref={downloadLink}>
+                        {i18n("common:download")}
+                    </a>
+                </Button>
+            </DialogActions>
+        </Dialog>
     );
 }
 

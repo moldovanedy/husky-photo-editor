@@ -6,15 +6,14 @@ import styles from "./../../styles/take-photo.module.scss";
 import { capture, scaleCanvas } from "./../../src/capturePhoto";
 import PhotoResult from "./../../components/PhotoResult";
 import { State } from "../../src/GlobalSpecialState";
-import Link from "../../components/Link";
+import PrivacyPolicy from "../../components/PrivacyPolicy";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import CameraswitchIcon from "@mui/icons-material/Cameraswitch";
+import CameraSwitchIcon from "@mui/icons-material/Cameraswitch";
 import VideocamIcon from "@mui/icons-material/Videocam";
-import SettingsIcon from "@mui/icons-material/Settings";
 import CameraIcon from "@mui/icons-material/Camera";
 
 const getStaticProps = makeStaticProps(["common", "takePhoto", "messages"]);
@@ -29,10 +28,22 @@ function TakePhoto() {
     let [hasTakenPhoto, setHasTakenPhoto] = useState(false);
     const { t } = useTranslation();
 
+    let [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
     useEffect(() => {
         window.onresize = () => {
             scaleCanvas(canvasElement.current);
         };
+
+        let hasAcceptedLegalTerms = localStorage.getItem(
+            "hasAcceptedLegalTerms"
+        );
+        if (
+            hasAcceptedLegalTerms === null ||
+            hasAcceptedLegalTerms === undefined
+        ) {
+            setShowPrivacyPolicy(true);
+        }
 
         try {
             if (
@@ -81,6 +92,13 @@ function TakePhoto() {
                 />
             </Head>
 
+            {showPrivacyPolicy ? (
+                <PrivacyPolicy
+                    title={t("common:initial.privacyPolicyDialogTitle")}
+                    content={t("common:initial.privacyPolicyDialogContent")}
+                />
+            ) : null}
+
             <main id={styles.mainCamera} className="centerAlign">
                 <div>
                     {/* default width and height */}
@@ -93,30 +111,28 @@ function TakePhoto() {
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.topLine}`}>
-                    <Link href="/">
-                        <ArrowBackIcon
-                            className="themeDependentIcon"
-                            sx={{ fontSize: "36px", color: "#fff" }}
-                            onClick={() => {
-                                // because otherwise the camera will still be on
-                                let stream = State.getObject("stream");
-                                if (stream !== null) {
-                                    stream.stop();
-                                }
-                            }}
-                        />
-                    </Link>
+                    <ArrowBackIcon
+                        sx={{ fontSize: "36px" }}
+                        onClick={() => {
+                            // to ensure the camera stops when leaving the page,
+                            // in addition to calling stram.stop(),
+                            // use location replace insead of link component
+                            let stream = State.getObject("stream");
+                            if (stream !== null) {
+                                stream.stop();
+                            }
+                            document.location.pathname = "/";
+                        }}
+                    />
 
-                    <CameraswitchIcon
-                        className="themeDependentIcon"
+                    <CameraSwitchIcon
                         ref={changeCameraButton}
-                        sx={{ fontSize: "36px", color: "#fff" }}
+                        sx={{ fontSize: "36px" }}
                         // onClick event listener is in src/capturePhoto.ts?82
                     />
 
                     <VideocamIcon
-                        className="themeDependentIcon"
-                        sx={{ fontSize: "36px", color: "#fff" }}
+                        sx={{ fontSize: "36px" }}
                         onClick={() => {
                             if (
                                 videoElement.current !== null &&
@@ -133,20 +149,33 @@ function TakePhoto() {
                             }
                         }}
                     />
-
-                    <SettingsIcon
-                        className="themeDependentIcon"
-                        sx={{ fontSize: "36px", color: "#fff" }}
-                    />
                 </div>
 
                 <div className={`${styles.buttonLines} ${styles.bottomLine}`}>
                     <CameraIcon
-                        className="themeDependentIcon"
-                        sx={{ fontSize: "60px", color: "#fff" }}
+                        sx={{ fontSize: "60px" }}
                         ref={capturePhotoButton}
                         onClick={() => {
                             setHasTakenPhoto(true);
+
+                            let settings: any = {},
+                                audio = new Audio(
+                                    "/assets/audio/takePhoto.mp3"
+                                );
+                            if (localStorage.getItem("settings") !== null) {
+                                settings = JSON.parse(
+                                    //@ts-ignore
+                                    localStorage.getItem("settings")
+                                );
+                            }
+
+                            if (settings.soundsEnabled) {
+                                audio.volume = settings.appVolume
+                                    ? settings.appVolume / 100
+                                    : 30;
+                                audio.play();
+                            }
+
                             if (canvasElement.current !== null) {
                                 State.addObject(
                                     "canvas",

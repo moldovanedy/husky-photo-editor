@@ -11,10 +11,11 @@ const getStaticProps = makeStaticProps(["common", "privacyPolicy"]);
 export { getStaticPaths, getStaticProps };
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import SettingsIcon from "@mui/icons-material/Settings";
+import Header from "../../components/Header";
 
 function PrivacyPolicy() {
     const { t } = useTranslation();
+
     return (
         <>
             <Head>
@@ -29,27 +30,7 @@ function PrivacyPolicy() {
                 />
             </Head>
 
-            <header className={styles.header}>
-                <img
-                    src="/assets/logo/logo64x64.png"
-                    alt={"App logo"}
-                    height={50}
-                    width={50}
-                    style={{ cursor: "pointer" }}
-                    // in order to have a way to refresh app when using the PWA
-                    onClick={() => {
-                        document.location.pathname = "/";
-                    }}
-                />
-
-                <Link href="/settings" skipLocaleHandling={false}>
-                    <SettingsIcon
-                        className="themeDependentIcon"
-                        fontSize="large"
-                        sx={{ margin: "10px", color: "#fff" }}
-                    />
-                </Link>
-            </header>
+            <Header />
 
             <Link href={"/"}>
                 <ArrowBackIcon

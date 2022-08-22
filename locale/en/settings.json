@@ -14,5 +14,12 @@
     "deleteLocalData": "Delete all local data",
     "disableLogoSpin": "Disable app logo spin when a page is loading",
     "enableSounds": "Enable sounds",
+    "volume": "Volume",
+    "helpers": {
+        "soundsTitle": "Enable sounds",
+        "soundsContent": "If this is enabled, the app will make sounds when capturing a photo or when unexpected errors occur.",
+        "logoSpinTitle": "Spinning logo",
+        "logoSpinContent": "While a page is loading, the app logo will spin on the screen. If this behaviour is disturbing, you can stop it by enabling this option."
+    },
     "save": "Save"
 }

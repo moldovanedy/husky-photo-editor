@@ -7,6 +7,14 @@
             "problemMatcher": [],
             "label": "Run local server in development mode",
             "detail": "next dev -p 8080"
+        },
+        {
+            "type": "npm",
+            "script": "build",
+            "problemMatcher": [],
+            "label": "Build the app as a static site",
+            "detail": "next build && next export"
         }
     ]
 }
+

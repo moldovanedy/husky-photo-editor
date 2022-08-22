@@ -7,6 +7,7 @@ import { DownloadMenu, DownscaleMenu } from "./TakePhotoMenus";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
+    closeDownloadDialog,
     openDownloadDialog,
     openDownscaleDialog
 } from "../src/redux/takePhotoDialogs.redux";
@@ -37,8 +38,7 @@ function PhotoResult(props: any) {
                     ? {
                           opacity: 1,
                           pointerEvents: "all",
-                          touchAction: "none",
-                          overflow: "hidden"
+                          touchAction: "none"
                       }
                     : { opacity: 0, pointerEvents: "none" }
             }
@@ -47,7 +47,11 @@ function PhotoResult(props: any) {
             <TopBar i18n={props.i18n} />
             <BottomBar i18n={props.i18n} />
             <div
-                style={{ cursor: "grab", imageRendering: "pixelated" }}
+                style={{
+                    cursor: "grab",
+                    imageRendering: "pixelated",
+                    height: "100%"
+                }}
                 id="scrollable"
             >
                 {props.children}
@@ -213,9 +217,12 @@ function BottomBar({ i18n }) {
     let [photoWidth, setPhotoWidth] = useState(0);
     let [photoHeight, setPhotoHeight] = useState(0);
 
-    let resizedPhoto = useSelector(
-        (state: RootState) => state.takePhotoDialogs.downscaleDialog
-    );
+    let downscaleDialogOpen = useSelector(
+            (state: RootState) => state.takePhotoDialogs.downscaleDialog
+        ),
+        downloadDialogOpen = useSelector(
+            (state: RootState) => state.takePhotoDialogs.downloadDialog
+        );
 
     useEffect(() => {
         if (
@@ -228,7 +235,7 @@ function BottomBar({ i18n }) {
                 setPhotoHeight(canvas.height);
             }
         }
-    }, [State.getObject("canvas"), resizedPhoto]);
+    }, [State.getObject("canvas"), downscaleDialogOpen]);
 
     return (
         <>
@@ -259,7 +266,14 @@ function BottomBar({ i18n }) {
                     />
                 </button>
 
-                <DownloadMenu i18n={i18n} />
+                {downloadDialogOpen ? (
+                    <DownloadMenu
+                        i18n={i18n}
+                        closeEvent={() => {
+                            dispatch(closeDownloadDialog());
+                        }}
+                    />
+                ) : null}
                 <DownscaleMenu i18n={i18n} />
             </div>
         </>

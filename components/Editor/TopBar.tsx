@@ -16,7 +16,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import UndoIcon from "@mui/icons-material/Undo";
 import RedoIcon from "@mui/icons-material/Redo";
 import InfoIcon from "@mui/icons-material/Info";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import HelpIcon from "@mui/icons-material/Help";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
 import ZoomInIcon from "@mui/icons-material/ZoomIn";
 import PanToolIcon from "@mui/icons-material/PanTool";
@@ -71,19 +71,19 @@ function TopBar() {
                     </IconButton>
                 ) : null}
 
-                <IconButton size="small">
+                {/* <IconButton size="small">
                     <UndoIcon
                         className="themeDependentIcon"
                         sx={{ fontSize: "40px" }}
                     />
-                </IconButton>
+                </IconButton> */}
 
-                <IconButton size="small">
+                {/* <IconButton size="small">
                     <RedoIcon
                         className="themeDependentIcon"
                         sx={{ fontSize: "40px" }}
                     />
-                </IconButton>
+                </IconButton> */}
 
                 {windowWidth > 768 ? (
                     <>
@@ -144,19 +144,19 @@ function TopBar() {
             </div>
 
             <div>
-                <IconButton size="small">
+                {/* <IconButton size="small">
                     <InfoIcon
                         className="themeDependentIcon"
                         sx={{ fontSize: "40px" }}
                     />
-                </IconButton>
+                </IconButton> */}
 
-                <IconButton size="small">
-                    <HelpOutlineIcon
+                {/* <IconButton size="small">
+                    <HelpIcon
                         className="themeDependentIcon"
                         sx={{ fontSize: "40px" }}
                     />
-                </IconButton>
+                </IconButton> */}
             </div>
         </div>
     );

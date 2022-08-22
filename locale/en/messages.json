@@ -1,15 +1,21 @@
 {
     "errors": {
-        "unknownError": "An unknown error has occured",
-        "unknownHardwareError": "An unknown hardware error has occured",
+        "unknownError": "An unknown error has occured.",
+        "unknownHardwareError": "An unknown hardware error has occured.",
+        "unknownDbError": "An unknown indexedDB (local database) error has occured.",
         "cameraAccessDenied": "Permission to camera has been denied. Please reload page settings to grant permission to camera.",
         "cameraNotFound": "We were unable to find a camera on your device.",
         "unsupportedFeature": "The following feature is not supported on your browser: {{feature}}. Please upgrade your browser or use another browser."
     },
+    "warnings": {
+        "invalidFileType": "The file was not a valid image type."
+    },
     "success": {
-        "projectDeleted": "Project deleted succesfully!"
+        "projectDeleted": "Project deleted succesfully.",
+        "dataDeleted": "Local data sucesfully deleted."
     },
     "information": {
-        "projectNotDeleted": "Project was not deleted."
+        "projectNotDeleted": "Project was not deleted succesfully.",
+        "dataNotDeleted": "Local data was not deleted succesfully."
     }
 }

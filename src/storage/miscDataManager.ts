@@ -1,3 +1,4 @@
+import { State } from "../GlobalSpecialState";
 import { store } from "../redux/global.store";
 import { createMessage, MessageType } from "../redux/messages.redux";
 import { db } from "./db";
@@ -6,6 +7,7 @@ export async function addOrModifyMiscDataDB(
     key: string,
     value: any
 ): Promise<boolean> {
+    let i18n = State.getObject("translationContext");
     function resolve() {
         return true;
     }
@@ -30,7 +32,7 @@ export async function addOrModifyMiscDataDB(
     } catch {
         store.dispatch(
             createMessage({
-                message: "An unknown indexedDB error has occured.",
+                message: i18n("messages:errors.unknownDbError"),
                 type: MessageType.Error
             })
         );

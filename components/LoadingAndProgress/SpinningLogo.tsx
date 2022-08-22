@@ -3,7 +3,13 @@ import React from "react";
 
 import styles from "./ProgressStyle.module.scss";
 
-function SpinningLogo({ fullScreen, normalLogoSize, maxLogoSizePx, show }) {
+function SpinningLogo({
+    fullScreen,
+    normalLogoSize,
+    maxLogoSizePx,
+    show,
+    noAnimations
+}) {
     if (normalLogoSize === null || normalLogoSize === undefined) {
         normalLogoSize = 10;
     }
@@ -15,15 +21,17 @@ function SpinningLogo({ fullScreen, normalLogoSize, maxLogoSizePx, show }) {
                 ${show ? styles.active : styles.inactive}
             `}
         >
-            <img
-                style={{
-                    width: `${normalLogoSize}%`,
-                    maxWidth: `${maxLogoSizePx}px`,
-                }}
-                src="/assets/logo/logo.svg"
-                alt="Husky Logo"
-                className={styles.logo}
-            />
+            {noAnimations ? null : (
+                <img
+                    style={{
+                        width: `${normalLogoSize}%`,
+                        maxWidth: `${maxLogoSizePx}px`
+                    }}
+                    src="/assets/logo/logo.svg"
+                    alt="Husky Logo"
+                    className={styles.logo}
+                />
+            )}
         </div>
     );
 }

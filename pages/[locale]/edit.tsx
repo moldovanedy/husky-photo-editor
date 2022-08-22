@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from "react";
+import React, { createContext, useEffect, useRef, useState } from "react";
 import Head from "next/head";
 
 import TopBar from "../../components/Editor/TopBar";
 import Tools from "../../components/Editor/Tools";
 import ProjectsBar from "../../components/Editor/ProjectsBar";
+import PrivacyPolicy from "../../components/PrivacyPolicy";
 
 import styles from "./../../styles/edit.module.scss";
 import { State } from "../../src/GlobalSpecialState";
@@ -34,12 +35,15 @@ import { navigateInProject } from "../../src/input/navigateInProject";
 import { db } from "../../src/storage/db";
 import { displayProject } from "../../src/projectInteractions/displayProject";
 
-const getStaticProps = makeStaticProps(["common", "messages"]);
+const getStaticProps = makeStaticProps(["common", "messages", "edit"]);
 export { getStaticPaths, getStaticProps };
+
+export const Translation = createContext(null);
 
 function Edit() {
     let mainElement = useRef<HTMLElement>(null);
     let [open, setOpen] = useState(false);
+    let [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
     function openSpeedDial() {
         setOpen(true);
@@ -105,9 +109,19 @@ function Edit() {
             }px`;
         }
 
+        let hasAcceptedLegalTerms = localStorage.getItem(
+            "hasAcceptedLegalTerms"
+        );
+        if (
+            hasAcceptedLegalTerms === null ||
+            hasAcceptedLegalTerms === undefined
+        ) {
+            setShowPrivacyPolicy(true);
+        }
+
         db.misc.get("openedProjects").then((data) => {
             if (data !== undefined) {
-                //get porjects stored in Redux
+                //get projects stored in Redux
                 let openedProjectsInRedux = store.getState().projectManagement;
                 data.value.forEach((project: string, i: number) => {
                     //if the project is in indexedDB, but not in Redux, add it
@@ -180,8 +194,15 @@ function Edit() {
                 />
             </Head>
 
+            {showPrivacyPolicy ? (
+                <PrivacyPolicy
+                    title={t("common:initial.privacyPolicyDialogTitle")}
+                    content={t("common:initial.privacyPolicyDialogContent")}
+                />
+            ) : null}
+
             <TopBar />
-            <ProjectsBar />
+            <ProjectsBar i18n={t} />
 
             <main
                 ref={mainElement}
@@ -277,7 +298,7 @@ function Edit() {
                             icon={<PanToolIcon />}
                             tooltipTitle={"Pan"}
                             sx={navButtonStyle}
-                            //closing the speed dial form here will break navigation :(
+                            //closing the speed dial from here will break navigation :(
                             onClick={() => {
                                 if (isInNavigationMode) {
                                     store.dispatch(exitNavigationMode());
@@ -295,14 +316,12 @@ function Edit() {
                             className={styles.canvasContainer}
                             id={project.id}
                             key={index}
-                        >
-                            {/* TODO: make margins grow individually when user tries to scroll beyond 0 or canvas width or height by setting margin-top when user goes up, margin-botom: canvas height + value when user goes down etc. */}
-                        </div>
+                        ></div>
                     );
                 })}
             </main>
 
-            <Tools />
+            <Tools i18n={t} />
         </>
     );
 }

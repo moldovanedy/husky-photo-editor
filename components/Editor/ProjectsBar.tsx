@@ -23,10 +23,9 @@ import styles from "./ProjectsBar.module.scss";
 import CloseIcon from "@mui/icons-material/Close";
 import { deleteProjectDB } from "../../src/storage/projectManagement";
 import { createMessage, MessageType } from "../../src/redux/messages.redux";
-import { State } from "../../src/GlobalSpecialState";
 import { useSelector } from "react-redux";
 
-function ProjectsBar() {
+function ProjectsBar(props: { i18n: any }) {
     let projectsBar = useRef<HTMLDivElement>(null);
     let [dialogOpen, setDialogOpen] = useState(false);
 
@@ -34,11 +33,7 @@ function ProjectsBar() {
         (state: RootState) => state.projectManagement
     );
 
-    let i18n = useRef(State.getObject("translationContext"));
-
-    useEffect(() => {
-        i18n.current = State.getObject("translationContext");
-    }, [State.getObject("translationContext")]);
+    let i18n = props.i18n;
 
     return (
         <div
@@ -120,7 +115,7 @@ function ProjectsBar() {
                     if (success) {
                         store.dispatch(
                             createMessage({
-                                message: i18n.current(
+                                message: i18n(
                                     "messages:success.projectDeleted"
                                 ),
                                 type: MessageType.Success
@@ -129,7 +124,7 @@ function ProjectsBar() {
                     } else {
                         store.dispatch(
                             createMessage({
-                                message: i18n.current(
+                                message: i18n(
                                     "messages:information.projectNotDeleted"
                                 ),
                                 type: MessageType.Information
@@ -147,15 +142,15 @@ function ProjectsBar() {
                 onClose={() => {
                     closeDialog();
                 }}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Save project?</DialogTitle>
+                <DialogTitle>
+                    {i18n("edit:projectManagement.saveProjectText")}?
+                </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Would you like to save the project locally? If you save
-                        your project locally, you will be able to access it at
-                        any time.
+                    <DialogContentText>
+                        {i18n(
+                            "edit:projectManagement.saveProjectDialogContent"
+                        )}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -164,22 +159,21 @@ function ProjectsBar() {
                             closeDialog();
                         }}
                     >
-                        Cancel
+                        {i18n("common:cancel")}
                     </Button>
                     <Button
                         onClick={() => {
                             deleteProject();
                         }}
                     >
-                        No
+                        {i18n("common:no")}
                     </Button>
                     <Button
                         onClick={() => {
                             saveProject();
                         }}
-                        autoFocus
                     >
-                        Yes
+                        {i18n("common:yes")}
                     </Button>
                 </DialogActions>
             </Dialog>

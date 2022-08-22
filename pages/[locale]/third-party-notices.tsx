@@ -1,5 +1,5 @@
 import Head from "next/head";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
     Accordion,
     AccordionDetails,
@@ -11,6 +11,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import Link from "../../components/Link";
+import PrivacyPolicy from "../../components/PrivacyPolicy";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
@@ -900,6 +901,19 @@ SOFTWARE.
 
 function ThirdPartyNotices() {
     const { t } = useTranslation();
+    let [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+
+    useEffect(() => {
+        let hasAcceptedLegalTerms = localStorage.getItem(
+            "hasAcceptedLegalTerms"
+        );
+        if (
+            hasAcceptedLegalTerms === null ||
+            hasAcceptedLegalTerms === undefined
+        ) {
+            setShowPrivacyPolicy(true);
+        }
+    }, []);
 
     return (
         <main style={{ margin: "10px" }}>
@@ -914,6 +928,13 @@ function ThirdPartyNotices() {
                     content="width=device-width, initial-scale=1.0"
                 />
             </Head>
+
+            {showPrivacyPolicy ? (
+                <PrivacyPolicy
+                    title={t("common:initial.privacyPolicyDialogTitle")}
+                    content={t("common:initial.privacyPolicyDialogContent")}
+                />
+            ) : null}
 
             <Link href={"/"}>
                 <ArrowBackIcon

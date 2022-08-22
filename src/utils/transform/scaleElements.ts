@@ -1,18 +1,18 @@
 import {
     getTransformValuesOfElement,
-    convertTransformObjectToString,
+    convertTransformObjectToString
 } from "./transformUtility";
 
 export enum MeasuringSystem {
     Relative,
-    Absolute,
+    Absolute
 }
 
 /**
  * Scales the element to the new x and y
  * @param element The element on which the transform property will be applied
- * @param x Number of pixels to move on x axis
- * @param y Number of pixels to move on y axis
+ * @param x Scaling factor on x axis
+ * @param y Scaling factor on y axis
  * @param system Absolute
  */
 export function scale(
@@ -24,8 +24,8 @@ export function scale(
 
 /**
  * Scales the element by an x and y amount
- * @param x Number of pixels to move on x axis
- * @param y Number of pixels to move on y axis
+ * @param x Scaling factor on x axis
+ * @param y Scaling factor on y axis
  * @param system Relative
  */
 export function scale(

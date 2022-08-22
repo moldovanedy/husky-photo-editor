@@ -1,4 +1,3 @@
-import { State } from "../GlobalSpecialState";
 import { store } from "../redux/global.store";
 import { setProjectAsActive } from "../redux/userInterface.redux";
 

@@ -1,0 +1,7 @@
+{
+    "menu": {},
+    "projectManagement": {
+        "saveProjectText": "Save project",
+        "saveProjectDialogContent": "Would you like to save the project locally? If you save your project locally, in the browser's storage, you will be able to access it at any time."
+    }
+}

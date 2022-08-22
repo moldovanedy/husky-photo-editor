@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useRef } from "react";
 
 import styles from "./Tools.module.scss";
@@ -9,8 +10,9 @@ import TitleIcon from "@mui/icons-material/Title";
 import { RootState } from "../../src/redux/global.store";
 import { useSelector } from "react-redux";
 
-function Tools() {
+function Tools(props: { i18n: any }) {
     let toolbar = useRef<HTMLElement>(null);
+
     useEffect(() => {
         State.addObject("toolbar", toolbar.current);
     }, []);
@@ -18,6 +20,8 @@ function Tools() {
     let zoomFactor = useSelector(
         (state: RootState) => state.userInterface.zoomFactor
     );
+
+    let i18n = props.i18n;
 
     return (
         <>
@@ -33,7 +37,8 @@ function Tools() {
                     }
                 }}
             >
-                <div>
+                {/* for future */}
+                {/* <div>
                     <HistoryIcon
                         className="themeDependentIcon"
                         sx={{ fontSize: "22px" }}
@@ -60,13 +65,15 @@ function Tools() {
                         sx={{ fontSize: "22px" }}
                     />
                     <span>Text</span>
-                </div>
+                </div> */}
             </aside>
 
             <aside className={styles.infoPanel}>
-                <span>Pos.: 1920:1080</span>
-                <span>Zoom: {zoomFactor.toFixed(2)}</span>
-                <span>Layer: 1</span>
+                <span></span>
+                <span>
+                    {i18n("common:scale")}: {zoomFactor.toFixed(2)}
+                </span>
+                <span>{i18n("common:layer")}: 1</span>
             </aside>
         </>
     );

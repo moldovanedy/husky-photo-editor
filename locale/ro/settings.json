@@ -14,5 +14,12 @@
     "deleteLocalData": "Ștergeți toate datele locale",
     "disableLogoSpin": "Dezactivați logo-ul rotitor când se încarcă pagina",
     "enableSounds": "Activați efecte sonore",
+    "volume": "Volum",
+    "helpers": {
+        "soundsTitle": "Activați efecte sonore",
+        "soundsContent": "Dacă este activat, aplicația va produce sunete la capturarea unei poze sau la erori neașteptate.",
+        "logoSpinTitle": "Logo rotitor",
+        "logoSpinContent": "În timp ce o pagină se încarcă, pe ecran va apărea logo-ul aplicației rotindu-se. Dacă acest comportament este deranjant, îl puteți opri activând această opțiune"
+    },
     "save": "Salvare"
 }

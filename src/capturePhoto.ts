@@ -22,6 +22,8 @@ export function capture(
         videotrackIndex = 0;
     }
 
+    let i18n = State.getObject("translationContext");
+
     navigator.mediaDevices
         .getUserMedia({
             audio: false,
@@ -72,8 +74,7 @@ export function capture(
                     } else {
                         store.dispatch(
                             createMessage({
-                                message:
-                                    "The video element was not found. Please reload the page.",
+                                message: i18n("messages:errors.unknownError"),
                                 type: MessageType.Error
                             })
                         );
@@ -99,8 +100,7 @@ export function capture(
             } else {
                 store.dispatch(
                     createMessage({
-                        message:
-                            "A button element was not found. Please reload the page.",
+                        message: i18n("messages:errors.unknownError"),
                         type: MessageType.Error
                     })
                 );
@@ -111,8 +111,7 @@ export function capture(
                 case "NotAllowedError":
                     store.dispatch(
                         createMessage({
-                            message:
-                                "Permission to camera has been denied. Please reload page settings to grant permission to camera",
+                            message: i18n("messages:errors.cameraAccessDenied"),
                             type: MessageType.Error
                         })
                     );
@@ -120,7 +119,9 @@ export function capture(
                 case "NotReadableError":
                     store.dispatch(
                         createMessage({
-                            message: "An unknown hardware error has occured.",
+                            message: i18n(
+                                "messages:errors.unknownHardwareError"
+                            ),
                             type: MessageType.Error
                         })
                     );
@@ -128,8 +129,7 @@ export function capture(
                 case "NotFoundError":
                     store.dispatch(
                         createMessage({
-                            message:
-                                "We were unable to find a camera on your device.",
+                            message: i18n("messages:errors.cameraNotFound"),
                             type: MessageType.Error
                         })
                     );
@@ -137,7 +137,7 @@ export function capture(
                 default:
                     store.dispatch(
                         createMessage({
-                            message: "An unknown error has occured.",
+                            message: i18n("messages:errors.unknownError"),
                             type: MessageType.Error
                         })
                     );

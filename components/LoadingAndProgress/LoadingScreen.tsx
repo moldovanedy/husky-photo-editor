@@ -12,7 +12,8 @@ import {
 } from "./../../src/redux/environmentInfo.redux";
 
 function LoadingScreen() {
-    let [show, setShow] = useState(false);
+    let [show, setShow] = useState(false),
+        [wantsSpinningLogo, setWantsSpinningLogo] = useState(true);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -34,6 +35,18 @@ function LoadingScreen() {
             because of that, pressing the back button from browser/OS
             will keep overflow hidden, thus making scrolling impossible
             on other pages until reload */
+
+        let settings: any = {};
+        if (localStorage.getItem("settings") !== null) {
+            settings = JSON.parse(
+                //@ts-ignore
+                localStorage.getItem("settings")
+            );
+        }
+
+        if (settings.appLogoSpinDisabled) {
+            setWantsSpinningLogo(false);
+        }
     };
     const handleRouteDone = () => {
         NProgress.done();
@@ -51,6 +64,7 @@ function LoadingScreen() {
                 normalLogoSize={60}
                 maxLogoSizePx={500}
                 show={show}
+                noAnimations={!wantsSpinningLogo}
             />
         </>
     );

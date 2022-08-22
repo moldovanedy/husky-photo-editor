@@ -8,6 +8,7 @@ import {
 import { db } from "../storage/db";
 
 export function displayProject(id: string) {
+    let i18n = State.getObject("translationContext");
     db.projects.get(id).then((proj) => {
         if (proj !== null && proj !== undefined) {
             let container = document.getElementById(id);
@@ -15,6 +16,7 @@ export function displayProject(id: string) {
                 let canvas = document.createElement("canvas");
                 canvas.setAttribute("id", `${proj.id}_${i + 1}`);
                 canvas.setAttribute("class", "project");
+                canvas.style.zIndex = `${i + 1}`;
                 container?.appendChild(canvas);
                 State.addObject(`${proj.id}_${i + 1}`, canvas);
             }
@@ -54,7 +56,7 @@ export function displayProject(id: string) {
                 } else {
                     store.dispatch(
                         createMessage({
-                            message: "An unknown error occured.",
+                            message: i18n("messages:errors.unknownError"),
                             type: MessageType.Error
                         })
                     );
@@ -63,7 +65,7 @@ export function displayProject(id: string) {
         } else {
             store.dispatch(
                 createMessage({
-                    message: "An unknown error occured.",
+                    message: i18n("messages:errors.unknownError"),
                     type: MessageType.Error
                 })
             );

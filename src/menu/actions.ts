@@ -6,10 +6,24 @@ import { store } from "../redux/global.store";
 import { addProjectToState } from "../redux/projectManagement.redux";
 import { switchActiveProject } from "../projectInteractions/switchActiveProject";
 import { startWork, completeWork } from "../redux/userInterface.redux";
+import { createMessage, MessageType } from "../redux/messages.redux";
+import { State } from "../GlobalSpecialState";
 
 export function openFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
         store.dispatch(startWork());
+        let i18n = State.getObject("translationContext");
+
+        if (!files[i].type.startsWith("image/")) {
+            store.dispatch(
+                createMessage({
+                    message: i18n("messages:warnings.invalidFileType"),
+                    type: MessageType.Error
+                })
+            );
+            store.dispatch(completeWork());
+            continue;
+        }
 
         //@ts-ignore Object is possibly "null"
         fileToImageData(files[i]).then((imgData) => {

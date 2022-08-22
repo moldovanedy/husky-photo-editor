@@ -45,9 +45,32 @@ function StorageEstimation({ i18n }) {
                         {usedStorage} / {allowedStorage}
                     </meter>
                     <p>
+                        {/* we use the standard MB, GB etc. insetad MiB, GiB etc. because browsers interpret storage like this */}
                         {i18n("settings:storageEstimationText", {
-                            bytesUsed: usedStorage,
-                            bytesAvailable: allowedStorage
+                            bytesUsed:
+                                usedStorage <= Math.pow(10, 6)
+                                    ? `${(
+                                          usedStorage / Math.pow(10, 3)
+                                      ).toFixed(2)} KB`
+                                    : usedStorage <= Math.pow(10, 9)
+                                    ? `${(
+                                          usedStorage / Math.pow(10, 6)
+                                      ).toFixed(2)} MB`
+                                    : `${(
+                                          usedStorage / Math.pow(10, 9)
+                                      ).toFixed(2)} GB`,
+                            bytesAvailable:
+                                allowedStorage <= Math.pow(10, 6)
+                                    ? `${(
+                                          allowedStorage / Math.pow(10, 3)
+                                      ).toFixed(2)} KB`
+                                    : allowedStorage <= Math.pow(10, 9)
+                                    ? `${(
+                                          allowedStorage / Math.pow(10, 6)
+                                      ).toFixed(2)} MB`
+                                    : `${(
+                                          allowedStorage / Math.pow(10, 9)
+                                      ).toFixed(2)} GB`
                         })}
                     </p>
                 </>

@@ -6,6 +6,7 @@ import { createMessage, MessageType } from "../redux/messages.redux";
 import { deleteProjectRedux } from "../redux/projectManagement.redux";
 import { displayProject } from "../projectInteractions/displayProject";
 import { addOrModifyMiscDataDB } from "./miscDataManager";
+import { State } from "../GlobalSpecialState";
 
 /**
  * Creates a new project and stores it in memory.
@@ -21,6 +22,7 @@ export async function createNewProjectDB(
     width: number,
     height: number
 ): Promise<IndexableType | null> {
+    let i18n = State.getObject("translationContext");
     try {
         let id = await db.projects.add({
             id: uuid(),
@@ -55,7 +57,7 @@ export async function createNewProjectDB(
     } catch {
         store.dispatch(
             createMessage({
-                message: "An unknown indexedDB error has occured.",
+                message: i18n("messages:errors.unknownDbError"),
                 type: MessageType.Error
             })
         );
@@ -67,6 +69,7 @@ export async function deleteProjectDB(
     projectId: string,
     dontUpdateDisplayedProjects?: boolean
 ): Promise<boolean> {
+    let i18n = State.getObject("translationContext");
     function resolve() {
         store.dispatch(deleteProjectRedux(projectId));
         return true;
@@ -114,7 +117,7 @@ export async function deleteProjectDB(
     } catch {
         store.dispatch(
             createMessage({
-                message: "An unknown indexedDB error has occured.",
+                message: i18n("messages:errors.unknownDbError"),
                 type: MessageType.Error
             })
         );

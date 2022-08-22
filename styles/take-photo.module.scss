@@ -16,10 +16,13 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    // background-color: var(--secondary-app-color);
 
     svg {
         cursor: pointer;
+
+        * {
+            color: #fff !important; //override light theme
+        }
     }
 }
 
@@ -27,11 +30,13 @@
     top: 0;
     padding: 10px;
     justify-content: space-around !important;
+    background-image: linear-gradient(#000000b0, #00000045);
 }
 
 .bottomLine {
     bottom: 0;
     padding: 10px;
+    background-image: linear-gradient(360deg, #000000b0, #00000045);
 }
 
 #result {

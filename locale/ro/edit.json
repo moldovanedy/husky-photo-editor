@@ -1,0 +1,7 @@
+{
+    "menu": {},
+    "projectManagement": {
+        "saveProjectText": "Salvați proiectul",
+        "saveProjectDialogContent": "Ați dori să salvați proiectul local? Dacă salvați proiectul local, în spațiul de stocare al browser-ului, îl veți putea accesa oricând."
+    }
+}

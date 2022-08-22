@@ -28,9 +28,19 @@ class ErrorBoundary extends React.Component<IProps, IState> {
     render() {
         // Check if the error is thrown
         if (this.state.hasError) {
-            let audio = new Audio("/assets/audio/criticalError.mp3");
-            audio.volume = 0.05;
-            audio.play();
+            let settings: any = {},
+                audio = new Audio("/assets/audio/criticalError.mp3");
+            if (localStorage.getItem("settings") !== null) {
+                //@ts-ignore
+                settings = JSON.parse(localStorage.getItem("settings"));
+            }
+
+            if (settings.soundsEnabled) {
+                audio.volume = settings.appVolume
+                    ? settings.appVolume / 100
+                    : 30;
+                audio.play();
+            }
             //inline styling to ensure the component works properly
             return (
                 <div

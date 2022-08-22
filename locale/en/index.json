@@ -3,6 +3,6 @@
     "takePhoto": "Take photo",
     "recentProjects": "Recent projects",
     "privacyPolicy": "Privacy policy",
-    "privacyPolicyDialogTitle": "Privacy policy & terms of use",
-    "privacyPolicyDialogContent": "This website uses cookies and similar technologies to make your experience better. By clicking \"Accept\" and continuing to use this website, you agree with our privacy policy and terms of use. We only store essential storage locally and we do not collect personal information on our servers."
+    "sizeEstimationInfoTitle": "Estimated storage",
+    "sizeEstimationInfoContent": "The storage estimation provided here is approximative and does not represent the exact size of the project"
 }

@@ -1,5 +1,6 @@
 {
     "saveAs": "Save as:",
+    "save": "Save",
     "quality": "Quality:",
     "imgName": "Image name:",
     "download": "Download",
@@ -10,6 +11,14 @@
     "generateRandomName": "Generate random name",
     "license": "License",
     "termsOfUse": "Terms of use",
+    "about": "About",
+    "scale": "Scale",
+    "layer": "Layer",
+
+    "initial": {
+        "privacyPolicyDialogTitle": "Privacy policy & terms of use",
+        "privacyPolicyDialogContent": "This website uses cookies and similar technologies to make your experience better. By clicking \"Accept\" and continuing to use this website, you agree with our privacy policy and terms of use. We only store essential storage locally and we do not collect personal information on our servers."
+    },
 
     "imageProperties": {
         "width": "Width",

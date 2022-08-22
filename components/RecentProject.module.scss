@@ -1,0 +1,17 @@
+@import "sass-material-design-colors/palette.scss";
+
+.recentProjectElement {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border: 2px inset #bbdefb;
+    border-radius: 5px;
+    margin: 10px;
+    background-color: var(--main-theme-color);
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.recentProjectElement:hover {
+    background-color: $blue-500;
+}
