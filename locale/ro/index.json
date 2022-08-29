@@ -4,5 +4,6 @@
     "recentProjects": "Proiecte recente",
     "privacyPolicy": "Politica de confidențialitate",
     "sizeEstimationInfoTitle": "Spațiu de stocare estimat",
-    "sizeEstimationInfoContent": "Spațiul de stocare precizat aici este aproximatiov și nu reprezintă dimensiunea exactă a proiectului"
+    "sizeEstimationInfoContent": "Spațiul de stocare precizat aici este aproximativ și nu reprezintă dimensiunea exactă a proiectului",
+    "deleteConfirmationContent": "Sunteți sigur/ă că vreți să ștergeți acest proiect permanent? Nu îl veți mai putea recupera."
 }

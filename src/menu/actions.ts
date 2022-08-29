@@ -9,6 +9,10 @@ import { startWork, completeWork } from "../redux/userInterface.redux";
 import { createMessage, MessageType } from "../redux/messages.redux";
 import { State } from "../GlobalSpecialState";
 
+/**
+ * Transforms an array of files into projects and stores the projects in IndexedDB
+ * @param files The array of files obtained from <input type="file" />
+ */
 export function openFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
         store.dispatch(startWork());

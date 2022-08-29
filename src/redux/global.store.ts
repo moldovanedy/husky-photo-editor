@@ -5,6 +5,7 @@ import messagesSlice from "./messages.redux";
 import environmentInfoSlice from "./environmentInfo.redux";
 import userInterfaceSlice from "./userInterface.redux";
 import projectManagementSlice from "./projectManagement.redux";
+import toolOptionsSlice from "./toolOptions.redux";
 
 export const store = configureStore({
     reducer: {
@@ -12,7 +13,8 @@ export const store = configureStore({
         messages: messagesSlice,
         environmentInfo: environmentInfoSlice,
         userInterface: userInterfaceSlice,
-        projectManagement: projectManagementSlice
+        projectManagement: projectManagementSlice,
+        toolOptions: toolOptionsSlice
     }
 });
 

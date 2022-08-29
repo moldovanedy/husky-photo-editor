@@ -65,6 +65,12 @@ export async function createNewProjectDB(
     }
 }
 
+/**
+ * Permanently deletes a project from the db
+ * @param projectId The project's uuid
+ * @param dontUpdateDisplayedProjects If this is true, the displayProject(item) function will not be called.
+ * @returns A Promise that resolves with a boolean indicating that the operation was successful or not
+ */
 export async function deleteProjectDB(
     projectId: string,
     dontUpdateDisplayedProjects?: boolean

@@ -1,10 +1,13 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import styles from "./MainMenu.module.scss";
 
 import { useDispatch } from "react-redux";
-import { closeMainMenu } from "../../../src/redux/userInterface.redux";
+import {
+    closeMainMenu,
+    openHelpMenu
+} from "../../../src/redux/userInterface.redux";
 import { store } from "../../../src/redux/global.store";
 import {
     Menu,
@@ -22,16 +25,24 @@ import CloseIcon from "@mui/icons-material/Close";
 import SaveIcon from "@mui/icons-material/Save";
 import FolderOpenIcon from "@mui/icons-material/FolderOpen";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
+import InsertDriveFileIcon from "@mui/icons-material/InsertDriveFile";
+import HelpIcon from "@mui/icons-material/Help";
+import InfoIcon from "@mui/icons-material/Info";
+import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
+import PolicyIcon from "@mui/icons-material/Policy";
+
 import { SaveDialog } from "./Dialogs/FileMenuDialogs";
 import { db } from "../../../src/storage/db";
 
-export function MainMenuMobile(props: { show: boolean }) {
+export function MainMenuMobile(props: { show: boolean; i18n: any }) {
     const dispatch = useDispatch();
     let filePicker = useRef<HTMLInputElement>(null);
     let [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    let i18n = props.i18n;
 
     return (
         <>
+            {/* dialogs */}
             {saveDialogOpen ? (
                 <SaveDialog
                     closeEvent={() => {
@@ -69,7 +80,6 @@ export function MainMenuMobile(props: { show: boolean }) {
                                 />
                             </div>
                             <CloseIcon
-                                className="themeDependentIcon"
                                 sx={{
                                     fontSize: "60px",
                                     position: "absolute",
@@ -82,17 +92,21 @@ export function MainMenuMobile(props: { show: boolean }) {
                                 }}
                             />
                         </SidebarHeader>
+
                         <SidebarContent className={styles.sidebarThemeSwitch}>
                             <Menu
                                 iconShape="square"
                                 popperArrow={true}
                                 className={styles.sidebarThemeSwitch}
                             >
-                                <SubMenu title="File">
+                                {/* file menu */}
+                                <SubMenu
+                                    icon={<InsertDriveFileIcon />}
+                                    title={i18n("edit:menu.file.fileText")}
+                                >
                                     <MenuItem
                                         icon={
                                             <FolderOpenIcon
-                                                className="themeDependentIcon"
                                                 sx={{ fontSize: "28px" }}
                                             />
                                         }
@@ -103,7 +117,7 @@ export function MainMenuMobile(props: { show: boolean }) {
                                                 cursor: "pointer"
                                             }}
                                         >
-                                            Open
+                                            {i18n("edit:menu.file.open")}
                                         </label>
                                         <input
                                             style={{
@@ -140,22 +154,81 @@ export function MainMenuMobile(props: { show: boolean }) {
                                         }}
                                         icon={
                                             <SaveIcon
-                                                className="themeDependentIcon"
                                                 sx={{ fontSize: "28px" }}
                                             />
                                         }
                                     >
-                                        Save
+                                        {i18n("edit:menu.file.save")}
                                     </MenuItem>
                                 </SubMenu>
 
-                                <SubMenu title="Help">
-                                    <MenuItem>About</MenuItem>
+                                {/* help menu */}
+                                <SubMenu
+                                    icon={<HelpIcon />}
+                                    title={i18n("edit:menu.help.helpText")}
+                                >
+                                    <MenuItem
+                                        icon={
+                                            <LibraryBooksIcon
+                                                sx={{ fontSize: "28px" }}
+                                            />
+                                        }
+                                    >
+                                        {i18n("edit:menu.help.manual")}
+                                    </MenuItem>
+
+                                    <MenuItem
+                                        onClick={() => {
+                                            dispatch(
+                                                openHelpMenu("/privacy-policy")
+                                            );
+                                            dispatch(closeMainMenu());
+                                        }}
+                                        icon={
+                                            <PolicyIcon
+                                                sx={{ fontSize: "28px" }}
+                                            />
+                                        }
+                                    >
+                                        {i18n("common:privacyPolicy")}
+                                    </MenuItem>
+
+                                    <MenuItem
+                                        onClick={() => {
+                                            dispatch(
+                                                openHelpMenu("/terms-of-use")
+                                            );
+                                            dispatch(closeMainMenu());
+                                        }}
+                                        icon={
+                                            <LibraryBooksIcon
+                                                sx={{ fontSize: "28px" }}
+                                            />
+                                        }
+                                    >
+                                        {i18n("common:license")} &{" "}
+                                        {i18n("common:termsOfUse")}
+                                    </MenuItem>
+
+                                    <MenuItem
+                                        onClick={() => {
+                                            dispatch(openHelpMenu("/about"));
+                                            dispatch(closeMainMenu());
+                                        }}
+                                        icon={
+                                            <InfoIcon
+                                                sx={{ fontSize: "28px" }}
+                                            />
+                                        }
+                                    >
+                                        {i18n("edit:menu.help.about")}
+                                    </MenuItem>
                                 </SubMenu>
                                 <div style={{ paddingTop: "50px" }}></div>
                                 {/* in order to leave elements visible because the footer covers the last 50px */}
                             </Menu>
                         </SidebarContent>
+
                         <SidebarFooter
                             className={styles.sidebarFooter}
                             onClick={() => {
@@ -165,7 +238,7 @@ export function MainMenuMobile(props: { show: boolean }) {
                             }}
                         >
                             <ExitToAppIcon sx={{ fontSize: "36px" }} />
-                            Exit editor
+                            {i18n("edit:menu.exitEditor")}
                         </SidebarFooter>
                     </ProSidebar>
                 </section>

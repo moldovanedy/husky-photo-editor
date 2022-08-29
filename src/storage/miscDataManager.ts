@@ -3,6 +3,12 @@ import { store } from "../redux/global.store";
 import { createMessage, MessageType } from "../redux/messages.redux";
 import { db } from "./db";
 
+/**
+ * Adds or modifies data from the "misc" table in the db. If the key already exist, the value will be overwritten. If the key does not exist, a new record will be created
+ * @param key The key that identifies the value
+ * @param value The actual value that gets stored in the db
+ * @returns A Promise that resolves with a boolean indicating that the operation was successful or not
+ */
 export async function addOrModifyMiscDataDB(
     key: string,
     value: any

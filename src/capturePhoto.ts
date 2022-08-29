@@ -4,7 +4,7 @@ import { store } from "./redux/global.store";
 import { createMessage, MessageType } from "./redux/messages.redux";
 
 /**
- * @description Captures user's camera and displays output in a video element
+ * Captures user's camera and displays output in a video element
  * @param videotrackIndex Usually 0
  * @param videoElement The video element that will hold user's camera output
  * @param capturePhotoButton The element that, when pressed, will render current frame on a canvas
@@ -18,11 +18,11 @@ export function capture(
     canvasReference: HTMLCanvasElement,
     changeCameraButton: SVGSVGElement | null
 ): void {
+    let i18n = State.getObject("translationContext");
+
     if (videotrackIndex === null || videotrackIndex === undefined) {
         videotrackIndex = 0;
     }
-
-    let i18n = State.getObject("translationContext");
 
     navigator.mediaDevices
         .getUserMedia({
@@ -146,11 +146,19 @@ export function capture(
         });
 }
 
+/**
+ * Captures a photo from video element, draws it on canvas and stops the video stream
+ * @param videoElement The video element from which to take photo
+ * @param canvasReference The canvas on which to draw the resulting image
+ * @param streamTrack The stream which provided the video element the actual image taken from the user's camera
+ */
 export function takePhotoAction(
     videoElement: HTMLVideoElement,
     canvasReference: HTMLCanvasElement,
     streamTrack: MediaStreamTrack
 ) {
+    let i18n = State.getObject("translationContext");
+
     if (
         streamTrack.getSettings().width !== undefined &&
         streamTrack.getSettings().height
@@ -160,7 +168,12 @@ export function takePhotoAction(
         // @ts-ignore
         canvasReference.height = streamTrack.getSettings().height;
     } else {
-        alert("Not supported");
+        store.dispatch(
+            createMessage({
+                message: i18n("messages:errors.unknownError"),
+                type: MessageType.Error
+            })
+        );
     }
 
     let ctx = canvasReference.getContext("2d");
@@ -178,20 +191,8 @@ export function takePhotoAction(
     State.deleteObject("stream");
 }
 
-export function getAvailableCameras(): string[] {
-    let devicesList: string[] = [];
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
-        devices.forEach((device) => {
-            if (device.kind === "videoinput") {
-                devicesList.push(device.label);
-            }
-        });
-    });
-    return devicesList;
-}
-
 /**
- * @description Switches the camera facing mode (front/rear)
+ * Switches the camera facing mode (front/rear)
  */
 export function switchCameraFacingMode(): void {
     let localData = localStorage.getItem("isFrontCamera");
@@ -211,6 +212,10 @@ export function switchCameraFacingMode(): void {
     }, 500);
 }
 
+/**
+ * Tries to scale the canvas to fit the screen
+ * @param canvasElement The canvas element that needs to be scaled
+ */
 export function scaleCanvas(canvasElement: HTMLCanvasElement | null): void {
     var canvas: HTMLCanvasElement | null = canvasElement;
     if (canvas === null) {

@@ -6,7 +6,7 @@
     "start_url": "/",
     "name": "Husky Photo Editor",
     "short_name": "Husky Photo Editor",
-    "description": "The free web photo editor",
+    "description": "The free and open-source web photo editor",
     "categories": ["photo"],
     "icons": [
         {

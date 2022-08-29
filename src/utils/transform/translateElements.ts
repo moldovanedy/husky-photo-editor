@@ -3,6 +3,9 @@ import {
     convertTransformObjectToString
 } from "./transformUtility";
 
+/**
+ * If this is Absolute, the element will be translated to the given position. If this is Relative, the element will be translated by the given amount
+ */
 export enum MeasuringSystem {
     Relative,
     Absolute

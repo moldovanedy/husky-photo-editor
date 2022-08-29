@@ -4,5 +4,6 @@
     "recentProjects": "Recent projects",
     "privacyPolicy": "Privacy policy",
     "sizeEstimationInfoTitle": "Estimated storage",
-    "sizeEstimationInfoContent": "The storage estimation provided here is approximative and does not represent the exact size of the project"
+    "sizeEstimationInfoContent": "The storage estimation provided here is approximative and does not represent the exact size of the project",
+    "deleteConfirmationContent": "Are you sure you want to permanently delete this project? You will not be able to recover it."
 }

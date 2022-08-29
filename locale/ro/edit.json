@@ -1,7 +1,33 @@
 {
-    "menu": {},
+    "menu": {
+        "file": {
+            "fileText": "Fișier",
+            "open": "Deschidere",
+            "save": "Salvare"
+        },
+        "view": {
+            "viewText": "Vizualizare",
+            "zoom": "Zoom",
+            "zoomIn": "Mărire",
+            "zoomOut": "Micșorare",
+            "navigationMode": "Modul navigare"
+        },
+        "help": {
+            "helpText": "Ajutor",
+            "manual": "Manual",
+            "about": "Despre"
+        },
+        "exitEditor": "Ieșire din editor"
+    },
+
     "projectManagement": {
         "saveProjectText": "Salvați proiectul",
         "saveProjectDialogContent": "Ați dori să salvați proiectul local? Dacă salvați proiectul local, în spațiul de stocare al browser-ului, îl veți putea accesa oricând."
+    },
+
+    "toolOptions": {
+        "moveTool": {
+            "title": "Mutare"
+        }
     }
 }

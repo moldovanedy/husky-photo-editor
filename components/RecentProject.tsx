@@ -23,6 +23,8 @@ function RecentProject(props: {
     recreateFunction: Function;
 }) {
     let [helpMenuActive, setHelpMenuActive] = useState(false);
+    let [deleteConfirmationActive, setDeleteConfirmationActive] =
+        useState(false);
 
     return (
         <div
@@ -35,6 +37,7 @@ function RecentProject(props: {
                 );
             }}
         >
+            {/* help dialog */}
             <Dialog
                 open={helpMenuActive}
                 onClose={(e) => {
@@ -62,6 +65,71 @@ function RecentProject(props: {
                         }}
                     >
                         {props.t("common:ok")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* delete confirmation dialog */}
+            <Dialog
+                open={deleteConfirmationActive}
+                onClose={(e) => {
+                    //@ts-ignore
+                    e.stopPropagation();
+                    setDeleteConfirmationActive(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {props.t("common:areYouSure")}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {props.t("index:deleteConfirmationContent")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="text"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setDeleteConfirmationActive(false);
+                        }}
+                    >
+                        {props.t("common:no")}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            deleteProjectDB(props.item.id, true).then(
+                                (success) => {
+                                    if (success) {
+                                        store.dispatch(
+                                            createMessage({
+                                                message: props.t(
+                                                    "messages:success.projectDeleted"
+                                                ),
+                                                type: MessageType.Success
+                                            })
+                                        );
+                                    } else {
+                                        store.dispatch(
+                                            createMessage({
+                                                message: props.t(
+                                                    "messages:success.projectNotDeleted"
+                                                ),
+                                                type: MessageType.Information
+                                            })
+                                        );
+                                    }
+                                    props.recreateFunction();
+                                }
+                            );
+                            setDeleteConfirmationActive(false);
+                        }}
+                    >
+                        {props.t("common:yes")}
                     </Button>
                 </DialogActions>
             </Dialog>
@@ -95,29 +163,7 @@ function RecentProject(props: {
                     }}
                     onClick={(e) => {
                         e.stopPropagation();
-
-                        deleteProjectDB(props.item.id, true).then((success) => {
-                            if (success) {
-                                store.dispatch(
-                                    createMessage({
-                                        message: props.t(
-                                            "messages:success.projectDeleted"
-                                        ),
-                                        type: MessageType.Success
-                                    })
-                                );
-                            } else {
-                                store.dispatch(
-                                    createMessage({
-                                        message: props.t(
-                                            "messages:success.projectNotDeleted"
-                                        ),
-                                        type: MessageType.Information
-                                    })
-                                );
-                            }
-                            props.recreateFunction();
-                        });
+                        setDeleteConfirmationActive(true);
                     }}
                 />
             </span>

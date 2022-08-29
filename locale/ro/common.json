@@ -11,9 +11,13 @@
     "generateRandomName": "Generați un nume aleatoriu",
     "license": "Licență",
     "termsOfUse": "Termeni de utilizare",
+    "privacyPolicy": "Politica de confidențialitate",
     "about": "Despre",
+    "help": "Ajutor",
     "scale": "Scară",
     "layer": "Strat",
+    "loading": "Se încarcă",
+    "notFunctional": "Nefuncțional.",
 
     "initial": {
         "privacyPolicyDialogTitle": "Politica de confidențialitate & termenii de utilizare",

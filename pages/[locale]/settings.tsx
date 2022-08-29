@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 import Head from "next/head";
-const getStaticProps = makeStaticProps(["common", "settings", "messages"]);
+const getStaticProps = makeStaticProps(["common", "settingsPage", "messages"]);
 export { getStaticPaths, getStaticProps };
 
 import PrivacyPolicy from "../../components/PrivacyPolicy";
@@ -39,7 +39,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 
 import { db } from "../../src/storage/db";
-import StorageEstimation from "../../components/settings/StorageEstimation";
+import StorageEstimation from "../../components/StorageEstimation";
 import { store } from "../../src/redux/global.store";
 import { createMessage, MessageType } from "../../src/redux/messages.redux";
 
@@ -48,6 +48,8 @@ function Settings() {
     let [language, setLanguage] = useState("en"),
         [theme, setTheme] = useState("dark"),
         [showUnsavedChangesDialog, setShowUnsavedChangesDialog] =
+            useState(false),
+        [showDeleteConfirmationDialog, setShowDeleteConfirmationDialog] =
             useState(false),
         [hasUnsavedSettings, setHasUnsavedSettings] = useState(false),
         [audioValue, setAudioValue] = useState(30);
@@ -177,11 +179,10 @@ function Settings() {
                 </DialogContent>
                 <DialogActions>
                     <Button
-                        variant="outlined"
+                        variant="text"
                         onClick={() => {
                             setShowUnsavedChangesDialog(false);
                         }}
-                        autoFocus
                     >
                         {t("common:cancel")}
                     </Button>
@@ -189,6 +190,67 @@ function Settings() {
                         variant="contained"
                         onClick={() => {
                             document.location.pathname = "/";
+                        }}
+                    >
+                        {t("common:yes")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* delete confirmation dialog */}
+            <Dialog
+                open={showDeleteConfirmationDialog}
+                onClose={() => {
+                    setShowDeleteConfirmationDialog(false);
+                }}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {t("common:areYouSure")}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        {t("settings:deleteLocalDataConfirmationContent")}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        variant="text"
+                        onClick={() => {
+                            setShowDeleteConfirmationDialog(false);
+                        }}
+                    >
+                        {t("common:cancel")}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={() => {
+                            db.delete()
+                                .then(() => {
+                                    store.dispatch(
+                                        createMessage({
+                                            message: t(
+                                                "messages:success.dataDeleted"
+                                            ),
+                                            type: MessageType.Success
+                                        })
+                                    );
+                                })
+                                .catch(() => {
+                                    store.dispatch(
+                                        createMessage({
+                                            message: t(
+                                                "messages:information.dataNotDeleted"
+                                            ),
+                                            type: MessageType.Information
+                                        })
+                                    );
+                                })
+                                .finally(() => {
+                                    localStorage.clear();
+                                    setShowDeleteConfirmationDialog(false);
+                                });
                         }}
                     >
                         {t("common:yes")}
@@ -433,30 +495,7 @@ function Settings() {
                         color="error"
                         variant="contained"
                         onClick={() => {
-                            db.delete()
-                                .then(() => {
-                                    store.dispatch(
-                                        createMessage({
-                                            message: t(
-                                                "messages:success.dataDeleted"
-                                            ),
-                                            type: MessageType.Success
-                                        })
-                                    );
-                                })
-                                .catch(() => {
-                                    store.dispatch(
-                                        createMessage({
-                                            message: t(
-                                                "messages:information.dataNotDeleted"
-                                            ),
-                                            type: MessageType.Information
-                                        })
-                                    );
-                                })
-                                .finally(() => {
-                                    localStorage.clear();
-                                });
+                            setShowDeleteConfirmationDialog(true);
                         }}
                     >
                         {t("settings:deleteLocalData")}

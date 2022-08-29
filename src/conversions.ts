@@ -1,4 +1,9 @@
-export function fileToImageData(file: File) {
+/**
+ * Converts a file to an ImageData object
+ * @param file The file that needs to be converted
+ * @returns A Promise which resolves to the created ImageData object or null if the operation fails
+ */
+export function fileToImageData(file: File): Promise<ImageData> | null {
     try {
         //@ts-ignore Object is possibly "null"
         let url = URL.createObjectURL(file);

@@ -1,0 +1,10 @@
+{
+    "description": "The free and open-source web photo editor.",
+    "previewStatement": "Currently, the project is in preview because only the photo capturing feature works properly. So, expect some features to not work properly.",
+    "bugs": "Found an issue? Please report it on",
+    "sourceCode": "Source code",
+    "sourceCodeText": "You can view the source code, issues, discussions etc. on",
+    "sourceCodeContribution": "You can help the development of Husky Photo Editor by submitting code on GitHub to fix bugs, translate the app in more languages etc. Please consult GitHub documentation and CONTRIBUTING.md file from the Husky Photo Editor repository to learn how you can contribute to open-source software.",
+    "privacyText1": "Please see",
+    "privacyText2": "pages for more information."
+}

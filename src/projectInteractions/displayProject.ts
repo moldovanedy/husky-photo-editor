@@ -5,8 +5,13 @@ import {
     completeProjectLoading,
     setActiveProjectRedux
 } from "../redux/projectManagement.redux";
+import { setProjectAsActive } from "../redux/userInterface.redux";
 import { db } from "../storage/db";
 
+/**
+ * Gets the project data and creates the HTML elements that represent the project (canvases for eact layer and a div element as the parent whose id will be the project's uuid)
+ * @param id The uuid of the project from the db
+ */
 export function displayProject(id: string) {
     let i18n = State.getObject("translationContext");
     db.projects.get(id).then((proj) => {
@@ -17,6 +22,7 @@ export function displayProject(id: string) {
                 canvas.setAttribute("id", `${proj.id}_${i + 1}`);
                 canvas.setAttribute("class", "project");
                 canvas.style.zIndex = `${i + 1}`;
+                canvas.style.border = "3px dashed #000";
                 container?.appendChild(canvas);
                 State.addObject(`${proj.id}_${i + 1}`, canvas);
             }
@@ -29,6 +35,7 @@ export function displayProject(id: string) {
                     if (canvas.getAttribute("id") !== "helpers") {
                         canvas.width = proj.width;
                         canvas.height = proj.height;
+
                         let ctx = canvas.getContext("2d");
                         if (
                             ctx !== null &&
@@ -48,6 +55,9 @@ export function displayProject(id: string) {
                             );
                             ctx.putImageData(imageData, 0, 0);
                             store.dispatch(completeProjectLoading(id));
+                            store.dispatch(
+                                setProjectAsActive(proj.id.toString())
+                            );
                             store.dispatch(
                                 setActiveProjectRedux(proj.id.toString())
                             );

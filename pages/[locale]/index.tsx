@@ -92,7 +92,7 @@ function Home() {
 
             <div className={styles.main}>
                 <h1 className={styles.title}>Husky Photo Editor</h1>
-                <h3>v. 0.3.0</h3>
+                <h3>v. 0.4.0</h3>
                 <h3 style={{ color: "#f00", fontWeight: "bolder" }}>
                     EXPERIMENTAL!!!
                 </h3>
@@ -160,7 +160,7 @@ function Home() {
                                         flexDirection: "column"
                                     }}
                                 >
-                                    <p>Loading...</p>
+                                    <p>{t("common:loading")}...</p>
                                     <aside
                                         style={{
                                             width: "95%",

@@ -1,6 +1,10 @@
 import { store } from "../redux/global.store";
 import { setProjectAsActive } from "../redux/userInterface.redux";
 
+/**
+ * Hides all other opened projects with display: none and shows only the active project
+ * @param id The uuid of the project from the db
+ */
 export function switchActiveProject(id: string) {
     let openedProjects = store.getState().projectManagement;
     store.dispatch(setProjectAsActive(id));

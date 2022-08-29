@@ -17,10 +17,12 @@ import { db } from "../../../src/storage/db";
 function FileMenu(props: {
     anchorElement: Element | ((element: Element) => Element) | null | undefined;
     open: boolean;
-    closeEvent;
+    closeEvent: any;
+    i18n: any;
 }) {
     let filePicker = useRef<HTMLInputElement>(null);
     let [saveDialogOpen, setSaveDialogOpen] = useState(false);
+    let i18n = props.i18n;
 
     return (
         <>
@@ -50,7 +52,7 @@ function FileMenu(props: {
                             sx={{ fontSize: "28px" }}
                         />
                     </ListItemIcon>
-                    Open
+                    {i18n("edit:menu.file.open")}
                     <input
                         style={{
                             opacity: 0,
@@ -88,7 +90,7 @@ function FileMenu(props: {
                             sx={{ fontSize: "28px" }}
                         />
                     </ListItemIcon>
-                    Save
+                    {i18n("edit:menu.file.save")}
                 </MenuItem>
                 <Divider />
 
@@ -105,7 +107,7 @@ function FileMenu(props: {
                             sx={{ fontSize: "28px" }}
                         />
                     </ListItemIcon>
-                    <ListItemText>Exit editor</ListItemText>
+                    <ListItemText>{i18n("edit:menu.exitEditor")}</ListItemText>
                 </MenuItem>
             </Menu>
         </>

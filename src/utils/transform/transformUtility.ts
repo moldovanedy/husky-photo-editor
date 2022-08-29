@@ -1,3 +1,6 @@
+/**
+ * The object representation of the transform string
+ */
 export interface TransformObject {
     translate?: string[];
     translate3d?: string[];
@@ -128,17 +131,26 @@ export function getTransformProperties(transformString: string): string[] {
     }
 }
 
+/**
+ * Representation of the key-value pair for the TransformObject
+ */
 interface KeyValuePair {
     key: string;
     value: string;
 }
 
+/**
+ * Converts a TransformObject to a string
+ * @param transformObject The TransformObject to be converted
+ * @param excludedProperties An array of strings that will be excluded from the construction
+ * @returns The resulting string or null if the TransformObject was null
+ */
 export function convertTransformObjectToString(
     transformObject: TransformObject | null,
     excludedProperties?: string[]
-) {
+): string | null {
     if (transformObject === null) {
-        return;
+        return null;
     }
 
     let transformString = "",

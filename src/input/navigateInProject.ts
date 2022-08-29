@@ -1,14 +1,18 @@
 import { store } from "../redux/global.store";
-import { setZoomFactor } from "../redux/userInterface.redux";
 import { zoomProject } from "../zoomProject";
 
 let eventCache: PointerEvent[] = [],
     previousDiff = -1;
 
+/**
+ * Enables pan and pinch-zoom functionality on a project
+ * @param mainElement The element on which to apply the navigation functionality
+ * @param isInNavigationMode If this is true, all functionality is enabled, if it is false, only the zoom with Ctrl + mouse wheel and middle mouse button navigation will work (so no navigation on mobile is this is false)
+ */
 export function navigateInProject(
     mainElement: HTMLElement,
     isInNavigationMode: boolean
-) {
+): void {
     //remove event listeners
     if (mainElement !== null && !isInNavigationMode) {
         mainElement.onmousedown = () => {};
@@ -27,10 +31,70 @@ export function navigateInProject(
             offsetY = 0,
             isMiddleMouseButon = false;
 
+        let ctrlPressed = false,
+            shiftPressed = false;
+
+        window.onkeydown = (e: KeyboardEvent) => {
+            if (e.ctrlKey) {
+                ctrlPressed = true;
+            }
+            if (e.shiftKey) {
+                shiftPressed = true;
+            }
+        };
+
+        window.onkeyup = (e: KeyboardEvent) => {
+            if (e.key === "Control") {
+                ctrlPressed = false;
+            }
+            if (e.key === "Shift") {
+                shiftPressed = false;
+            }
+        };
+
+        mainElement.onwheel = (e: WheelEvent) => {
+            let zoomFactor = store.getState().userInterface.zoomFactor,
+                nextScale = 1;
+
+            if (e.deltaY > 0) {
+                if (shiftPressed) {
+                    nextScale = zoomFactor - 0.01;
+                } else {
+                    nextScale = zoomFactor - zoomFactor * 0.06;
+                }
+            } else {
+                if (shiftPressed) {
+                    nextScale = zoomFactor + 0.01;
+                } else {
+                    nextScale = zoomFactor + zoomFactor * 0.06;
+                }
+            }
+
+            if (ctrlPressed) {
+                e.preventDefault();
+                zoomProject(
+                    store.getState().userInterface.activeProject,
+                    nextScale,
+                    2
+                );
+            }
+        };
+
+        //the cursor changes only sometimes, why...
         mainElement.onmousedown = (e: MouseEvent) => {
             if (e.button === 1) {
                 isMiddleMouseButon = true;
             }
+
+            setTimeout(() => {
+                mainElement.style.cursor = "move";
+            }, 5);
+        };
+
+        mainElement.onmouseup = () => {
+            setTimeout(() => {
+                mainElement.style.cursor = "default";
+            }, 5);
         };
 
         mainElement.onpointerdown = (e: PointerEvent) => {
@@ -52,7 +116,6 @@ export function navigateInProject(
                 firstX = 0;
                 firstY = 0;
             }
-            mainElement.style.cursor = "grabbing";
         };
 
         mainElement.onpointerup = (e: PointerEvent) => {
@@ -61,11 +124,11 @@ export function navigateInProject(
             if (eventCache.length < 2) {
                 previousDiff = -1;
             }
-            mainElement.style.cursor = "grab";
         };
 
         mainElement.onpointermove = (e: PointerEvent) => {
             if (isPressing && !isMiddleMouseButon) {
+                mainElement.style.cursor = "move";
                 for (let i = 0; i < eventCache.length; i++) {
                     if (e.pointerId === eventCache[i].pointerId) {
                         eventCache[i] = e;
@@ -98,7 +161,6 @@ export function navigateInProject(
                                 nextScale,
                                 2
                             );
-                            store.dispatch(setZoomFactor(nextScale));
                         }
                         if (curDiff < previousDiff) {
                             // The distance between the two pointers has decreased
@@ -108,7 +170,6 @@ export function navigateInProject(
                                 nextScale,
                                 2
                             );
-                            store.dispatch(setZoomFactor(nextScale));
                         }
                     }
 
@@ -126,8 +187,11 @@ export function navigateInProject(
     }
 }
 
+/**
+ * Removes the event from the target's cache
+ * @param e The pointer event to be removed
+ */
 function removeEvent(e: PointerEvent) {
-    // Remove this event from the target's cache
     for (let i = 0; i < eventCache.length; i++) {
         if (eventCache[i].pointerId === e.pointerId) {
             eventCache.splice(i, 1);

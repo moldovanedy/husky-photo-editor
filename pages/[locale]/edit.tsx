@@ -18,7 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { Box, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
-import { useTranslation } from "next-i18next";
+import { i18n, useTranslation } from "next-i18next";
 
 import BuildIcon from "@mui/icons-material/Build";
 import ZoomOutIcon from "@mui/icons-material/ZoomOut";
@@ -34,11 +34,12 @@ import {
 import { navigateInProject } from "../../src/input/navigateInProject";
 import { db } from "../../src/storage/db";
 import { displayProject } from "../../src/projectInteractions/displayProject";
+import FrameHelp from "../../components/UI/FrameHelp";
+import ToolOptionsBase from "../../components/UI/ToolOptionsBase";
+import MoveTool from "../../components/Editor/ToolOptions/MoveTool";
 
 const getStaticProps = makeStaticProps(["common", "messages", "edit"]);
 export { getStaticPaths, getStaticProps };
-
-export const Translation = createContext(null);
 
 function Edit() {
     let mainElement = useRef<HTMLElement>(null);
@@ -201,8 +202,10 @@ function Edit() {
                 />
             ) : null}
 
-            <TopBar />
+            <TopBar i18n={t} />
             <ProjectsBar i18n={t} />
+
+            <FrameHelp i18n={t} />
 
             <main
                 ref={mainElement}
@@ -227,15 +230,16 @@ function Edit() {
                                       .windowHeight -
                                       State.getObject("toolbar").offsetTop)
                               }px`
-                            : "300px",
-                    cursor: isInNavigationMode ? "grab" : "default"
+                            : "300px"
                 }}
             >
                 {/* helpers canvas is where we display all graphical elements that help the user understand the tool (these are called "Gizmos" in Blender) */}
                 <canvas
                     id="helpers"
                     style={{
-                        position: "fixed"
+                        position: "fixed",
+                        pointerEvents: "none",
+                        zIndex: 8000
                     }}
                 ></canvas>
                 {isWorkInProgress ? (
@@ -316,12 +320,18 @@ function Edit() {
                             className={styles.canvasContainer}
                             id={project.id}
                             key={index}
+                            style={{
+                                marginBottom: project.height * zoomFactor + 200,
+                                marginRight: project.width * zoomFactor + 200
+                            }}
                         ></div>
                     );
                 })}
             </main>
 
             <Tools i18n={t} />
+
+            <MoveTool i18n={t} />
         </>
     );
 }

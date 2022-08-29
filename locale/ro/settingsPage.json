@@ -12,6 +12,7 @@
     "storageEstimationText": "Se folosesc {{bytesUsed}} din {{bytesAvailable}} disponibili",
     "unsupportedStorageEstimation": "Estimarea spațiului de stocare nu este disponibilă în browser-ul dvs.",
     "deleteLocalData": "Ștergeți toate datele locale",
+    "deleteLocalDataConfirmationContent": "Sunteți sigur/ă că vreți să ștergeți toate datele locale? Aceasta va șterge permanent toate proiectele și setările.",
     "disableLogoSpin": "Dezactivați logo-ul rotitor când se încarcă pagina",
     "enableSounds": "Activați efecte sonore",
     "volume": "Volum",

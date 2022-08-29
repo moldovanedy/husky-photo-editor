@@ -31,6 +31,11 @@ function TakePhoto() {
     let [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
     useEffect(() => {
+        let context = State.getObject("translationContext");
+        if (context === null) {
+            State.addObject("translationContext", t);
+        }
+
         window.onresize = () => {
             scaleCanvas(canvasElement.current);
         };

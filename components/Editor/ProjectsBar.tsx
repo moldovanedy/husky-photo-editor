@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { switchActiveProject } from "../../src/projectInteractions/switchActiveProject";
 import { RootState, store } from "../../src/redux/global.store";
 import {
+    deleteProjectRedux,
     ProjectInState,
     setActiveProjectRedux
 } from "../../src/redux/projectManagement.redux";
@@ -24,6 +25,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import { deleteProjectDB } from "../../src/storage/projectManagement";
 import { createMessage, MessageType } from "../../src/redux/messages.redux";
 import { useSelector } from "react-redux";
+import { displayProject } from "../../src/projectInteractions/displayProject";
+import { db } from "../../src/storage/db";
+import { addOrModifyMiscDataDB } from "../../src/storage/miscDataManager";
 
 function ProjectsBar(props: { i18n: any }) {
     let projectsBar = useRef<HTMLDivElement>(null);
@@ -107,7 +111,43 @@ function ProjectsBar(props: { i18n: any }) {
             setDialogOpen(false);
         }
 
-        function saveProject() {}
+        function saveProject() {
+            db.misc.get("openedProjects").then((projects) => {
+                store.dispatch(
+                    deleteProjectRedux(
+                        store.getState().userInterface.activeProject
+                    )
+                );
+                if (projects !== undefined) {
+                    let index = -1;
+                    for (let i = 0; i < projects.value.length; i++) {
+                        if (
+                            projects.value[i] ===
+                            store.getState().userInterface.activeProject
+                        ) {
+                            index = i;
+                        }
+                    }
+
+                    if (index !== -1) {
+                        projects.value.splice(index, 1);
+                    }
+
+                    setTimeout(() => {
+                        projects.value.forEach((item) => {
+                            displayProject(item);
+                        });
+                    }, 200);
+
+                    addOrModifyMiscDataDB("openedProjects", {
+                        key: projects.key,
+                        value: projects.value
+                    });
+
+                    closeDialog();
+                }
+            });
+        }
 
         function deleteProject() {
             deleteProjectDB(store.getState().userInterface.activeProject).then(
@@ -155,6 +195,7 @@ function ProjectsBar(props: { i18n: any }) {
                 </DialogContent>
                 <DialogActions>
                     <Button
+                        variant="text"
                         onClick={() => {
                             closeDialog();
                         }}
@@ -162,6 +203,7 @@ function ProjectsBar(props: { i18n: any }) {
                         {i18n("common:cancel")}
                     </Button>
                     <Button
+                        variant="text"
                         onClick={() => {
                             deleteProject();
                         }}
@@ -169,6 +211,7 @@ function ProjectsBar(props: { i18n: any }) {
                         {i18n("common:no")}
                     </Button>
                     <Button
+                        variant="contained"
                         onClick={() => {
                             saveProject();
                         }}

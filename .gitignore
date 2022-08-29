@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+#statistics
+/.VSCodeCounter
+
 # next.js
 /.next/
 /out/

@@ -1,0 +1,35 @@
+.mainMobile {
+    width: 100vw;
+    position: fixed;
+    bottom: 0;
+    z-index: 9000;
+    background-color: var(--main-app-color);
+    transition: height 0.5s ease-in-out;
+}
+
+.topBar {
+    width: 100vw;
+    height: 32px;
+    background-color: var(--main-theme-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    touch-action: none;
+
+    .title {
+        position: relative;
+        font-size: 22px;
+        width: 100%;
+        text-align: center;
+        cursor: ns-resize;
+
+        div {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            opacity: 0.5;
+        }
+    }
+}

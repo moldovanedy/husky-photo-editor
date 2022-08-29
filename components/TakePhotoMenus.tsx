@@ -217,18 +217,34 @@ export function DownscaleMenu({ i18n }) {
             return;
         } else {
             createImageBitmap(canvasRef).then((imgBitmap) => {
-                image = imgBitmap;
-                //@ts-ignore Object is possibly 'null'
-                ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
-                canvasRef.width = Math.round(imgBitmap.width * downscaleRatio);
-                canvasRef.height = Math.round(
-                    imgBitmap.height * downscaleRatio
-                );
+                try {
+                    image = imgBitmap;
+                    //@ts-ignore Object is possibly 'null'
+                    ctx.clearRect(0, 0, canvasRef.width, canvasRef.height);
+                    canvasRef.width = Math.round(
+                        imgBitmap.width * downscaleRatio
+                    );
+                    canvasRef.height = Math.round(
+                        imgBitmap.height * downscaleRatio
+                    );
 
-                //@ts-ignore Object is possibly 'null'
-                ctx.scale(downscaleRatio, downscaleRatio);
-                //@ts-ignore Object is possibly 'null'
-                ctx.drawImage(image, 0, 0);
+                    //@ts-ignore Object is possibly 'null'
+                    ctx.scale(downscaleRatio, downscaleRatio);
+                    //@ts-ignore Object is possibly 'null'
+                    ctx.drawImage(image, 0, 0);
+                } catch (e) {
+                    store.dispatch(
+                        createMessage({
+                            message: i18n(
+                                "messages:errors.unsupportedFeature",
+                                {
+                                    feature: "ImageBitmap"
+                                }
+                            ),
+                            type: MessageType.Error
+                        })
+                    );
+                }
             });
         }
     }

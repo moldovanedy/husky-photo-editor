@@ -6,10 +6,11 @@ import styles from "../../styles/about.module.scss";
 import Link from "../../components/Link";
 import Header from "../../components/Header";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
-const getStaticProps = makeStaticProps(["common", "messages"]);
+const getStaticProps = makeStaticProps(["common", "messages", "about"]);
 export { getStaticPaths, getStaticProps };
 
 function About() {
@@ -32,7 +33,7 @@ function About() {
     return (
         <>
             <Home>
-                <title>About</title>
+                <title>{t("common:about")}</title>
                 <meta
                     property="og:url"
                     content="https://huskyphotoeditor.netlify.app/about"
@@ -52,7 +53,72 @@ function About() {
                 />
             ) : null}
 
-            <main></main>
+            <main
+                style={{
+                    width: "100%"
+                }}
+            >
+                <div
+                    style={{
+                        margin: "auto",
+                        width: "90%",
+                        maxWidth: "1200px"
+                    }}
+                >
+                    <Link href={"/"}>
+                        <ArrowBackIcon
+                            className="themeDependentIcon"
+                            sx={{
+                                fontSize: "50px",
+                                marginTop: "70px",
+                                color: "#fff"
+                            }}
+                        />
+                    </Link>
+
+                    <h1 style={{ marginTop: "0px" }}>Husky Photo Editor</h1>
+                    <p>{t("about:description")}</p>
+                    <p>{t("about:previewStatement")}</p>
+                    <p>
+                        {t("about:bugs")}{" "}
+                        <a
+                            href="https://github.com"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            GitHub
+                        </a>
+                        .
+                    </p>
+
+                    <h3>{t("about:sourceCode")}</h3>
+                    <p>
+                        {t("about:sourceCodeText")}
+                        <a
+                            href="https://github.com"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {" "}
+                            GitHub
+                        </a>
+                        . {t("about:sourceCodeContribution")}
+                    </p>
+
+                    <h3>{t("common:initial.privacyPolicyDialogTitle")}</h3>
+                    <p>
+                        {t("about:privacyText1")}{" "}
+                        <Link href="/privacy-policy">
+                            {t("common:privacyPolicy")}
+                        </Link>
+                        ,{" "}
+                        <Link href="/terms-of-use">
+                            {t("common:termsOfUse")}
+                        </Link>{" "}
+                        {t("about:privacyText2")}
+                    </p>
+                </div>
+            </main>
         </>
     );
 }

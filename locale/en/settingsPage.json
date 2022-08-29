@@ -12,6 +12,7 @@
     "storageEstimationText": "Using {{bytesUsed}} out of {{bytesAvailable}} available",
     "unsupportedStorageEstimation": "Storage estimation is not supported on your browser.",
     "deleteLocalData": "Delete all local data",
+    "deleteLocalDataConfirmationContent": "Are you sure you want to delete all local data? This will permanently delete all projects and settings.",
     "disableLogoSpin": "Disable app logo spin when a page is loading",
     "enableSounds": "Enable sounds",
     "volume": "Volume",

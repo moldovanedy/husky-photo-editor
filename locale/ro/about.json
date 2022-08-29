@@ -1,0 +1,10 @@
+{
+    "description": "Editorul web de fotografii gratiuit și open-source.",
+    "previewStatement": "Momentan, proiectul este în previzualizare deoarece doar caracteristica de capturare a fotografiilor funcționează corect. Așadar, așteptați-vă ca unele funcții să nu funcționeze corespunzător.",
+    "bugs": "Ați găsit o eroare? Vă rugăm raportați-o pe",
+    "sourceCode": "Codul sursă",
+    "sourceCodeText": "Puteți vedea codul sursă, probleme, discuții etc. pe",
+    "sourceCodeContribution": "Puteți ajuta dezvoltarea Husky Photo Editor prin a trimite cod pe GitHub pentru a rezolva erori, traduce aplicația în mai multe limbi etc. Vă rugăm consultați documentația GitHub și fișierul CONTRIBUTING.md din depozitul de cod Husky Photo Editor pentru a vedea cum puteți contribui la software-ul open-source.",
+    "privacyText1": "Vă rugăm vizitați paginile",
+    "privacyText2": "pentru mai multe informații."
+}

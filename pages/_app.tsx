@@ -21,6 +21,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import CompatibilityCheck from "../components/CompatibilityCheck";
 
 function MyApp({ Component, pageProps }: AppProps) {
     let [theme, setTheme] = useState("dark");
@@ -52,6 +53,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Provider store={store}>
                 <ThemeProvider defaultTheme="dark">
                     <MaterialUI theme={muiTheme}>
+                        <CompatibilityCheck />
                         <LoadingScreen />
                         <Component {...pageProps} />
                         <ShowMessages />

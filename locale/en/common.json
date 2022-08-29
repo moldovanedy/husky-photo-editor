@@ -11,9 +11,13 @@
     "generateRandomName": "Generate random name",
     "license": "License",
     "termsOfUse": "Terms of use",
+    "privacyPolicy": "Privacy policy",
     "about": "About",
+    "help": "Help",
     "scale": "Scale",
     "layer": "Layer",
+    "loading": "Loading",
+    "notFunctional": "Not functional.",
 
     "initial": {
         "privacyPolicyDialogTitle": "Privacy policy & terms of use",

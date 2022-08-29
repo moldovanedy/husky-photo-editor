@@ -48,7 +48,6 @@ function PhotoResult(props: any) {
             <BottomBar i18n={props.i18n} />
             <div
                 style={{
-                    cursor: "grab",
                     imageRendering: "pixelated",
                     height: "100%"
                 }}

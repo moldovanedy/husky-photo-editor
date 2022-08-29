@@ -6,6 +6,8 @@ export interface UI {
     activeProject: string;
     zoomFactor: number;
     isInNavigationMode: boolean;
+    helpMenuActive: boolean;
+    helpMenuUrl: string;
 }
 
 const initialState: UI = {
@@ -13,7 +15,9 @@ const initialState: UI = {
     workInProgress: false,
     activeProject: "",
     zoomFactor: 1,
-    isInNavigationMode: true
+    isInNavigationMode: true,
+    helpMenuActive: false,
+    helpMenuUrl: ""
 };
 
 export const userInterfaceSlice = createSlice({
@@ -25,6 +29,14 @@ export const userInterfaceSlice = createSlice({
         },
         closeMainMenu: (state: UI) => {
             state.mainMenuOpen = false;
+        },
+        openHelpMenu: (state: UI, action: PayloadAction<string>) => {
+            state.helpMenuActive = true;
+            state.helpMenuUrl = action.payload;
+        },
+        closeHelpMenu: (state: UI) => {
+            state.helpMenuActive = false;
+            state.helpMenuUrl = "";
         },
         startWork: (state: UI) => {
             state.workInProgress = true;
@@ -50,6 +62,8 @@ export const userInterfaceSlice = createSlice({
 export const {
     openMainMenu,
     closeMainMenu,
+    openHelpMenu,
+    closeHelpMenu,
     startWork,
     completeWork,
     setProjectAsActive,

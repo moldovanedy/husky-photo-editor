@@ -1,7 +1,33 @@
 {
-    "menu": {},
+    "menu": {
+        "file": {
+            "fileText": "File",
+            "open": "Open",
+            "save": "Save"
+        },
+        "view": {
+            "viewText": "View",
+            "zoom": "Zoom",
+            "zoomIn": "Zoom in",
+            "zoomOut": "Zoom out",
+            "navigationMode": "Navigation mode"
+        },
+        "help": {
+            "helpText": "Help",
+            "manual": "Manual",
+            "about": "About"
+        },
+        "exitEditor": "Exit editor"
+    },
+
     "projectManagement": {
         "saveProjectText": "Save project",
         "saveProjectDialogContent": "Would you like to save the project locally? If you save your project locally, in the browser's storage, you will be able to access it at any time."
+    },
+
+    "toolOptions": {
+        "moveTool": {
+            "title": "Move"
+        }
     }
 }

@@ -37,7 +37,7 @@ class HuskyDocument extends Document {
                     <meta name="theme-color" content="#3326a7" />
                     <meta
                         name="description"
-                        content="The free web photo editor"
+                        content="The free and open-source web photo editor"
                     />
                     <meta charSet="UTF-8" />
                     <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -51,7 +51,7 @@ class HuskyDocument extends Document {
                     <meta property="og:type" content="website" />
                     <meta
                         property="og:description"
-                        content="The free web photo editor"
+                        content="The free and open-source web photo editor."
                     />
                     <meta
                         property="og:site_name"
@@ -68,6 +68,17 @@ class HuskyDocument extends Document {
                     <meta
                         property="og:image:alt"
                         content="Husky Photo Editor logo"
+                    />
+
+                    <meta name="twitter:card" content="summary" />
+                    <meta name="twitter:title" content="Husky Photo Editor" />
+                    <meta
+                        name="twitter:description"
+                        content="The free and open-source web photo editor."
+                    />
+                    <meta
+                        name="twitter:image"
+                        content="https://huskyphotoeditor.netlify.app/assets/logo/logo512x512.png"
                     />
                 </Head>
                 <body>
