@@ -79,7 +79,7 @@ function FrameHelp(props: { i18n: any }) {
                     // }}
                 ></iframe>
                 <a
-                    href={`http://localhost:8080${frameSrc}`}
+                    href={`http://huskyphotoeditor.netlify.app${frameSrc}`}
                     target="_blank"
                     rel="noreferrer"
                 >

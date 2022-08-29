@@ -82,7 +82,7 @@ function About() {
                     <p>
                         {t("about:bugs")}{" "}
                         <a
-                            href="https://github.com"
+                            href="https://github.com/moldovanedy/husky-photo-editor/issues"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -95,7 +95,7 @@ function About() {
                     <p>
                         {t("about:sourceCodeText")}
                         <a
-                            href="https://github.com"
+                            href="https://github.com/moldovanedy/husky-photo-editor"
                             target="_blank"
                             rel="noreferrer"
                         >

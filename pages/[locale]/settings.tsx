@@ -142,7 +142,7 @@ function Settings() {
     return (
         <>
             <Head>
-                <title>{t("settings:settings")}</title>
+                <title>{t("settingsPage:settings")}</title>
                 <meta
                     property="og:url"
                     content="https://huskyphotoeditor.netlify.app/settings"
@@ -174,7 +174,7 @@ function Settings() {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {t("settings:unsavedChangesDialogContent")}
+                        {t("settingsPage:unsavedChangesDialogContent")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -211,7 +211,7 @@ function Settings() {
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {t("settings:deleteLocalDataConfirmationContent")}
+                        {t("settingsPage:deleteLocalDataConfirmationContent")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -268,11 +268,11 @@ function Settings() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {t("settings:helpers.soundsTitle")}
+                    {t("settingsPage:helpers.soundsTitle")}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {t("settings:helpers.soundsContent")}
+                        {t("settingsPage:helpers.soundsContent")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -297,11 +297,11 @@ function Settings() {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {t("settings:helpers.logoSpinTitle")}
+                    {t("settingsPage:helpers.logoSpinTitle")}
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
-                        {t("settings:helpers.logoSpinContent")}
+                        {t("settingsPage:helpers.logoSpinContent")}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
@@ -335,7 +335,7 @@ function Settings() {
                 />
 
                 <h1 style={{ textAlign: "center", marginBottom: "40px" }}>
-                    {t("settings:settings")}
+                    {t("settingsPage:settings")}
                 </h1>
 
                 <div>
@@ -350,12 +350,12 @@ function Settings() {
                         }}
                     >
                         <InputLabel id="languageSelector">
-                            {t("settings:language")}
+                            {t("settingsPage:language")}
                         </InputLabel>
                         <Select
                             labelId="languageSelector"
                             value={language}
-                            label={t("settings:language")}
+                            label={t("settingsPage:language")}
                             onChange={(e) => {
                                 setLanguage(e.target.value);
                                 setHasUnsavedSettings(true);
@@ -368,7 +368,9 @@ function Settings() {
 
                     {/* theme */}
                     <FormControl className={styles.displayBlockLabels}>
-                        <FormLabel>{t("settings:theme.themeText")}</FormLabel>
+                        <FormLabel>
+                            {t("settingsPage:theme.themeText")}
+                        </FormLabel>
                         <RadioGroup
                             value={theme}
                             name="radio-buttons-group"
@@ -380,17 +382,17 @@ function Settings() {
                             <FormControlLabel
                                 value="dark"
                                 control={<Radio />}
-                                label={t("settings:theme.darkTheme")}
+                                label={t("settingsPage:theme.darkTheme")}
                             />
                             <FormControlLabel
                                 value="light"
                                 control={<Radio />}
-                                label={t("settings:theme.lightTheme")}
+                                label={t("settingsPage:theme.lightTheme")}
                             />
                             <FormControlLabel
                                 value="system"
                                 control={<Radio />}
-                                label={t("settings:theme.systemTheme")}
+                                label={t("settingsPage:theme.systemTheme")}
                             />
                         </RadioGroup>
                     </FormControl>
@@ -412,7 +414,7 @@ function Settings() {
                                         flexWrap: "wrap"
                                     }}
                                 >
-                                    {t("settings:enableSounds")}
+                                    {t("settingsPage:enableSounds")}
                                     <InfoIcon
                                         onClick={() => {
                                             setSettings((previousValue) => ({
@@ -498,13 +500,13 @@ function Settings() {
                             setShowDeleteConfirmationDialog(true);
                         }}
                     >
-                        {t("settings:deleteLocalData")}
+                        {t("settingsPage:deleteLocalData")}
                     </Button>
                 </div>
                 <hr />
 
                 <div>
-                    <h2>{t("settings:accesibility")}</h2>
+                    <h2>{t("settingsPage:accesibility")}</h2>
 
                     {/* logo spin */}
                     <FormGroup className={styles.displayBlockLabels}>
@@ -522,7 +524,7 @@ function Settings() {
                                         flexWrap: "wrap"
                                     }}
                                 >
-                                    {t("settings:disableLogoSpin")}
+                                    {t("settingsPage:disableLogoSpin")}
                                     <InfoIcon
                                         onClick={() => {
                                             setSettings((previousValue) => ({
@@ -555,7 +557,7 @@ function Settings() {
                         saveSettings();
                     }}
                 >
-                    {t("settings:save")}
+                    {t("settingsPage:save")}
                 </Button>
             </div>
         </>
