@@ -2,7 +2,7 @@
 import React from "react";
 import Head from "next/head";
 
-import styles from "./../../styles/privacy-policy.module.scss";
+import styles from "../../styles/privacy-policy.module.scss";
 import Link from "../../components/Link";
 
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
