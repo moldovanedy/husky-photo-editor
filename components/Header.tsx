@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
-import styles from "../styles/home.module.scss";
+import styles from "../styles/Home.module.scss";
 import Link from "./Link";
 import SettingsIcon from "@mui/icons-material/Settings";
 

@@ -2,7 +2,7 @@
 import Head from "next/head";
 import Link from "./../../components/Link";
 
-import styles from "../../styles/home.module.scss";
+import styles from "../../styles/Home.module.scss";
 import { getStaticPaths, makeStaticProps } from "./../../lib/getStatic";
 import { useTranslation } from "next-i18next";
 import PrivacyPolicy from "../../components/PrivacyPolicy";
