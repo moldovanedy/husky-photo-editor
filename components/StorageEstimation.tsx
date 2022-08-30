@@ -46,7 +46,7 @@ function StorageEstimation({ i18n }) {
                     </meter>
                     <p>
                         {/* we use the standard MB, GB etc. insetad MiB, GiB etc. because browsers interpret storage like this */}
-                        {i18n("settings:storageEstimationText", {
+                        {i18n("settingsPage:storageEstimationText", {
                             bytesUsed:
                                 usedStorage <= Math.pow(10, 6)
                                     ? `${(
@@ -75,7 +75,7 @@ function StorageEstimation({ i18n }) {
                     </p>
                 </>
             ) : (
-                <p>{i18n("settings:unsupportedStorageEstimation")}</p>
+                <p>{i18n("settingsPage:unsupportedStorageEstimation")}</p>
             )}
         </>
     );

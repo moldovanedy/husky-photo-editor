@@ -92,7 +92,7 @@ function Home() {
 
             <div className={styles.main}>
                 <h1 className={styles.title}>Husky Photo Editor</h1>
-                <h3>v. 0.4.0</h3>
+                <h3>v. 0.4.2</h3>
                 <h3 style={{ color: "#f00", fontWeight: "bolder" }}>
                     EXPERIMENTAL!!!
                 </h3>
