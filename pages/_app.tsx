@@ -39,6 +39,13 @@ function MyApp({ Component, pageProps }: AppProps) {
         if (settedLang !== null) {
             document.documentElement.setAttribute("lang", settedLang);
         }
+
+        navigator.serviceWorker.register("/sw.js", { scope: "/" }).then(
+            () => {},
+            function (err) {
+                console.log("Service Worker registration failed: ", err);
+            }
+        );
     }, []);
 
     let muiTheme = createTheme({

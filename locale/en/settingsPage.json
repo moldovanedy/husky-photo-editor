@@ -10,6 +10,7 @@
         "systemTheme": "System"
     },
     "storageEstimationText": "Using {{bytesUsed}} out of {{bytesAvailable}} available",
+    "storageEstimationNote": "(2-3 MB represents cache memory, not projects)",
     "unsupportedStorageEstimation": "Storage estimation is not supported on your browser.",
     "deleteLocalData": "Delete all local data",
     "deleteLocalDataConfirmationContent": "Are you sure you want to delete all local data? This will permanently delete all projects and settings.",

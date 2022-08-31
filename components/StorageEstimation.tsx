@@ -73,6 +73,9 @@ function StorageEstimation({ i18n }) {
                                       ).toFixed(2)} GB`
                         })}
                     </p>
+                    <p style={{ fontSize: "14px" }}>
+                        {i18n("settingsPage:storageEstimationNote")}
+                    </p>
                 </>
             ) : (
                 <p>{i18n("settingsPage:unsupportedStorageEstimation")}</p>

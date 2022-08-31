@@ -5,11 +5,17 @@ All notable changes to this project from its first public release (version 0.4.0
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html) since version 0.4.0.
 
+## 0.4.3 (2022-08-31)
+
+### Changed
+
+-   Uninstall next-pwa and create service worker from scratch which will hopefully end the PWA installation problem.
+
 ## 0.4.2 (2022-08-30)
 
 ### Changed
 
--   Configuration files and netlify-specific files that caused the app to not build or fail installing as a PWA
+-   Configuration files and netlify-specific files that caused the app to not build or fail installing as a PWA.
 
 ## 0.4.1 (2022-08-29)
 
@@ -19,7 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
--   Fix bug that caused the app to not display settings page text properly
+-   Fix bug that caused the app to not display settings page text properly.
 
 ## 0.4.0 (2022-08-29)
 

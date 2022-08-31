@@ -1,1 +1,93 @@
-if(!self.define){let e,s={};const a=(a,n)=>(a=new URL(a+".js",n).href,s[a]||new Promise((s=>{if("document"in self){const e=document.createElement("script");e.src=a,e.onload=s,document.head.appendChild(e)}else e=a,importScripts(a),s()})).then((()=>{let e=s[a];if(!e)throw new Error(`Module ${a} didn’t register its module`);return e})));self.define=(n,t)=>{const c=e||("document"in self?document.currentScript.src:"")||location.href;if(s[c])return;let i={};const o=e=>a(e,c),r={module:{uri:c},exports:i,require:o};s[c]=Promise.all(n.map((e=>r[e]||o(e)))).then((e=>(t(...e),i)))}}define(["./workbox-5f5b08d6"],(function(e){"use strict";importScripts(),self.skipWaiting(),e.clientsClaim(),e.precacheAndRoute([{url:"/_next/static/IYGxw_As2N3c7oVluY8Wu/_buildManifest.js",revision:"5491d7c4be0ae9d1e83fa300ec6984b0"},{url:"/_next/static/IYGxw_As2N3c7oVluY8Wu/_ssgManifest.js",revision:"b6652df95db52feb4daf4eca35380933"},{url:"/_next/static/chunks/459-efbea4a253160079.js",revision:"efbea4a253160079"},{url:"/_next/static/chunks/575-dfb2db32acd52728.js",revision:"dfb2db32acd52728"},{url:"/_next/static/chunks/f357f4e3-d756e0a784f64108.js",revision:"d756e0a784f64108"},{url:"/_next/static/chunks/framework-4556c45dd113b893.js",revision:"4556c45dd113b893"},{url:"/_next/static/chunks/main-faa700f629aac78e.js",revision:"faa700f629aac78e"},{url:"/_next/static/chunks/pages/%5Blocale%5D-b38bf87d910f95c2.js",revision:"b38bf87d910f95c2"},{url:"/_next/static/chunks/pages/%5Blocale%5D/privacy-policy-101cb69747633f2a.js",revision:"101cb69747633f2a"},{url:"/_next/static/chunks/pages/%5Blocale%5D/settings-d756977c4c4d2d53.js",revision:"d756977c4c4d2d53"},{url:"/_next/static/chunks/pages/%5Blocale%5D/take-photo-3207100eb79f22ef.js",revision:"3207100eb79f22ef"},{url:"/_next/static/chunks/pages/404-628e47840c031fea.js",revision:"628e47840c031fea"},{url:"/_next/static/chunks/pages/_app-d34c401489e1171d.js",revision:"d34c401489e1171d"},{url:"/_next/static/chunks/pages/_error-a4ba2246ff8fb532.js",revision:"a4ba2246ff8fb532"},{url:"/_next/static/chunks/pages/index-f3b9ee79be601536.js",revision:"f3b9ee79be601536"},{url:"/_next/static/chunks/pages/privacy-policy-8926cfa4986b7d48.js",revision:"8926cfa4986b7d48"},{url:"/_next/static/chunks/pages/settings-e74c0a7b14616378.js",revision:"e74c0a7b14616378"},{url:"/_next/static/chunks/pages/take-photo-4bbf8a457d79fc33.js",revision:"4bbf8a457d79fc33"},{url:"/_next/static/chunks/polyfills-0d1b80a048d4787e.js",revision:"40ccea369337cec877151c906f22814d"},{url:"/_next/static/chunks/webpack-5752944655d749a0.js",revision:"5752944655d749a0"},{url:"/_next/static/css/19117486a616c65d.css",revision:"19117486a616c65d"},{url:"/_next/static/css/47a9cd479472a17d.css",revision:"47a9cd479472a17d"},{url:"/_next/static/css/7222c0404d1d1db3.css",revision:"7222c0404d1d1db3"},{url:"/_next/static/css/c76839c76b6f7280.css",revision:"c76839c76b6f7280"},{url:"/_next/static/css/ead8198d34efa20d.css",revision:"ead8198d34efa20d"},{url:"/assets/icons/editPhoto.png",revision:"d3db018615db37b2d62db4245b47c663"},{url:"/assets/icons/takePhoto.png",revision:"608df627b968ad586f759542207028f1"},{url:"/assets/logo/logo.svg",revision:"8cd15e01384f0cb7a0b2fec6b2a255f3"},{url:"/assets/logo/logo1024x1024.png",revision:"6ce285dbb1fee5594e46f032af3e8d05"},{url:"/assets/logo/logo128x128.png",revision:"3175e1d196aa25a1ec27524a33db1c84"},{url:"/assets/logo/logo192x192.png",revision:"b3d3f84244710efa8444ce030dba97bd"},{url:"/assets/logo/logo256x256.png",revision:"6749fce1e50d9d2d41d05041c8c4dc83"},{url:"/assets/logo/logo384x384.png",revision:"681f878456d5a2fa3c3899589b8a0629"},{url:"/assets/logo/logo512x512.png",revision:"c69d2549c85cd23cb51fcbd4f665fa33"},{url:"/assets/logo/logo64x64.png",revision:"c54fef649b121d8a3b2b7ddf9dfc5b57"},{url:"/assets/logo/maskable_icon.png",revision:"4b5430d6ebda6b285249a081ef0fea0c"},{url:"/favicon.ico",revision:"744054cf8464dbe743753e67d9af0623"},{url:"/manifest.json",revision:"198e4293170869c117145d1f6f3d1750"},{url:"/robots.txt",revision:"d41d8cd98f00b204e9800998ecf8427e"},{url:"/vercel.svg",revision:"4b4f1876502eb6721764637fe5c41702"}],{ignoreURLParametersMatching:[]}),e.cleanupOutdatedCaches(),e.registerRoute("/",new e.NetworkFirst({cacheName:"start-url",plugins:[{cacheWillUpdate:async({request:e,response:s,event:a,state:n})=>s&&"opaqueredirect"===s.type?new Response(s.body,{status:200,statusText:"OK",headers:s.headers}):s}]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:gstatic)\.com\/.*/i,new e.CacheFirst({cacheName:"google-fonts-webfonts",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:31536e3})]}),"GET"),e.registerRoute(/^https:\/\/fonts\.(?:googleapis)\.com\/.*/i,new e.StaleWhileRevalidate({cacheName:"google-fonts-stylesheets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:eot|otf|ttc|ttf|woff|woff2|font.css)$/i,new e.StaleWhileRevalidate({cacheName:"static-font-assets",plugins:[new e.ExpirationPlugin({maxEntries:4,maxAgeSeconds:604800})]}),"GET"),e.registerRoute(/\.(?:jpg|jpeg|gif|png|svg|ico|webp)$/i,new e.StaleWhileRevalidate({cacheName:"static-image-assets",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/image\?url=.+$/i,new e.StaleWhileRevalidate({cacheName:"next-image",plugins:[new e.ExpirationPlugin({maxEntries:64,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp3|wav|ogg)$/i,new e.CacheFirst({cacheName:"static-audio-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:mp4)$/i,new e.CacheFirst({cacheName:"static-video-assets",plugins:[new e.RangeRequestsPlugin,new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:js)$/i,new e.StaleWhileRevalidate({cacheName:"static-js-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:css|less)$/i,new e.StaleWhileRevalidate({cacheName:"static-style-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\/_next\/data\/.+\/.+\.json$/i,new e.StaleWhileRevalidate({cacheName:"next-data",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute(/\.(?:json|xml|csv)$/i,new e.NetworkFirst({cacheName:"static-data-assets",plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;const s=e.pathname;return!s.startsWith("/api/auth/")&&!!s.startsWith("/api/")}),new e.NetworkFirst({cacheName:"apis",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:16,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>{if(!(self.origin===e.origin))return!1;return!e.pathname.startsWith("/api/")}),new e.NetworkFirst({cacheName:"others",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:86400})]}),"GET"),e.registerRoute((({url:e})=>!(self.origin===e.origin)),new e.NetworkFirst({cacheName:"cross-origin",networkTimeoutSeconds:10,plugins:[new e.ExpirationPlugin({maxEntries:32,maxAgeSeconds:3600})]}),"GET")}));
+try {
+    const PRECACHE = "precache-v2";
+    const RUNTIME = "runtime";
+
+    // A list of local resources we always want to be cached.
+    const PRECACHE_URLS = [
+        "/",
+        "/take-photo",
+        "/edit",
+        "/privacy-policy",
+        "/settings",
+        "/favicon.ico",
+        "/assets/logo/logo.svg",
+        "/assets/logo/logo64x64.png",
+        "/assets/logo/logo192x192.png",
+        "/assets/logo/logo512x512.png"
+    ];
+
+    // The install handler takes care of precaching the resources we always need.
+    self.addEventListener("install", (event) => {
+        event.waitUntil(
+            caches
+                .open(PRECACHE)
+                .then((cache) => cache.addAll(PRECACHE_URLS))
+                .then(self.skipWaiting())
+        );
+    });
+    // The activate handler takes care of cleaning up old caches.
+    self.addEventListener("activate", (event) => {
+        const currentCaches = [PRECACHE, RUNTIME];
+        event.waitUntil(
+            caches
+                .keys()
+                .then((cacheNames) => {
+                    return cacheNames.filter(
+                        (cacheName) => !currentCaches.includes(cacheName)
+                    );
+                })
+                .then((cachesToDelete) => {
+                    return Promise.all(
+                        cachesToDelete.map((cacheToDelete) => {
+                            return caches.delete(cacheToDelete);
+                        })
+                    );
+                })
+                .then(() => self.clients.claim())
+        );
+    });
+
+    // The fetch handler serves responses for same-origin resources from a cache.
+    // If no response is found, it populates the runtime cache with the response
+    // from the network before returning it to the page.
+    self.addEventListener("fetch", (event) => {
+        // Skip cross-origin requests, like those for Google Analytics.
+        if (event.request.url.startsWith(self.location.origin)) {
+            // event.respondWith(
+            // caches.match(event.request).then((cachedResponse) => {
+            //     if (cachedResponse) {
+            //         return cachedResponse;
+            //     }
+
+            //     return caches.open(RUNTIME).then((cache) => {
+            //         return fetch(event.request, {}).then((response) => {
+            //             // Put a copy of the response in the runtime cache.
+            //             return cache
+            //                 .put(event.request, response.clone())
+            //                 .then(() => {
+            //                     return response;
+            //                 })
+            //                 .catch(() => {});
+            //         });
+            //     });
+            // })
+
+            event.respondWith(
+                caches.open(PRECACHE).then(async function (cache) {
+                    const response = await cache.match(event.request);
+                    return (
+                        response ||
+                        fetch(event.request).then(function (response_1) {
+                            cache.put(event.request, response_1.clone());
+                            return response_1;
+                        })
+                    );
+                })
+            );
+            // );
+        }
+    });
+} catch (e) {
+    console.log(e);
+}
+
